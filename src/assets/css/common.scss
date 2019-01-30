@@ -1,0 +1,140 @@
+/*分页组件公共样式，为了不影响其他组件外层用一个类名为commonPaginaton的DIV包裹*/
+     .common_paginaton {
+     	span.el-pagination__total {
+     		color: #2b82d3;
+     	}
+     	input.el-input__inner {
+     		background-color: rgba(44, 149, 240, 0.1);
+     		border: 1px solid #285e8c;
+     		color: #2f96ef;
+     	}
+     	.el-pagination button:disabled {
+     		color: #1f5bd3;
+     		background-color: rgba(44, 149, 240, 0.1);
+     	}
+     	.el-pager li {
+     		color: #2f96ef;
+     		background-color: rgba(44, 149, 240, 0.1);
+     	}
+     	.el-pager li.active {
+     		color: #fff;
+     		cursor: default;
+     	}
+     	.el-select .el-input .el-select__caret {
+     		color: #1f5bd3;
+     	}
+     	.el-pagination .btn-next,
+     	.el-pagination .btn-prev {
+     		color: #1f5bd3;
+     		background-color: rgba(44, 149, 240, 0.1);
+     	}
+     	.el-pagination .btn-prev {
+     		color: #1f5bd3;
+     		background-color: rgba(44, 149, 240, 0.1);
+     	}
+     	.el-pagination__jump {
+     		color: #2b82d3;
+     	}
+     	.container {
+     		border: 10px solid gray;
+     	}
+      }
+	 /*elementUI--select下拉列表样式*/
+	 .common_select{
+		.el-input__icon{
+			line-height:30px;
+		} 
+	 }
+	 
+	 
+     /*表格样式*/
+	 .common_table{
+		 .el-table--border td{
+			 /*单元格右侧border*/
+			 border-right:none;
+		 }
+		 .el-table__body-wrapper .is-scrolling-none{
+			 /* background:rgba(39, 69, 111, 0.3); */
+		 }
+		 .el-table--border{
+		     border:none;	 
+		 }
+		 .el-table{
+			 background:none;
+		 }
+		 /*表头背景色*/
+		 .has-gutter .is-leaf{
+			 background:#14284B;
+		 }
+		 .el-table th{
+			 background:#193965; 
+			 border:none;
+			 color:white;
+			 font-size:18px;
+		 } 
+		 /*没有数据时空表格的背景颜色*/
+		 .el-table__empty-block{
+			 background:#193965;
+			 
+		 }
+		 /*取消右下1px伪类的白色背景色*/
+		 .el-table::before {
+			 background:none;
+		 }
+		 /*去掉右侧1PX的伪类*/
+		 .el-table--border::after, .el-table--group::after{
+			 width:0;
+		 }
+		 .el-table td{
+			 border-bottom:1px solid #191717;
+			 color:#31a0ff;
+		 }
+		 /*每一行的背景颜色*/
+		 .el-table__row{
+			background:rgba(27, 60, 106, 0.9)
+		 }
+	 }
+	 .common_select{
+		 input.el-input__inner {
+		 	background-color: rgba(44, 149, 240, 0.1);
+		 	border: 1px solid #285e8c;
+		 	color: #2f96ef;
+		 }
+		 .el-select .el-input .el-select__caret {
+		 	color: #1f5bd3;
+		 }
+	 } 	
+
+// 
+	.el-select-dropdown__wrap.el-scrollbar__wrap{
+		margin-bottom: -20px !important;
+		margin-right: -20px !important;
+	}
+	.el-select-dropdown__list {
+		padding: 0 !important;
+	}
+	.el-select-dropdown {
+		border: 1px solid #409eff !important;
+		background-color: rgba(20, 43, 81, 0.92) !important;
+	}
+	.popper__arrow {
+		border-bottom-color: #409eff !important;
+		border-top-color: #409eff !important;
+	}
+	.popper__arrow::after {
+		border-bottom-color: rgba(0, 2, 6, 0.25) !important;
+		border-top-color: rgba(0, 2, 6, 0.25) !important;
+	}
+	.el-select-dropdown__item {
+		color: #fff !important;
+	}
+	.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+			background-color: rgba(49, 160, 255, 0.48) !important;
+	}
+	.el-input__inner {
+			height: 30px !important;
+			line-height: 30px !important;
+	}
+	.el-input__icon {
+			line-height: 23px !important;
+	}
