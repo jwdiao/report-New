@@ -3,7 +3,7 @@
     <!-- 头部 start -->
     <div class="index_top">
       <div class="index_imgText">
-        <span class="title">车辆门禁管理统计信息</span>
+        <span class="title">南口•南大门车辆统计报表</span>
       </div>
       <em class="time" v-text="currentTime"></em>
 			<div class="button" @click="enterIndexPage('/HomeGuide')"></div>
@@ -11,144 +11,75 @@
     <div class="index_main">
       <div class="index_left">
         <div class="index_left_top">
-          <p class="home_title home_title-blue" style="display: flex;justify-content: space-between"><span>车辆门禁管理结果统计</span><span style="text-align: right;font-family: fontnameRegular;">{{currentDate}}</span></p><!--style="color:#31A0FF;"-->
+          <p class="home_title home_title-T1" style="display: flex;justify-content: space-between">
+            <span>超过24小时未离开总数</span>
+            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carAllData.strandedTotalNum}}</span>
+          </p>
           <div class="index_left_top_main">
-            <div class="index_left_top_main_Cars">
-              <div class="index_left_top_main_Cars_module">
-                <p><img src="../assets/images/E1.png" alt="">车辆总数</p>
-                <div class="index_left_top_main_Cars_module_num">{{carStatistics.carAllNum}}</div>
-              </div>
-              <!--<div class="index_left_top_main_Cars_img"><img src="../assets/images/E1.png" alt=""></div>-->
-            </div>
-            <div class="index_left_top_main_Cars">
-              <div class="index_left_top_main_Cars_module">
-                <p><img src="../assets/images/E2.png" alt="">内部车辆</p>
-                <div class="index_left_top_main_Cars_module_num">{{carStatistics.carInsideNum}}</div>
-              </div>
-            </div>
-            <div class="index_left_top_main_Cars">
-              <div class="index_left_top_main_Cars_module">
-                <p><img src="../assets/images/E3.png" alt="">外部车辆</p>
-                <div class="index_left_top_main_Cars_module_num">{{carStatistics.carExternalNum}}</div>
-              </div>
-            </div>
-            <!-- <div class="index_left_top_main_Cars">
-               <div class="index_left_top_main_Cars_module">
-                 <p><img src="../assets/images/E4.png" alt="">大货车</p>
-                 <div class="index_left_top_main_Cars_module_num">{{carStatistics.carLargeNum}}</div>
+           <div>
+             <div class="index_left_top_main_Cars">
+               <div class="index_left_top_main_Cars_module carsN">
+                 <p><img src="../assets/images/E2.png" alt="">内部车辆</p>
+                 <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideNum}}</div>
                </div>
-             </div>-->
+             </div>
+             <div class="index_left_top_main_Cars ">
+               <div class="index_left_top_main_Cars_module carsH">
+                 <p><img src="../assets/images/E4.png" alt="">货  车</p>
+                 <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedTruckNum}}</div>
+               </div>
+             </div>
+           </div>
+            <div>
+              <div class="index_left_top_main_Cars ">
+                <div class="index_left_top_main_Cars_module carsW">
+                  <p><img src="../assets/images/E3.png" alt="">外部车辆</p>
+                  <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideNum}}</div>
+                </div>
+              </div>
+              <div class="index_left_top_main_Cars ">
+                <div class="index_left_top_main_Cars_module carsX">
+                  <p><img src="../assets/images/E00.png" alt="">小轿车 </p>
+                  <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedCarNum}}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="index_left_bottom">
-          <div class="home_title home_title-blue">
-            <p>车辆信息列表</p>
-
+          <div class="home_title home_title-E10">
+            <p>未离开车辆列表</p>
           </div>
           <div class="search">
-            <el-date-picker
-              v-model="valueStart"
-              type="date" @change="handleDateStart" value-format="yyyy-MM-dd"
-              :picker-options="pickerOptionsStart"
-              placeholder="选择开始日期">
-            </el-date-picker>
-            <el-date-picker
-              v-model="valueEnd" style="margin-left: 20px;"
-              type="date" @change="handleDateEnd" value-format="yyyy-MM-dd"
-              :picker-options="pickerOptionsEnd"
-              placeholder="选择结束日期">
-            </el-date-picker>
-            <el-select  class="module" v-model="innerOrOuterCars" @change="innerOrOuterFn" clearable @clear="clearAll" placeholder="内部外部车辆">
+            <el-select  class="module" v-model="hceliangguishu" @change="cheliangguishuFn" clearable @clear="clearAll" placeholder="车辆归属">
               <el-option
-                v-for="item in innerOrOuterArr"
+                v-for="item in innerOrOuterArr1"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
               </el-option>
             </el-select>
-            <label class="module">
-              <input type="text" class="search-num" ref="inputCarNum" @focus="handlefocus" @blur="handleblur" @input="inputIsVal1" placeholder="请输入车牌号" value="">
-              <i v-show="isRm1" data-index="1" @click="clearVal"></i>
-            </label>
-            <label class="module is-out">
-              <el-select v-model="selectCarType" @change="carArrTypeFn" clearable placeholder="选择车辆类型">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </label>
-            <label class="module is-out">
-              <template>
-                <el-select v-model="isOutStatus"  clearable placeholder="车辆是否离开"><!--@change="isOutStatusFn"-->
-                  <el-option
-                    v-for="item in carType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </template>
-            </label>
+            <el-select  class="module" v-model="cheliangtype" @change="cheliangtypeFn" clearable @clear="clearAll" placeholder="车辆类型">
+              <el-option
+                v-for="item in innerOrOuterArr2"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
             <button class="search-btn" @click="gerSearchCarData">查找车辆</button>
           </div>
-          <div class="title"><span>序号</span><span>车牌号</span><span>内部/外部</span><span>车辆类型</span><span>进入时间</span><span>离开时间</span><span>车主姓名</span></div>
+          <div class="title"><span>序</span><span>车牌号</span><span>进入时间</span><span>时长(h)</span></div>
           <div class="index_left_bottom_main">
             <el-scrollbar class="message" style="overflow-x: hidden;">
-              <div class="title_message" v-for="(item,index) in carArr" :key="index">
+              <div class="title_message" v-for="(item,index) in carArrNew" :key="index">
                 <span style="color:#fff03e;">{{(index+1)+(currentPage-1)*pageSize}}</span>
                 <span>{{item.cCode}}</span>
-                <span>{{item.memo}}</span>
-                <span class="typeCar" :data-car-type = "item.plateTypeName">{{item.plateTypeName}}</span>
                 <span>{{item.inDT}}</span>
-                <span>{{item.outDT == null ? '未离开' : item.outDT}}</span>
-                <span>{{item.customerName}}</span>
+                <span>{{item.strandedTime}}</span>
               </div>
             </el-scrollbar>
           </div>
-
-          <!--<div class="title_message" style="background-color: #2b82d3;">
-            <el-table
-              :data="carArr"
-              stripe
-              size="mini"
-              style="width: 100%" height="500" background="red">
-              <el-table-column
-                type="index"
-                label="序号"
-                width="50">
-              </el-table-column>
-              <el-table-column
-                prop="cCode"
-                label="车牌号"
-                width="140">
-              </el-table-column>
-              <el-table-column
-                prop="memo"
-                label="内部/外部"
-                width="160">
-              </el-table-column>
-              <el-table-column
-                prop="plateTypeName"
-                label="车辆类型">
-              </el-table-column>
-              <el-table-column
-                prop="inDT"
-                label="进入时间">
-              </el-table-column>
-              <el-table-column
-                prop="outDT"
-                label="离开时间">
-              </el-table-column>
-              <el-table-column
-                prop="customerName"
-                label="车主姓名">
-              </el-table-column>
-            </el-table>
-          </div>-->
-
           <template>
             <div class="block" style="text-align: center;">
               <el-pagination
@@ -157,11 +88,163 @@
                 :current-page="currentPage"
                 :page-sizes="[20, 50, 100]"
                 :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="carTotal">
+                layout="total, prev, pager, next"
+                :total="carTotals">
               </el-pagination>
             </div>
           </template>
+        </div>
+      </div>
+      <div class="index_center">
+        <div class="checking_dashbordBox">
+          <p class="home_title home_title-blue" style="display: flex;justify-content: space-between">
+            <span>今日进入总数</span>
+            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carEchartsData.enterTotalNum}}</span>
+          </p>
+          <div class="checking_dashbord">
+            <ul>
+              <li>
+                <div class="top">
+                  <div class="item text">内部车辆</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterInsideNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvBlue" id="nbcllv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">外部车辆</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterOutsideNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvRed" id="wbcllv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">货车</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterTruckNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvYellow" id="hclv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">小轿车</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterCarNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvGreen" id="xjclv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="checking_dashbordBox">
+          <p class="home_title home_title-blue" style="display: flex;justify-content: space-between">
+            <span>今日离开总数</span>
+            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carEchartsData.leaveTotalNum}}</span>
+          </p>
+          <div class="checking_dashbord">
+            <ul>
+              <li>
+                <div class="top">
+                  <div class="item text">内部车辆</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveInsideNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvBlue" id="lknblv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">外部车辆</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveOutsideNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvRed" id="lkwblv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">货车</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveTruckNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvYellow" id="lkhclv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">小轿车</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveCarNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvGreen" id="lkxjclv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="checking_dashbordBox">
+          <p class="home_title home_title-blue" style="display: flex;justify-content: space-between">
+            <span>今日未离开总数</span>
+            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carEchartsData.notLeaveTotalNum}}</span>
+          </p>
+          <div class="checking_dashbord">
+            <ul>
+              <li>
+                <div class="top">
+                  <div class="item text">内部车辆</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveInsideNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvBlue" id="wlknblv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">外部车辆</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveOutsideNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvRed" id="wlkwblv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">货车</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveTruckNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvYellow" id="wlkhclv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+              <li>
+                <div class="top">
+                  <div class="item text">小轿车</div>
+                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveCarNum}}</div>
+                </div>
+                <div class="bottom">
+                  <div class="lv lvGreen" id="wlkxjclv"></div>
+                  <p class="lvText">占比率</p>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="index_right">
@@ -170,7 +253,6 @@
     </div>
   </div>
 </template>
-
 <script>
   import CarsManage from '../components/CarsManage'
   import echarts from 'echarts'
@@ -178,7 +260,7 @@
   import $ from 'jquery'
   import http from '../api/http'
   import BScroll from 'better-scroll'
-  import {reqUserInfo,reqCarData}from'../api'
+  import {reqUserInfo,reqCarData,reqCarEchartsList}from'../api'
 
   export default {
     name: 'cars',
@@ -188,27 +270,16 @@
     data() {
       return {
         carArr : [],
+        carArrNew : [],
         timerId: '',        // 定时器
         timerIdHour: '',    // 中间小时的定时器
         currentTime: '',    // 系统当前时间
         currentDate: '',    // 系统当前日期
-        valueStart: '',     //开始日期选择器的value
-        valueEnd: '',       //结束日期选择器的value
         selectCarType:'',   //选择车辆类型
-        innerOrOuterCars:'',//选择内部或外部车辆
         inputLabel:'',      //input车牌号码
-        pickerOptionsStart: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          }
-        },
-        pickerOptionsEnd:{
-          disabledDate:(time) =>{
-            return time.getTime() < new Date(this.valueStart).getTime() - 3600*1000*24 || time.getTime() > Date.now();
-          }
-        },
-        innerOrOuterCarsHttp:'',
-        innerOrOuterArr:[
+        hceliangguishu:'',//车辆归属
+        cheliangtype:'', //车辆类型
+        innerOrOuterArr1:[
           {
             value:'001',
             label:'内部车辆'
@@ -217,58 +288,36 @@
             label:'外部车辆'
           }
         ],
-        options:[
+        innerOrOuterArr2:[
           {
-            value:'01',
-            label:'黄牌大型车'
+            value:'001',
+            label:'货车'
           },{
-            value:'02',
-            label:'蓝牌小型车'
-          },{
-            value:'03',
-            label:'白牌军用车'
-          },{
-            value:'04',
-            label:'绿牌电动车'
+            value:'002',
+            label:'小轿车'
           }
         ],
         //分页
         dataCount: 0,  //初始化信息条数
-        pageSize: 20,//每页显示条数
+        pageSize: 10,//每页显示条数
         page:1, //当前页码
-        historyData:[],
-        isRm1: false,
-        isRm2: false,
         currentPage: 1,
-        carTotal: 0,
+        carTotals: 0,
         carStatistics: {
           carAllNum: 0,
           carInsideNum: 0,
           carExternalNum: 0,
           carLargeNum: 0
         },
-        carType: [{
-          value: '',
-          label: '全部'
-        },{
-          value: '1',
-          label: '离开车辆'
-        }, {
-          value: '0',
-          label: '未离开车辆'
-        }],
-        isOutStatus: '',
+        neibuRateObj: {}, // 内部车辆率 ====
+        waibuRateObj: {}, // 外部车辆率 ====
+        huocheRateObj: {}, // 货车占有率======
+        xiaojiaocheRateObj: {}, // 小轿车占有率====
+        carEchartsData:{},//中间列表展示的数据
+        carAllData:{},//左侧展示的数据
       }
     },
-    created() {
-
-      this.carData()
-      this.setDefaultDate()
-      this.carListData(this.valueStart,this.valueEnd, '','','','')
-      setInterval(() => {
-        this.carData()
-      }, 300000)
-    },
+    created() {},
     mounted() {
       // 顶部日期时间
       this.currentTime = this.getCurrentDateTime();
@@ -276,37 +325,33 @@
       setInterval(() => {
         this.currentTime = this.getCurrentDateTime();
       }, 1000)
+
+       this.getChartsData()
+      const{currentPage,pageSize} = this
+      this.getCarAllData('','',currentPage,pageSize)
     },
     methods: {
-      async carListData (startDate,endDate,cCode,carType,carBelong,isOutStatus,page,pageSize) {
-        if(isOutStatus === '离开车辆')  isOutStatus == '1';
-        if(isOutStatus == '未离开车辆') isOutStatus == '0';
-        if(isOutStatus == '全部') isOutStatus == '';
-        // const res = await http.post('/carPlater/getSanyCarDataList',{'ccode': cCode, 'cartype': carType, page: page + '', pagesize: pageSize + '', isoutstatus: isOutStatus});
-        const res = await reqUserInfo(startDate,endDate,cCode,carType,carBelong,isOutStatus,page,pageSize)//page,pageSize
-        if (res && res.status == 200 && res.data.ret === "200") {
-          console.log('res:',res)
-          var carArrss = res.data.list;
-          this.carTotal = res.data.total;
-          for (var i = 0; i < carArrss.length; i++) {
-            if(carArrss[i].memo !== '内部车辆' && carArrss[i].memo !== '外部车辆'){
-              carArrss[i].memo = '外部车辆'
-            }else if(carArrss[i].customerName === null){
-              carArrss[i].customerName = '未记录'
-            }else if(carArrss[i].inDT === null){
-              carArrss[i].inDT = '未找到入场记录'
-            }
-          }
-          this.carArr = carArrss
-        }
+      //接口--中间
+      async getChartsData(){
+        // const res = await reqCarEchartsList()
+        const res = await http.get('http://10.88.195.89:8083/carPlater/getTodaySanyCarData')
+       if(res.data.ret === '200'){
+          this.carEchartsData = res.data
+         console.log('carEchartsData:',this.carEchartsData)
+         this.renderEchartsCircle(this.carEchartsData)
+       }
       },
-      async carData () {
-        // const res = await http.get('/carPlater/getCarData');
-        const res = await reqCarData()
-        if (res && res.status == 200 && res.data.ret === "200") {
-          this.carStatistics = res.data.data;
-        }
+      //接口---左侧
+      async getCarAllData(carbelong,cartype,page,pagesize){
+        // const res = await reqCarAllInfo(carBelong,carType,page,pageSize)
+        const res = await http.post('http://10.88.195.89:8083/carPlater/getStrandedCarData',{carbelong,cartype,page,pagesize})
+       if(res.data.ret === '200'){
+          this.carAllData = res.data
+         this.carArrNew = res.data.strandedList
+         this.carTotals = res.data.total
+       }
       },
+
       /*函数名：carArrTypeFn
       参数：val:value值
       描述：下拉选项选取对应的车辆类型
@@ -318,65 +363,263 @@
         });
         this.selectCarType = obj.label
       },
-      /*函数名：isOutStatusFn
-         参数：val:value值
-         描述：下拉选项选取是否离开车辆状态
-       * */
-      /*isOutStatusFn(){
-        /!*const val = event.target.options[event.target.selectedIndex].value;
-        this.isOutStatus = val;
-        if(val === ''){
-          this.carListData('', '', this.currentPage, this.pageSize, this.isOutStatus);
-        }*!/
-        if(this.isOutStatus === ''){
-          this.carListData('', '', this.currentPage, this.pageSize, this.isOutStatus);
+      /* 四个率 */
+      renderClock (dom, data) {
+        var myChart = echarts.init(dom)
+        var option = null
+        option = {
+          tooltip: {
+            formatter: '{a} {b} : {c}%',
+            confine: true // 是否将tooltip框限制在图表的区域内
+          },
+          toolbox: {
+            show: true
+          },
+          series: [
+            {
+              name: data.name,
+              type: 'gauge',
+              radius: '100%',
+              rich: {
+                color: '#fff'
+              },
+              axisLabel: {
+                show: false
+              },
+              itemStyle: {
+                // color: data.color, //指针颜色
+                length: 5
+              },
+              axisTick: {
+                show: false
+              },
+              emphasis: {
+                itemStyle: {
+                  color: '#fff'
+                }
+              },
+              axisLine: { // 仪表盘轴线相关配置。
+                show: false,
+                lineStyle: {
+                  width: 0,
+                  // 0% 处的颜色
+                  color: [[1, new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: data.color.startColor }, { offset: 1, color: data.color.endColor }], false)]]
+                  // color: [[1,'#ff820d']]
+                },
+                length: 5
+              },
+              splitLine: {
+                show: false
+              },
+              pointer: {
+                width: 4
+              },
+              detail: { formatter: '{value}%', color: '#fff', offsetCenter: [0, '70%'], fontSize: 20 },
+              data: [{ value: data.value, name: '' }]
+            }
+          ]
         }
-      },*/
-      /*函数名：handleDateStart
-       参数：val:value值
-       描述：从开始日期选项中选择对应的日期
-     * */
-      handleDateStart(val){
-        this.valueStart = val
+        if (option && typeof option === 'object') {
+          myChart.setOption(option, true)
+        }
       },
-      /*函数名：handleDateEnd
-       参数：val:value值
-       描述：从结束日期选项中选择对应的日期
-     * */
-      handleDateEnd(val){
-        this.valueEnd = val
+      /* 四个率 */
+      renderEchartsCircle (carEchartsData) {
+        // 内部车辆率
+        var nbcllvEcharts = document.getElementById('nbcllv')
+        this.neibuRateObj = {
+          name: '内部车辆占有率',
+          // color: '#0097ff',
+          color: {
+            startColor: '#0090ff',
+            endColor: '#00e2ff'
+          },
+          value: carEchartsData.enterInsideRate,/*this.info.workPlanRate*/
+        }
+        this.renderClock(nbcllvEcharts, this.neibuRateObj)
+
+        // 外部车辆率
+        var wbcllvEcharts = document.getElementById('wbcllv')
+        this.waibuRateObj = {
+          name: '外部车辆占有率',
+          // color: '#ff8f19',
+          color: {
+            startColor: '#E5085D',
+            endColor: '#FC5081'
+          },
+          value:carEchartsData.enterOutsideRate, /*this.info.recordRate*/
+        }
+        this.renderClock(wbcllvEcharts, this.waibuRateObj)
+
+        // 货车率
+        var hclvEcharts = document.getElementById('hclv')
+        this.huocheRateObj = {
+          name: '货车占有率',
+          // color: '#0097ff',
+          color: {
+            startColor: '#ff7905',
+            endColor: '#ffbf46'
+          },
+          // value: this.info.onWorkRate
+          value: carEchartsData.enterTruckRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
+        }
+        this.renderClock(hclvEcharts, this.huocheRateObj)
+
+        // 小轿车率
+        var xjclvEcharts = document.getElementById('xjclv')
+        this.xiaojiaocheRateObj = {
+          name: '小轿车占有率',
+          // color: '#ff8f19',
+          color: {
+            startColor: '#2FC447',
+            endColor: '#36EBF5'
+          },
+          value:Number(carEchartsData.enterCarRate),/* this.info.validRate*/
+        }
+        this.renderClock(xjclvEcharts, this.xiaojiaocheRateObj)
+        //======================================
+        // 内部车辆率
+        var lknblvEcharts = document.getElementById('lknblv')
+        this.neibuRateObj = {
+          name: '内部车辆占有率',
+          // color: '#0097ff',
+          color: {
+            startColor: '#0090ff',
+            endColor: '#00e2ff'
+          },
+          value: carEchartsData.leaveInsideRate,/*this.info.workPlanRate*/
+        }
+        this.renderClock(lknblvEcharts, this.neibuRateObj)
+
+        // 外部车辆率
+        var lkwblvEcharts = document.getElementById('lkwblv')
+        this.waibuRateObj = {
+          name: '外部车辆占有率',
+          // color: '#ff8f19',
+          color: {
+            startColor: '#E5085D',
+            endColor: '#FC5081'
+          },
+          value:carEchartsData.leaveOutsideRate, /*this.info.recordRate*/
+        }
+        this.renderClock(lkwblvEcharts, this.waibuRateObj)
+
+        // 货车率
+        var lkhclvEcharts = document.getElementById('lkhclv')
+        this.huocheRateObj = {
+          name: '货车占有率',
+          // color: '#0097ff',
+          color: {
+            startColor: '#ff7905',
+            endColor: '#ffbf46'
+          },
+          // value: this.info.onWorkRate
+          value: carEchartsData.leaveTruckRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
+        }
+        this.renderClock(lkhclvEcharts, this.huocheRateObj)
+
+        // 小轿车率
+        var lkxjclvEcharts = document.getElementById('lkxjclv')
+        this.xiaojiaocheRateObj = {
+          name: '小轿车占有率',
+          // color: '#ff8f19',
+          color: {
+            startColor: '#2FC447',
+            endColor: '#36EBF5'
+          },
+          value:Number(carEchartsData.leaveCarRate),/* this.info.validRate*/
+        }
+        this.renderClock(lkxjclvEcharts, this.xiaojiaocheRateObj)
+        //======================================
+        // 内部车辆率
+        var wlknblvEcharts = document.getElementById('wlknblv')
+        this.neibuRateObj = {
+          name: '内部车辆占有率',
+          // color: '#0097ff',
+          color: {
+            startColor: '#0090ff',
+            endColor: '#00e2ff'
+          },
+          value: carEchartsData.notLeaveInsideRate,/*this.info.workPlanRate*/
+        }
+        this.renderClock(wlknblvEcharts, this.neibuRateObj)
+
+        // 外部车辆率
+        var wlkwblvEcharts = document.getElementById('wlkwblv')
+        this.waibuRateObj = {
+          name: '外部车辆占有率',
+          // color: '#ff8f19',
+          color: {
+            startColor: '#E5085D',
+            endColor: '#FC5081'
+          },
+          value:carEchartsData.notLeaveOutsideRate, /*this.info.recordRate*/
+        }
+        this.renderClock(wlkwblvEcharts, this.waibuRateObj)
+
+        // 货车率
+        var wlkhclvEcharts = document.getElementById('wlkhclv')
+        this.huocheRateObj = {
+          name: '货车占有率',
+          // color: '#0097ff',
+          color: {
+            startColor: '#ff7905',
+            endColor: '#ffbf46'
+          },
+          // value: this.info.onWorkRate
+          value: carEchartsData.notLeaveTruckRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
+        }
+        this.renderClock(wlkhclvEcharts, this.huocheRateObj)
+
+        // 小轿车率
+        var wlkxjclvEcharts = document.getElementById('wlkxjclv')
+        this.xiaojiaocheRateObj = {
+          name: '小轿车占有率',
+          // color: '#ff8f19',
+          color: {
+            startColor: '#2FC447',
+            endColor: '#36EBF5'
+          },
+          value:Number(carEchartsData.notLeaveCarRate),/* this.info.validRate*/
+        }
+        this.renderClock(wlkxjclvEcharts, this.xiaojiaocheRateObj)
+
+
+
+
       },
-      /*函数名：setDefaultDate
-        参数：
-        描述：设置默认日期
-      * */
-      setDefaultDate(){
-        const hour = (new Date()).getHours();
-        const month = new Date().getMonth() - 0 + 1 < 10 ? '0' + (new Date().getMonth() - 0 + 1) : new Date().getMonth() - 0 + 1,
-          days = new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate(),
-          hours = new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours(),
-          seconds = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds(),
-          minutes = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
-        this.valueStart =this.valueEnd = new Date().getFullYear() +'-'+ month +'-'+ days;
-      },
-      /*函数名：innerOrOuterFn
+      /*函数名：cheliangtype
         参数：val
-        描述：选择内部或外部车辆
+        描述：车辆类型
       * */
-      innerOrOuterFn(val){
+      cheliangtypeFn(val){
         let obj = {};
-        obj = this.innerOrOuterArr.find((item)=>{
+        obj = this.innerOrOuterArr2.find((item)=>{
           return item.value === val;
         });
-        this.innerOrOuterCars = obj.label
-        this.innerOrOuterCarsHttp = obj.label.substring(0,2)
+        this.cheliangtype = obj.label
+        console.log('cheliangtype:',this.cheliangtype)
+      },
+      /*函数名：cheliangguishuFn
+        参数：val
+        描述：车辆归属
+      * */
+      cheliangguishuFn(val){
+        let obj = {};
+        obj = this.innerOrOuterArr1.find((item)=>{
+          return item.value === val;
+        });
+        this.hceliangguishu = obj.label
+        console.log('hceliangguishu:',this.hceliangguishu)
+        // this.innerOrOuterCarsHttp = obj.label.substring(0,2)
       },
       /*函数名：clearAll
         参数：val
         描述：清空选择内部或外部车辆
       * */
       clearAll(){
-        this.innerOrOuterCarsHttp = ""
+        this.currentPage = 1
+        this.getCarAllData(this.hceliangguishu,this.cheliangtype,this.currentPage,this.pageSize)
       },
       /*函数名：gerSearchCarData
         参数：无
@@ -384,41 +627,14 @@
       * */
       gerSearchCarData(){
         this.currentPage = 1
-        this.carListData(this.valueStart,this.valueEnd,this.inputLabel,this.selectCarType,this.innerOrOuterCarsHttp,this.isOutStatus,this.currentPage,this.pageSize);
+        this.getCarAllData(this.hceliangguishu,this.cheliangtype,this.currentPage,this.pageSize)
       },
-      /*函数名：inputIsVal1
-       参数：无
-       描述：动态获取input的值
-     * */
-      inputIsVal1(){
-        event.target.value.length ? this.isRm1 = true :  this.isRm1 = false;
-        this.inputLabel = event.target.value
-      },
-      /*函数名：clearVal
-       参数：无
-       描述：清空车牌号逻辑
-     * */
-      clearVal(){
-        this.inputLabel = ''
-        event.target.previousSibling.value = '';
-        this.isRm1 = false;
-        this.currentPage = 1
-        this.carListData(this.valueStart,this.valueEnd,this.inputLabel,this.selectCarType,this.innerOrOuterCarsHttp,this.isOutStatus,this.currentPage,this.pageSize);
-      },
+
       enterIndexPage(path) {
         // 路径从state中获取
         this.$router.replace(path)
       },
-      /*函数名：handlefocus,handleblur
-        参数：无
-        描述：input输入车牌号聚焦与失焦样式
-      * */
-      handlefocus(){
-        this.$refs.inputCarNum.style.backgroundColor = 'rgba(44, 149, 240, 0.3)'
-      },
-      handleblur(){
-        this.$refs.inputCarNum.style.background = ''
-      },
+
       // 时间格式化
       getCurrentDateTime() {
         return moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
@@ -433,11 +649,11 @@
        * */
       handleSizeChange(val) {
         this.pageSize = val;
-        this.carListData(this.valueStart,this.valueEnd,this.inputLabel,this.selectCarType,this.innerOrOuterCarsHttp,this.isOutStatus,this.currentPage,this.pageSize);
+        this.getCarAllData(this.hceliangguishu,this.cheliangtype,this.currentPage,this.pageSize)
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.carListData(this.valueStart,this.valueEnd,this.inputLabel,this.selectCarType,this.innerOrOuterCarsHttp,this.isOutStatus,val,this.pageSize);
+        this.getCarAllData(this.hceliangguishu,this.cheliangtype,val,this.pageSize)
       },
       destroyed() {
         // clearInterval(this.timerId)
@@ -502,11 +718,11 @@
     }
     /*6s页面左侧盒子*/
     &_left{
-      width: 65%;float: left;height:100%;padding-right: 15px;
+      width: 25%;float: left;height:100%;padding-right: 15px;
       display: flex;flex-direction: column;flex-shrink: 0;
       /*6s页面左侧上部*/
       &_top{
-        flex: 2;
+        flex: 5;
         width:100%;
         background: rgba(39,69,111,0.3);
         border: 1px solid rgba(255,255,255,0.1);
@@ -525,18 +741,32 @@
           margin: 15px auto 0 ;
 
           &_Cars{
-            width: calc((100% - 45px)/3 );
-            height: 100%;
+            width: calc((100% - 45px)/0.7 );
+            height: 50%;
             /*min-height: 90px;*/
-            background: rgba(39,69,111,0.3);
-            margin-right: 15px;
+           // background: rgba(39,69,111,0.3);
+            margin-right: 100px;
+            .carsN{
+            color: #49E664;
+            }
+            .carsX{
+              color: #02BBFE;
+            }
+            .carsW{
+              color: #FF3566;
+            }
+            .carsH{
+              color: #FBD603;
+              margin-right: 0;
+            }
             &_module {
               width: 100%;
               height: 100%;
               padding: 15px 0;
-              color: #fff;
+
               /*border: 1px solid #fff;*/
               &_num {
+                color: #fff;
                 text-align: center;
                 line-height: 38px;
                 font-size: 38px;
@@ -544,7 +774,9 @@
               }
               & > p {
                 width: 100%;
-                text-align: center;
+                margin-left: 18%;
+                margin-bottom: 5%;
+                /*text-align: center;*/
                 height: 30px;
                 line-height: 30px;
                 font-weight: 300;
@@ -577,19 +809,7 @@
               }
             }
           }
-          &_Cars:nth-child(1){
-            color: #02BBFE;
-          }
-          &_Cars:nth-child(2){
-            color: #49E664;
-          }
-          &_Cars:nth-child(3){
-            color: #FF3566;
-          }
-          &_Cars:nth-child(4){
-            color: #FBD603;
-            margin-right: 0;
-          }
+
         }
         /*background-color: #eee;*/
       }
@@ -627,7 +847,7 @@
           text-align: right;
           overflow: hidden;
           .module {
-            width: 12%;
+            width: 30%;
             height: 100%;
             margin-left: 20px;
             position: relative;
@@ -716,22 +936,29 @@
           padding: 0 3%;
           span{
             display:inline-block;
-            width:14.2%;
+            width:24%;
             height:22px;
             box-sizing:border-box;
-            line-height:22px;
+            line-height:0px;
             font-size: 16px;
             text-align: center;
           }
           span:nth-child(1){
-            width:4%;
+            width:8%;
           }
-          span:nth-child(5), span:nth-child(6){
-            width:18%;
+          span:nth-child(2){
+            width:25%;
           }
+          span:nth-child(3){
+            width:45%;
+          }
+          span:nth-child(4){
+            width:16%;
+          }
+
         }
         &_main{
-          height: calc(90% - 50px);
+          height: calc(85% - 50px);
           overflow: hidden;
           .message{
             width:100%;
@@ -753,26 +980,26 @@
               background:rgba(56,142,237,0.2);
               span{
                 display:inline-block;
-                width: 14%;
+                width: 24%;
                 height: auto;
                 font-size: 14px;
                 box-sizing:border-box;
-                line-height:25px;
+                line-height:0px;
                 text-align: center;
                 user-select: auto;
               }
               span:nth-child(1){
-                width:4%;
+                width:8%;
               }
               span:nth-child(2){
-                width:15%;
+                width:25%;
               }
-              span:nth-child(5), span:nth-child(6){
-                width:18%;
+              span:nth-child(3){
+                width:45%;
               }
-              /*span:nth-child(2), span:nth-child(3) {
-                width:17%;
-              }*/
+              span:nth-child(4){
+                width:16%;
+              }
             }
             .title_message:hover{
               background:rgba(56,142,237,0.6);
@@ -824,9 +1051,92 @@
         }
       }
     }
+    /*6s页面左侧盒子*/
+    &_center{
+      width: 49%;float: left;height:calc(100% - 15px);padding-right: 15px;margin: 15px 15px 0 0;
+      display: flex;flex-direction: column;flex-shrink: 0;background-color: rgba(39, 69, 111, 0.3);padding:15px;
+      border:1px solid rgba(255,255,255,0.1);
+      .checking_dashbordBox{
+        /*background-color: rgba(39, 69, 111, 0.3);padding:15px;*/
+        /*border:1px solid rgba(255,255,255,0.1);*/
+        .home_title{
+          width:100%;position: relative;
+          .checking_total{
+            font-size: 0.20rem;// font-size:24px;
+            top:-5px;
+            color:#fff;position: absolute;left:25px;font-weight:bold;
+            em{
+              // font-size:42px;vertical-align: -6px;
+              font-size: 0.30rem;vertical-align: -4px;
+              color:#01cbff;display: inline-block;margin-left:12px;font-family: fontnameRegular;}
+          }
+        }
+      }
+      .checking_dashbord{
+        width:100%;height: calc(100% - 36px);overflow: hidden;
+        ul{
+          display: flex;flex-wrap: wrap;align-items: center;
+          height:100%;padding: 5px 0;
+          li{
+            background-color: rgba(42, 75, 133, 0.3);
+            padding:0 10px;
+            height:100%;
+            flex:1;margin-left:6px;text-align:center;
+            &:first-child{margin-left:0;}
+            .text{
+              text-align: center;
+              font-size: 0.22rem;
+              // font-size:22px;
+              font-weight:100;
+            }
+            .num{
+              font-size: 0.28rem;
+              // font-size:35px;
+              color:#02c9fc;font-family: fontnameRegular;
+            }
+            .lv{width:108px;height:108px;margin:0 auto;}
+            .lvYellow{
+              background:url(../assets/images/index_clock-yellow.png)
+            }
+            .lvBlue{
+              background:url(../assets/images/index_clock-blue.png)
+            }
+            .lvRed{
+              background:url(../assets/images/index_clock-red.png)
+            }
+            .lvGreen{
+              background:url(../assets/images/index_clock-green.png)
+            }
+            .lvText{
+              color:#c4c4c4;
+              // font-size:18px;
+              font-size: 0.18rem;
+              padding-bottom:10px;
+            }
+            .top{
+              // height:105px;
+              overflow: hidden;text-align:left;
+              .item{
+                height:0.38rem;line-height:0.38rem;
+                .text{display: inline-block;vertical-align: middle;text-align: left;}
+                .num{display: inline-block;vertical-align: middle;margin-left: 5px;}
+              }
+            }
+            .bottom{margin-top:8px;}/*padding-bottom:10px;*/
+            .single{
+              text-align: center;
+              .text{padding-top:5px;}
+              .num{padding-top:8px;}
+            }
+          }
+        }
+      }
+
+
+    }
     /*cars页面右侧盒子*/
     &_right{
-      width: 35%;float: left;height:100%;
+      width: 25%;float: left;height:100%;
     }
     /deep/ .el-range-input {
       background-color:rgb(19, 44, 83)!important;

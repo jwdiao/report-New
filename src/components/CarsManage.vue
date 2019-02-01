@@ -1,15 +1,15 @@
 <template>
   <div class="abnormal">
     <div class="abnormal-item">
-      <p class="home_title home_title-blue">车辆门禁管理天统计</p>
+      <p class="home_title home_title-icon1">车辆门禁管理天统计</p>
       <div class="day" id="day"></div>
     </div>
     <div class="abnormal-item">
-      <p class="home_title home_title-blue">车辆门禁管理月统计</p>
+      <p class="home_title home_title-icon2">车辆门禁管理月统计</p>
       <div class="month" id="month"></div>
     </div>
     <div class="abnormal-item">
-      <p class="home_title home_title-blue">车辆门禁管理年统计</p>
+      <p class="home_title home_title-icon3">车辆门禁管理年统计</p>
       <div class="year" id="year"></div>
     </div>
   </div>

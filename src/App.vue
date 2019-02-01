@@ -28,6 +28,21 @@ export default {
   &-purple{
     background:url('./assets/images/index_title-purple.png') no-repeat left center;
   }
+  &-T1{
+    background:url('./assets/images/T1.png') no-repeat left center;
+  }
+  &-E10{
+    background:url('./assets/images/E10.png') no-repeat left center;
+  }
+  &-icon1{
+    background:url('./assets/images/icon1.png') no-repeat left center;
+  }
+  &-icon2{
+    background:url('./assets/images/icon2.png') no-repeat left center;
+  }
+  &-icon3{
+    background:url('./assets/images/icon3.png') no-repeat left center;
+  }
   img{margin-left:5px;}
 }
 
@@ -48,6 +63,6 @@ export default {
 }
 @media (min-width: 1920px) {
   html{font-size: 100px;}
-} 
+}
 
 </style>
