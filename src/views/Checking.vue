@@ -17,7 +17,7 @@
         <AbnormalStatistics :info="baseInfo" :monthData="monthDataLeft" :yearData="yearDataLeft" />
       </div>
       <div class="index_con">
-        <!-- <Checking :info="baseInfo" :isDayOrNigint="dayOrNightStatus" :hourEchartsDataBetween="hourEchartsDataBetween" /> -->
+         <!--<Checking :info="baseInfo" :isDayOrNigint="dayOrNightStatus" :hourEchartsDataBetween="hourEchartsDataBetween" />-->
         <Checking :info="baseInfo" :isDayOrNigint="dayOrNightStatus" />
       </div>
       <div class="index_right">

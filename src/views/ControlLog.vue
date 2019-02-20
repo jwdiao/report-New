@@ -91,7 +91,7 @@
 				<!--表格结束-->
 				<!--分页开始-->
 				<template>
-					<div class="block" style="text-align: center;" v-show="pageShow">
+					<div class="block" style="text-align: center;position:absolute;bottom:5px;left:23%;" v-show="pageShow">
 						<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
 						 :page-sizes="[20, 50, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tableListTotal">
 						</el-pagination>
@@ -107,6 +107,7 @@
 	import echarts from 'echarts'
 	import moment from 'moment'
 	import http from '../api/http'
+	import {getSanyCameraSysLogStaticList,getSanyCameraSysLogStaticCharts} from '../api'
 	export default {
 		name: 'controllog',
 		data() {
@@ -208,7 +209,7 @@
 					loginIp: this.loginIp,
 					content: this.content
 				}
-				const res = await http.post('http://10.19.8.22:8083/sanyCameraSysLog/getSanyCameraSysLogList', logQuery);
+				const res = await getSanyCameraSysLogStaticList(logQuery)
 				if (res && res.data.ret == 200) {
 					res.data.data.length>0?this.pageShow = true :this.pageShow = false
 					this.tableList = res.data.data
@@ -222,9 +223,7 @@
         state	ture	String	1：控制日志   2：配置日志
 			 */
 			async getSanyCameraSysLogStatic() {
-				const res = await http.post('http://10.19.8.22:8083/sanyCameraSysLog/getSanyCameraSysLogStatic', {
-					state: this.index
-				});
+				const res = await getSanyCameraSysLogStaticCharts(this.index)
 				if (res && res.data.ret == 200) {
 					this.topEchartsList = [];
 					this.middleEchartsList = [];
@@ -487,6 +486,7 @@
 				margin-left: 20px;
 				padding: 30px 20px;
 				height: 100%;
+				position:relative;
 				.search {
 					width: 100%;
 					overflow: hidden;
@@ -580,7 +580,7 @@
 						width: 4%;
 					}
 					span:nth-child(2) {
-						width: 5%;
+						width: 8%;
 					}
 					span:nth-child(5),
 					span:nth-child(6) {
@@ -590,11 +590,12 @@
 						width: 23%;
 					}
 					span:nth-child(3) {
-						width: 17%;
+						width: 14%;
 					}
 				}
 				.index_left_bottom_main {
-					height: calc(90% - 50px);
+					//height: calc(90% - 50px);
+					height: calc(90%);
 					overflow: hidden;
 					.message {
 						width: 100%;
@@ -630,7 +631,7 @@
 								width: 4%;
 							}
 							span:nth-child(2) {
-								width: 5%;
+								width: 8%;
 							}
 							span:nth-child(5),
 							span:nth-child(6) {
@@ -640,7 +641,7 @@
 								width: 23%;
 							}
 							span:nth-child(3) {
-								width: 17%;
+								width: 14%;
 							}
 						}
 						.title_message:hover {

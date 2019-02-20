@@ -505,184 +505,8 @@ export default {
       }
       this.renderClock(yxsglvEcharts, this.validRateObj)
     },
-    // 1小时考勤统计
-    renderEchartsHour (myChartH, data) {
-      var option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999'
-            }
-          }
-        },
-        legend: {
-          data: this.arr,
-          show: true,
-          top: 15,
-          bottom: 10,
-          right: 40,
-          // x:680, // 图例水平位置
-          itemWidth: 20, // 设置图例的宽高
-          itemHeight: 10,
-          textStyle: {
-            fontWeight: 'normal', // 标题颜色
-            color: '#fff'
-          }
-        },
-        /* grid:{ // 调整坐标轴
-          x:30,
-          y:30,
-          x2:52,
-          y2:60
-        }, */
-        grid: { // 调整坐标轴
-          // bottom: 110,
-          bottom: 30,
-          left: 40,
-          right: 70
-        },
-        dataZoom: [
-          {
-            show: false,
-            start: 0,
-            end: 120,
-            zoomLock: true // 禁止鼠标缩放
-          },
-          {
-            type: 'inside',
-            start: 0,
-            end: 60,
-            zoomLock: true
-          }
-        ],
-        xAxis: [
-          {
-            type: 'category',
-            data: data.secData,
-            axisLine: { // 控制x轴线的样式
-              lineStyle: {
-                type: 'solid',
-                color: '#56AFFB',
-                width: '1'
-              }
-            },
-            axisPointer: {
-              type: 'shadow'
-            },
-            axisLabel: {
-              // formatter: '{value}',
-              textStyle: {
-                color: '#2DD7EC'
-              }
-            }
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            name: '',
-            // min: 0,
-            max: data.max,
-            // max: parseInt(data.max) + parseInt(data.max/3),
-            interval: data.interval,
-            axisLine: { // 控制y轴线的样式
-              lineStyle: {
-                type: 'solid',
-                color: '#23BBEC',
-                width: '1'
-              }
-            },
-            axisLabel: {
-              formatter: '{value} ',
-              textStyle: {
-                color: '#3AD6E1'
-              }
-            },
-            splitLine: { // 网格线
-              show: false,
-              lineStyle: {
-                color: ['#2DD7EC'],
-                width: 1,
-                type: 'dotted'
-              }
-            }
-          },
-          {
-            type: 'value',
-            name: '',
-            min: 0,
-            // max: 100,
-            interval: 20,
-            smooth: true,
-            axisLabel: {
-              formatter: '{value} %',
-              textStyle: {
-                color: '#3AD6E1'
-              }
-            },
-            axisLine: { // 控制y轴线%的样式
-              lineStyle: {
-                type: 'solid',
-                color: '#23BBEC',
-                width: '1'
-              }
-            },
-            splitLine: {
-              show: false,
-              lineStyle: {
-                color: ['#23BBEC'],
-                width: 1,
-                type: 'dotted'
-              }
-            }
-          }
-        ],
-        series: [
-          {
-            name: '在岗人数',
-            type: 'bar',
-            data: data.numData,
-            itemStyle: {
-              normal: {
-                barBorderRadius: 20, // 圆柱体效果边界圆角
-                color: new echarts.graphic.LinearGradient(
-                  0, 0, 0, 1,
-                  [
-                    { offset: 0, color: '#13F192' },
-                    { offset: 1, color: '#478FEC' }
-                  ]
-                )
-              }
-            },
-
-            barWidth: 4, // 控制柱子的宽度
-            barGap: '50%'// 控制柱子的间隔
-          },
-          {
-            name: '上岗率',
-            type: 'line',
-            yAxisIndex: 1,
-            symbol: 'none',
-            smooth: true,
-            data: data.lvData,
-            itemStyle: {
-              normal: {
-                lineStyle: {
-                  width: 2 // 曲线粗细样式
-                },
-                color: 'rgba(255,235,12, 1)' // 颜色以及透明度，注意如果要修改透明度，一定要配置在itemStyle里面，直接写在外面不起作用。
-              }
-            }
-          }
-        ]
-      }
-      myChartH.setOption(option, true)
-    },
     // 以图搜人
     async getCameraProInfo (workname, workno) {
-      // console.log(workname,workno)
       var response = await http.post('/sanyUserPushRecord/searchUserRecordHis', {
         workname: workname,
         workno: workno
@@ -826,9 +650,11 @@ export default {
     },
     // 处理点击tab切换
     handleCheckingTab (tab, event) {
-      console.log('当前的tab是：', tab)
-      console.log(tab, event);
+      // console.log('当前的tab是：', tab)
+      // console.log(tab, event);
+      this.$store.commit('changeSelectTabCheckingBetweenMut', tab.name);
       if (tab.name === "energy") { // 能源指标列表
+        // 设置选中的tab
         // 请求能源指标列表数据
         if (this.$store.state.centername === '') { // 如果是全部
           this.$store.dispatch('getEnergyListDataAction',{
@@ -843,9 +669,18 @@ export default {
           })
         }
         // 请求能源指标echarts图数据
-        // this.$store.dispatch('getEnergyDayDataAction')
-        // this.$store.dispatch('getEnergyMonthDataAction')
-        // this.$store.dispatch('getEnergyYearDataAction')
+        this.$store.dispatch('getEnergyDayDataAction', {
+          centerName: this.$store.state.centername,
+          queryFlag: 'day'
+        })
+        this.$store.dispatch('getEnergyMonthDataAction', {
+          centerName: this.$store.state.centername,
+          queryFlag: 'month'
+        })
+        this.$store.dispatch('getEnergyYearDataAction', {
+          centerName: this.$store.state.centername,
+          queryFlag: 'year'
+        })
       }
     },
     handleCurrentChange(val) {

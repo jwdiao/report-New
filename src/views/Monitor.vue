@@ -203,6 +203,7 @@
 		getPreviewParamByUuid,
 		getPreviewParam
 	} from '../assets/js/ocx.js'
+	import {searchCameraList,getOption} from '../api'
 	export default {
 		name: 'monitor',
 		data() {
@@ -394,7 +395,7 @@
 			*/
 		 
 			async getOptions(num, type, message,url) {
-				const res = await http.get(`${url}${num}`);
+				const res = await getOption(url , num);
 				if (res && res.data.ret == 200) {
 					const list = [];
 					res.data.data.forEach(function(ele, index) {
@@ -450,7 +451,7 @@
 			*/
 			async getMonitor() { //表格数据
 			  this.getIndex = 0;//每次调用之后都默认显示第一行 
-				const cameraserchObj = {
+				/* const cameraserchObj = {
 					'secondGroupCode':this.secondGroupValue,//二级工艺
 					'orgCode': this.orgValue || '',//事业部
 					'companyCode': this.companyValue||'',//子公司
@@ -460,8 +461,8 @@
 					'searchNme': this.cameraNameValue || '',//搜索框的值
 					'startIndex':(this.currentPage-1)*this.pageSize,//当前页码-1乘以每页显示多少条
 					'pageSize':this.pageSize//每页显示多少条
-				}			
-				const res = await http.post('/camera/searchCameraList', cameraserchObj);
+				}	 */
+				const res = await searchCameraList(this.secondGroupValue,this.orgValue,this.companyValue,this.factoryValue,this.groupValue,this.cameraValue,this.cameraNameValue,(this.currentPage-1)*this.pageSize,this.pageSize);
 				if (res && res.data.ret == 200) {
 				  res.data.data.list.forEach((ele,index)=>{
 						    ele.num = (this.currentPage-1)*this.pageSize+index+1;

@@ -42,6 +42,7 @@
           externalCars: [],
           // bigTruck: []
         },
+        rightEchartsAutoArr:[],//右侧echarts区域根据屏幕自适应
       }
     },
     mounted() {
@@ -53,8 +54,24 @@
         this.carRightForm('MON');
         this.carRightForm('DAY');
       },300000)
+
+      this.myEChartsYear = echarts.init(document.getElementById('year'));
+      this.rightEchartsAutoArr.push(this.myEChartsYear)
+      this.myEChartsMouth = echarts.init(document.getElementById('month'));
+      this.rightEchartsAutoArr.push(this.myEChartsMouth)
+      this.myEChartsDay = echarts.init(document.getElementById('day'));
+      this.rightEchartsAutoArr.push(this.myEChartsDay)
+      window.addEventListener('resize',this.handleResize)
+
     },
     methods: {
+      //右侧echarts区域根据屏幕自适应
+      handleResize(){
+        this.rightEchartsAutoArr.forEach((ele, index) => {
+          ele.resize()
+        })
+      },
+
       async carRightForm (DateType) {
         // const res = await http.post('/carPlater/getSanyCarDataStatic', {querySign: DateType});
         const res = await reqRightForm(DateType)
@@ -110,7 +127,7 @@
               }
             }
           },
-          grid: { top: '25%', left: '7%', right: '0', bottom: '15%'},
+          grid: { top: '25%', left: '10%', right: '0', bottom: '15%'},
           xAxis: [
             {
               type: 'category',
@@ -118,7 +135,7 @@
               axisLine: { // 控制x轴线的样式
                 lineStyle: {
                   type: 'solid',
-                  color: '#56aefb',
+                  color: '#2c4264',
                   width: '1'
                 }
               },
@@ -143,23 +160,23 @@
               axisLine: { // 控制y轴线的样式
                 lineStyle: {
                   type: 'solid',
-                  color: '#55aefb',
+                  color: '#2c4264',
                   width: '1'
                 }
               },
               axisLabel: {
                 formatter: '{value} ',
                 textStyle: {
-                  color: '#2fdaeb'
+                  color: '#fff'//2fdaeb
                 },
                 showMinLabel: true, // 是否显示最小 tick 的 label
                 showMaxLabel: true, // 是否显示最大 tick 的 label
                 verticalAlign: 'middle'
               },
               splitLine: { // 网格线
-                show: false,
+                show: true,
                 lineStyle: {
-                  color: ['#2DD7EC'],
+                  color: ['#2c4264'],
                   width: 1,
                   type: 'dotted'
                 }
@@ -301,7 +318,7 @@
               }
             }
           },
-          grid: { top: '25%', left: '7%', right: 0, bottom: '25%'},
+          grid: { top: '25%', left: '10%', right: 0, bottom: '20%'},
           xAxis: [
             {
               type: 'category',
@@ -309,7 +326,7 @@
               axisLine: { // 控制x轴线的样式
                 lineStyle: {
                   type: 'solid',
-                  color: '#56aefb',
+                  color: '#2c4264',
                   width: '1'
                 }
               },
@@ -335,23 +352,23 @@
               axisLine: { // 控制y轴线的样式
                 lineStyle: {
                   type: 'solid',
-                  color: '#55aefb',
+                  color: '#2c4264',
                   width: '1'
                 }
               },
               axisLabel: {
                 formatter: '{value} ',
                 textStyle: {
-                  color: '#2fdaeb'
+                  color: '#fff'//#2fdaeb
                 },
                 showMinLabel: true, // 是否显示最小 tick 的 label
                 showMaxLabel: true, // 是否显示最大 tick 的 label
                 verticalAlign: 'middle'
               },
               splitLine: { // 网格线
-                show: false,
+                show: true,
                 lineStyle: {
-                  color: ['#2DD7EC'],
+                  color: ['#2c4264'],
                   width: 1,
                   type: 'dotted'
                 }
@@ -445,7 +462,7 @@
               }
             }
           },
-          grid: { top: '25%', left: '10%', right: 0, bottom: '15%'},
+          grid: { top: '25%', left: '12%', right: 0, bottom: '15%'},
           xAxis: [
             {
               type: 'category',
@@ -453,7 +470,7 @@
               axisLine: { // 控制x轴线的样式
                 lineStyle: {
                   type: 'solid',
-                  color: '#56aefb',
+                  color: '#2c4264',
                   width: '1'
                 }
               },
@@ -478,23 +495,23 @@
               axisLine: { // 控制y轴线的样式
                 lineStyle: {
                   type: 'solid',
-                  color: '#55aefb',
+                  color: '#2c4264',
                   width: '1'
                 }
               },
               axisLabel: {
                 formatter: '{value} ',
                 textStyle: {
-                  color: '#2fdaeb'
+                  color: '#fff'
                 },
                 showMinLabel: true, // 是否显示最小 tick 的 label
                 showMaxLabel: true, // 是否显示最大 tick 的 label
                 verticalAlign: 'middle'
               },
               splitLine: { // 网格线
-                show: false,
+                show: true,
                 lineStyle: {
-                  color: ['#2DD7EC'],
+                  color: ['#2c4264'],
                   width: 1,
                   type: 'dotted'
                 }

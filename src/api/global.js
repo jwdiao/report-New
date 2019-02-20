@@ -1,4 +1,4 @@
-const BASE_URL = 'http://10.19.7.69:8083' // 测试接口地址
+ const BASE_URL = 'http://10.19.7.69:8083' // 测试接口地址
 // const BASE_URL = 'http://10.19.7.70:8083' // 生产接口地址
 //  const BASE_URL = 'http://10.88.195.191:8083' // 祁甲元
 //const BASE_URL = 'http://10.88.195.89:8083' // 高杰

@@ -5,16 +5,17 @@
       <!-- <div class="btnArea" @click="goTo('/Monitor')"></div> -->
       <div class="btnArea" @click="goTo('/Manage6S')"></div>
       <!-- 人员考勤 -->
-      <div class="btnArea" @click="goTo('/Checking')"></div>
+      <div class="btnArea" @click="goTo('/CheckingV5')"></div>
       <!-- 区域视频管理 -->
       <a class="btnArea" @click="goToVideoPage"></a>
       <!--设备安全统计-->
-      <a class="btnArea" @click="goTo('/DeviceSafeOnline')"></a>
+      <a class="btnArea" @click="goTo('/equipmentSafety')"></a>
       <!-- 监控设备查询 -->
       <a class="btnArea" @click="goTo('/Monitor')"></a>
       <!-- <a class="btnArea" @click="goToControlPage"></a> -->
       <!-- 车辆信息 -->
-      <div class="btnArea" @click="goTo('/Cars')"></div>
+      <!--<div class="btnArea" @click="goTo('/CarshlgV21')"></div>-->
+      <div class="btnArea" @click="goTo('/CarsHLGV31')"></div>
       <!--控制台日志-->
       <div class="btnArea" @click="goTo('/ControlLog')"></div>
     </div>
@@ -31,9 +32,9 @@
       goToVideoPage () {
         window.location.href = `${this.$store.state.baseUrl}/videodemo` // 视频
       },
-      goToControlPage () {
+     /* goToControlPage () {
         window.location.href = `${this.$store.state.baseUrl}/sanyDeviceCameraList` // 监控
-      },
+      },*/
     }
   }
 </script>
@@ -41,7 +42,7 @@
 <style  lang="scss" scoped>
 .home-page{
   width: 100%;height: 100%;
-  background: url("./images/home-page7.jpg") no-repeat;background-size: 100% 100%;
+  background: url("./images/home-page8.jpg") no-repeat;background-size: 100% 100%;
   .home-page-wrap{
     position: fixed;
     top: 0;

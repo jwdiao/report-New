@@ -15,20 +15,20 @@
           <div class="index_left_top_main">
             <div class="index_left_top_main_Cars">
               <div class="index_left_top_main_Cars_module">
-                <p><img src="../assets/images/E1.png" alt="">车辆总数</p>
+                <p><img src="../../assets/images/E1.png" alt="">车辆总数</p>
                 <div class="index_left_top_main_Cars_module_num">{{carStatistics.carAllNum}}</div>
               </div>
               <!--<div class="index_left_top_main_Cars_img"><img src="../assets/images/E1.png" alt=""></div>-->
             </div>
             <div class="index_left_top_main_Cars">
               <div class="index_left_top_main_Cars_module">
-                <p><img src="../assets/images/E2.png" alt="">内部车辆</p>
+                <p><img src="../../assets/images/E2.png" alt="">内部车辆</p>
                 <div class="index_left_top_main_Cars_module_num">{{carStatistics.carInsideNum}}</div>
               </div>
             </div>
             <div class="index_left_top_main_Cars">
               <div class="index_left_top_main_Cars_module">
-                <p><img src="../assets/images/E3.png" alt="">外部车辆</p>
+                <p><img src="../../assets/images/E3.png" alt="">外部车辆</p>
                 <div class="index_left_top_main_Cars_module_num">{{carStatistics.carExternalNum}}</div>
               </div>
             </div>
@@ -172,13 +172,13 @@
 </template>
 
 <script>
-  import CarsManage from '../components/CarsManage'
+  import CarsManage from '../../components/CarsManage'
   import echarts from 'echarts'
   import moment from 'moment'
   import $ from 'jquery'
-  import http from '../api/http'
+  import http from '../../api/http'
   import BScroll from 'better-scroll'
-  import {reqUserInfo,reqCarData}from'../api'
+  import {reqUserInfo,reqCarData}from'../../api'
 
   export default {
     name: 'cars',
@@ -448,7 +448,7 @@
 <style lang="scss" scoped>
   .index{
     height:100%;
-    background-image: url(../assets/images/index_bg.png);
+    background-image: url(../../assets/images/index_bg.png);
     background-size: cover;
     color: rgb(255, 255, 255);
     background-repeat: no-repeat;
@@ -485,12 +485,13 @@
 			.button {
 				width: 90px;
 				height: 40px;
-				background: url(../assets/images/index_back.png) no-repeat;
+				background: url(../../assets/images/index_back.png) no-repeat;
 				position:fixed;
 				top:60px;
 				left:40px;
 				cursor:pointer;
 			}
+
     }
     &_main{
       position: fixed;
@@ -568,7 +569,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              background: url("../assets/images/cars_bg.png") no-repeat;
+              background: url("../../assets/images/cars_bg.png") no-repeat;
               background-position: center 90%;
               background-size: 90% 40%;
               img{
@@ -663,7 +664,7 @@
               position: absolute;
               bottom: 4px;
               right: 4px;
-              background: url("../assets/images/rmReach.png") no-repeat center;
+              background: url("../../assets/images/rmReach.png") no-repeat center;
               background-size: 60% auto;
               cursor: pointer;
             }

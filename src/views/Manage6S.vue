@@ -121,6 +121,7 @@
 	import echarts from 'echarts'
 	import moment from 'moment'
 	import http from '../api/http'
+	import {getEventInforList,getEventInforStatis,getEventInforStatisday,getSelectList1} from '../api'
 	// 顶部环形图
 	export default {
 		name: 'manage6S',
@@ -189,10 +190,12 @@
 				this.currentTime = this.getCurrentDateTime();
 			}, 1000)
 			//左上6s统计数据
+			this.getSelectList(this.value,this.currentPage,this.pageSize);
+
 			this.getEventCount();
 			// 左下6s管理表格数据
 		/* 	this.getEventInfoList()	 */
-			 this.getSelectList(this.value,this.currentPage,this.pageSize);
+			
 			// 右侧====
 		/* 	this.getDayMonthYearRightData('DAY') */
 			this.getDayRightData();
@@ -200,11 +203,11 @@
 			this.getDayMonthYearRightData('YEAR');
 			
 		  setInterval(()=>{
+				this.getSelectList(this.value,this.currentPage,this.pageSize);
 				this.getEventCount();			
 				this.getDayRightData();
 				this.getDayMonthYearRightData('MON');
-				this.getDayMonthYearRightData('YEAR');
-				this.getSelectList(this.value,this.currentPage,this.pageSize);
+				this.getDayMonthYearRightData('YEAR');		
 			},30000)	
 			window.addEventListener('resize', this.handleResize); //给window对象绑定resize事件
 		},
@@ -325,9 +328,7 @@
 				return moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
 			},
 			async getDayRightData(){
-				const res = await http.post('/sanySanyEventInfor/getEventInforStatisday', {
-					querySign: "DAY"
-				})
+				const res = await getEventInforStatisday('DAY');
 				if (res.data && res.data.ret == 200){				 
 					 	this.dayEchartsDataRight.datadaystr = res.data.datadaystr ;// x轴
 					 	this.dayEchartsDataRight.suml = res.data.suml; //总数
@@ -340,9 +341,7 @@
 			,
 			// 右侧人员考勤日/月/年统计
 			async getDayMonthYearRightData(querySign) {
-				const res = await http.post('/sanySanyEventInfor/getEventInforStatis', {
-					querySign: querySign
-				})
+				const res = await getEventInforStatis(querySign);	
 				if (res.data && res.data.ret == 200) {
 					if (querySign === 'MON') {
 						this.monthEchartsDataRight.datadaystr = res.data.datadaystr ;// x轴
@@ -364,7 +363,7 @@
 			},
 			//统计数据
 			async getEventCount() {
-				const res = await http.get('/sanySanyEventInfor/getEventInforList');
+				const res = await getEventInforList();
 				if (res.data && res.data.ret == 200) {
 					this.hxqyjcnum = res.data.hxqyjcnum ;//核心区域进出
 					this.wptqnum = res.data.wptqnum ;//物品偷走
@@ -394,12 +393,14 @@
 				参数：query:事件名称 page:当前页 pagesize:一页显示多少条
 				描述：当前选择器的值为空时将它所联动的下级选择器的值初始化
 			 */
-			async getSelectList(query,page,pagesize) {
+			async getSelectList(eventtype,page,pagesize) {
 				this.activeIndex = 0;
-				const res = await http.post('/sanySanyEventInfor/getSelectList1',{eventtype:query,page:page,pagesize:pagesize});
+				const res = await getSelectList1(eventtype,page,pagesize);
+				console.log(res)
 				if (res.data && res.data.ret == 200) {
 					    this.tableTotal=res.data.total;
 					    var listArr = res.data.getAbsentList;
+							console.log(3223324)
 					    this.snapEventListArr.splice(0, this.snapEventListArr.length); //每次添加字典时先清空字典
 							if(listArr.length>0){
 								for (var i = 0; i < listArr.length; i++) {

@@ -3,7 +3,7 @@
     <!-- 头部 start -->
     <div class="index_top">
       <div class="index_imgText">
-        <span class="title">南口•南大门车辆统计报表</span>
+        <span class="title" @click="switchData('/CarsHLGV31')">{{NTitleName}}车辆统计报表</span>
       </div>
       <em class="time" v-text="currentTime"></em>
 			<div class="button" @click="enterIndexPage('/HomeGuide')"></div>
@@ -12,35 +12,40 @@
       <div class="index_left">
         <div class="index_left_top">
           <p class="home_title home_title-T1" style="display: flex;justify-content: space-between">
-            <span>超过24小时未离开总数</span>
-            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carAllData.strandedTotalNum}}</span>
+            <span>超过24小时未离开车辆统计</span>
+            <span style="text-align: right;font-size:32px;font-family: fontnameRegular;">{{carAllData.strandedTotalNum}}<span  style="font-size: 18px;font-weight: lighter"> 辆</span> </span>
           </p>
           <div class="index_left_top_main">
            <div>
              <div class="index_left_top_main_Cars">
                <div class="index_left_top_main_Cars_module carsN">
-                 <p><img src="../assets/images/E2.png" alt="">内部车辆</p>
-                 <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideNum}}</div>
+                 <!--<p><img src="../assets/images/E2.png" alt="">内部车辆</p>-->
+                 <p>内部小车 <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideCarNum}}</span></p>
+
                </div>
              </div>
              <div class="index_left_top_main_Cars ">
                <div class="index_left_top_main_Cars_module carsH">
-                 <p><img src="../assets/images/E4.png" alt="">货  车</p>
-                 <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedTruckNum}}</div>
+
+                 <!--<p><img src="../assets/images/E3.png" alt="">外部车辆</p>-->
+                 <p>外部小车 <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideCarNum}}</span></p>
+
                </div>
              </div>
            </div>
             <div>
               <div class="index_left_top_main_Cars ">
                 <div class="index_left_top_main_Cars_module carsW">
-                  <p><img src="../assets/images/E3.png" alt="">外部车辆</p>
-                  <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideNum}}</div>
+                  <!--<p><img src="../assets/images/E4.png" alt="">货  车</p>-->
+                  <p>内部大货车 <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideTruckNum}}</span></p>
+
                 </div>
               </div>
               <div class="index_left_top_main_Cars ">
                 <div class="index_left_top_main_Cars_module carsX">
-                  <p><img src="../assets/images/E00.png" alt="">小轿车 </p>
-                  <div class="index_left_top_main_Cars_module_num">{{carAllData.strandedCarNum}}</div>
+                  <!--<p><img src="../assets/images/E00.png" alt="">小轿车 </p>-->
+                  <p> 外部大货车 <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideTruckNum}}</span></p>
+
                 </div>
               </div>
             </div>
@@ -48,7 +53,7 @@
         </div>
         <div class="index_left_bottom">
           <div class="home_title home_title-E10">
-            <p>未离开车辆列表</p>
+            <p>超过24小时未离开车辆列表</p>
           </div>
           <div class="search">
             <el-select  class="module" v-model="hceliangguishu" @change="cheliangguishuFn" clearable @clear="clearAll" placeholder="车辆归属">
@@ -99,48 +104,48 @@
         <div class="checking_dashbordBox">
           <p class="home_title home_title-blue" style="display: flex;justify-content: space-between">
             <span>今日进入总数</span>
-            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carEchartsData.enterTotalNum}}</span>
+            <span style="text-align: right;font-size:32px;font-family: fontnameRegular;">{{carEchartsData.enterTotalNum}} <span  style="font-size: 18px;font-weight: lighter">辆</span></span>
           </p>
           <div class="checking_dashbord">
             <ul>
               <li>
                 <div class="top">
-                  <div class="item text">内部车辆</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterInsideNum}}</div>
+                  <div class="item text">内部小车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterInsideCarNum}}</span></div>
+
                 </div>
                 <div class="bottom">
                   <div class="lv lvBlue" id="nbcllv"></div>
-                  <p class="lvText">占比率</p>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">外部车辆</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterOutsideNum}}</div>
+                  <div class="item text">内部大货车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterInsideTruckNum}}</span></div>
+
                 </div>
                 <div class="bottom">
-                  <div class="lv lvRed" id="wbcllv"></div>
-                  <p class="lvText">占比率</p>
+                  <div class="lv lvBlue" id="wbcllv"></div>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">货车</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterTruckNum}}</div>
+                  <div class="item text">外部小车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterOutsideCarNum}}</span></div>
+
                 </div>
                 <div class="bottom">
                   <div class="lv lvYellow" id="hclv"></div>
-                  <p class="lvText">占比率</p>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">小轿车</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterCarNum}}</div>
+                  <div class="item text">外部大货车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.enterOutsideTruckNum}}</span></div>
+
                 </div>
                 <div class="bottom">
-                  <div class="lv lvGreen" id="xjclv"></div>
-                  <p class="lvText">占比率</p>
+                  <div class="lv lvYellow" id="xjclv"></div>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
             </ul>
@@ -149,48 +154,48 @@
         <div class="checking_dashbordBox">
           <p class="home_title home_title-blue" style="display: flex;justify-content: space-between">
             <span>今日离开总数</span>
-            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carEchartsData.leaveTotalNum}}</span>
+            <span style="text-align: right;font-size:32px;font-family: fontnameRegular;">{{carEchartsData.leaveTotalNum}} <span  style="font-size: 18px;font-weight: lighter">辆</span></span>
           </p>
           <div class="checking_dashbord">
             <ul>
               <li>
                 <div class="top">
-                  <div class="item text">内部车辆</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveInsideNum}}</div>
+                  <div class="item text">内部小车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveInsideCarNum}}</span></div>
+
                 </div>
                 <div class="bottom">
                   <div class="lv lvBlue" id="lknblv"></div>
-                  <p class="lvText">占比率</p>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">外部车辆</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveOutsideNum}}</div>
+                  <div class="item text">内部大货车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveInsideTruckNum}}</span></div>
+
                 </div>
                 <div class="bottom">
-                  <div class="lv lvRed" id="lkwblv"></div>
-                  <p class="lvText">占比率</p>
+                  <div class="lv lvBlue" id="lkwblv"></div>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">货车</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveTruckNum}}</div>
+                  <div class="item text">外部小车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveOutsideCarNum}}</span></div>
+
                 </div>
                 <div class="bottom">
                   <div class="lv lvYellow" id="lkhclv"></div>
-                  <p class="lvText">占比率</p>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">小轿车</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveCarNum}}</div>
+                  <div class="item text">外部大货车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.leaveOutsideTruckNum}}</span></div>
+
                 </div>
                 <div class="bottom">
-                  <div class="lv lvGreen" id="lkxjclv"></div>
-                  <p class="lvText">占比率</p>
+                  <div class="lv lvYellow" id="lkxjclv"></div>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
             </ul>
@@ -199,48 +204,48 @@
         <div class="checking_dashbordBox">
           <p class="home_title home_title-blue" style="display: flex;justify-content: space-between">
             <span>今日未离开总数</span>
-            <span style="text-align: right;color:#02c9fc;font-size:28px;font-family: fontnameRegular;">{{carEchartsData.notLeaveTotalNum}}</span>
+            <span style="text-align: right;font-size:32px;font-family: fontnameRegular;">{{carEchartsData.notLeaveTotalNum}} <span  style="font-size: 18px;font-weight: lighter">辆</span></span>
           </p>
           <div class="checking_dashbord">
             <ul>
               <li>
                 <div class="top">
-                  <div class="item text">内部车辆</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveInsideNum}}</div>
+                  <div class="item text">内部小车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveInsideCarNum}}</span></div>
+
                 </div>
                 <div class="bottom">
                   <div class="lv lvBlue" id="wlknblv"></div>
-                  <p class="lvText">占比率</p>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">外部车辆</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveOutsideNum}}</div>
+                  <div class="item text">内部大货车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveInsideTruckNum}}</span></div>
+
                 </div>
                 <div class="bottom">
-                  <div class="lv lvRed" id="wlkwblv"></div>
-                  <p class="lvText">占比率</p>
+                  <div class="lv lvBlue" id="wlkwblv"></div>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">货车</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveTruckNum}}</div>
+                  <div class="item text">外部小车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveOutsideCarNum}}</span></div>
+
                 </div>
                 <div class="bottom">
                   <div class="lv lvYellow" id="wlkhclv"></div>
-                  <p class="lvText">占比率</p>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
               <li>
                 <div class="top">
-                  <div class="item text">小轿车</div>
-                  <div class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveCarNum}}</div>
+                  <div class="item text">外部大货车<span class="num" style="letter-spacing:-3px; text-align: center">{{carEchartsData.notLeaveOutsideTruckNum}}</span></div>
+
                 </div>
                 <div class="bottom">
-                  <div class="lv lvGreen" id="wlkxjclv"></div>
-                  <p class="lvText">占比率</p>
+                  <div class="lv lvYellow" id="wlkxjclv"></div>
+                  <!--<p class="lvText">占比率</p>-->
                 </div>
               </li>
             </ul>
@@ -254,13 +259,13 @@
   </div>
 </template>
 <script>
-  import CarsManage from '../components/CarsManage'
+  import CarsManage from '../../components/CarsManage'
   import echarts from 'echarts'
   import moment from 'moment'
   import $ from 'jquery'
-  import http from '../api/http'
+  import http from '../../api/http'
   import BScroll from 'better-scroll'
-  import {reqUserInfo,reqCarData,reqCarEchartsList}from'../api'
+  import {reqUserInfo,reqCarData,reqCarEchartsList,reqCarAllInfo}from'../../api'
 
   export default {
     name: 'cars',
@@ -269,6 +274,7 @@
     },
     data() {
       return {
+        NTitleName:'南口•南大门',
         carArr : [],
         carArrNew : [],
         timerId: '',        // 定时器
@@ -307,14 +313,36 @@
           carAllNum: 0,
           carInsideNum: 0,
           carExternalNum: 0,
-          carLargeNum: 0
+          carLargeNum: 0,
         },
         neibuRateObj: {}, // 内部车辆率 ====
         waibuRateObj: {}, // 外部车辆率 ====
         huocheRateObj: {}, // 货车占有率======
         xiaojiaocheRateObj: {}, // 小轿车占有率====
-        carEchartsData:{},//中间列表展示的数据
-        carAllData:{},//左侧展示的数据
+        carEchartsData:{
+          enterTotalNum:0,
+          enterInsideCarNum:0,
+          enterInsideTruckNum:0,
+          enterOutsideCarNum:0,
+          enterOutsideTruckNum:0,
+          leaveInsideCarNum:0,
+          leaveInsideTruckNum:0,
+          leaveOutsideCarNum:0,
+          leaveOutsideTruckNum:0,
+          notLeaveInsideCarNum:0,
+          notLeaveInsideTruckNum:0,
+          notLeaveOutsideCarNum:0,
+          notLeaveOutsideTruckNum:0,
+          leaveTotalNum:0,
+          notLeaveTotalNum:0,
+        },//中间列表展示的数据
+        carAllData:{
+          strandedTotalNum:0,
+          strandedInsideCarNum:0,
+          strandedOutsideCarNum:0,
+          strandedInsideTruckNum:0,
+          strandedOutsideTruckNum:0,
+        },//左侧展示的数据
       }
     },
     created() {},
@@ -329,12 +357,23 @@
        this.getChartsData()
       const{currentPage,pageSize} = this
       this.getCarAllData('','',currentPage,pageSize)
+      //5分钟刷新一次
+      setInterval(() => {
+        this.getChartsData()
+        const{currentPage,pageSize} = this
+        this.getCarAllData('','',currentPage,pageSize)
+      }, 300000)
     },
     methods: {
+      //园区之间切换
+      switchData(path){
+        // this.NTitleName
+        this.$router.replace(path)
+      },
       //接口--中间
       async getChartsData(){
-        // const res = await reqCarEchartsList()
-        const res = await http.get('http://10.88.195.89:8083/carPlater/getTodaySanyCarData')
+        const res = await reqCarEchartsList()
+        // const res = await http.get('http://10.88.195.89:8083/carPlater/getTodaySanyCarData')
        if(res.data.ret === '200'){
           this.carEchartsData = res.data
          console.log('carEchartsData:',this.carEchartsData)
@@ -342,16 +381,15 @@
        }
       },
       //接口---左侧
-      async getCarAllData(carbelong,cartype,page,pagesize){
-        // const res = await reqCarAllInfo(carBelong,carType,page,pageSize)
-        const res = await http.post('http://10.88.195.89:8083/carPlater/getStrandedCarData',{carbelong,cartype,page,pagesize})
+      async getCarAllData(carBelong,carType,page,pageSize){
+        const res = await reqCarAllInfo(carBelong,carType,page,pageSize)
+        // const res = await http.post('http://10.88.195.89:8083/carPlater/getStrandedCarData',{carbelong:carBelong,cartype:carType,page:page,pagesize:pageSize})
        if(res.data.ret === '200'){
           this.carAllData = res.data
          this.carArrNew = res.data.strandedList
          this.carTotals = res.data.total
        }
       },
-
       /*函数名：carArrTypeFn
       参数：val:value值
       描述：下拉选项选取对应的车辆类型
@@ -425,162 +463,162 @@
       },
       /* 四个率 */
       renderEchartsCircle (carEchartsData) {
-        // 内部车辆率
+        // 内部轿车
         var nbcllvEcharts = document.getElementById('nbcllv')
         this.neibuRateObj = {
-          name: '内部车辆占有率',
+          name: '内部轿车辆占有率',
           // color: '#0097ff',
           color: {
             startColor: '#0090ff',
             endColor: '#00e2ff'
           },
-          value: carEchartsData.enterInsideRate,/*this.info.workPlanRate*/
+          value: carEchartsData.enterInsideCarRate,/*this.info.workPlanRate*/
         }
         this.renderClock(nbcllvEcharts, this.neibuRateObj)
 
-        // 外部车辆率
+        // 内部货车占有率
         var wbcllvEcharts = document.getElementById('wbcllv')
         this.waibuRateObj = {
-          name: '外部车辆占有率',
+          name: '内部货车占有率',
           // color: '#ff8f19',
           color: {
-            startColor: '#E5085D',
-            endColor: '#FC5081'
+            startColor: '#0090ff',
+            endColor: '#00e2ff'
           },
-          value:carEchartsData.enterOutsideRate, /*this.info.recordRate*/
+          value:carEchartsData.enterInsideTruckRate, /*this.info.recordRate*/
         }
         this.renderClock(wbcllvEcharts, this.waibuRateObj)
 
-        // 货车率
+        // 外部轿车占有率
         var hclvEcharts = document.getElementById('hclv')
         this.huocheRateObj = {
-          name: '货车占有率',
+          name: '外部轿车占有率',
           // color: '#0097ff',
           color: {
             startColor: '#ff7905',
             endColor: '#ffbf46'
           },
           // value: this.info.onWorkRate
-          value: carEchartsData.enterTruckRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
+          value: carEchartsData.enterOutsideCarRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
         }
         this.renderClock(hclvEcharts, this.huocheRateObj)
 
-        // 小轿车率
+        // 外部货车占有率
         var xjclvEcharts = document.getElementById('xjclv')
         this.xiaojiaocheRateObj = {
-          name: '小轿车占有率',
+          name: '外部货车占有率',
           // color: '#ff8f19',
           color: {
-            startColor: '#2FC447',
-            endColor: '#36EBF5'
+            startColor: '#ff7905',
+            endColor: '#ffbf46'
           },
-          value:Number(carEchartsData.enterCarRate),/* this.info.validRate*/
+          value:Number(carEchartsData.enterOutsideTruckRate),/* this.info.validRate*/
         }
         this.renderClock(xjclvEcharts, this.xiaojiaocheRateObj)
         //======================================
-        // 内部车辆率
+        // 离开内部轿车
         var lknblvEcharts = document.getElementById('lknblv')
         this.neibuRateObj = {
-          name: '内部车辆占有率',
+          name: '离开内部轿车占有率',
           // color: '#0097ff',
           color: {
             startColor: '#0090ff',
             endColor: '#00e2ff'
           },
-          value: carEchartsData.leaveInsideRate,/*this.info.workPlanRate*/
+          value: carEchartsData.leaveInsideCarRate,/*this.info.workPlanRate*/
         }
         this.renderClock(lknblvEcharts, this.neibuRateObj)
 
-        // 外部车辆率
+        // 内部货车占有率
         var lkwblvEcharts = document.getElementById('lkwblv')
         this.waibuRateObj = {
-          name: '外部车辆占有率',
+          name: '内部货车占有率',
           // color: '#ff8f19',
           color: {
-            startColor: '#E5085D',
-            endColor: '#FC5081'
+            startColor: '#0090ff',
+            endColor: '#00e2ff'
           },
-          value:carEchartsData.leaveOutsideRate, /*this.info.recordRate*/
+          value:carEchartsData.leaveInsideTruckRate, /*this.info.recordRate*/
         }
         this.renderClock(lkwblvEcharts, this.waibuRateObj)
 
-        // 货车率
+        // 外部轿车占有率
         var lkhclvEcharts = document.getElementById('lkhclv')
         this.huocheRateObj = {
-          name: '货车占有率',
+          name: '外部轿车占有率',
           // color: '#0097ff',
           color: {
             startColor: '#ff7905',
             endColor: '#ffbf46'
           },
           // value: this.info.onWorkRate
-          value: carEchartsData.leaveTruckRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
+          value: carEchartsData.leaveOutsideCarRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
         }
         this.renderClock(lkhclvEcharts, this.huocheRateObj)
 
-        // 小轿车率
+        // 外部货车占有率
         var lkxjclvEcharts = document.getElementById('lkxjclv')
         this.xiaojiaocheRateObj = {
-          name: '小轿车占有率',
+          name: '外部货车占有率',
           // color: '#ff8f19',
           color: {
-            startColor: '#2FC447',
-            endColor: '#36EBF5'
+            startColor: '#ff7905',
+            endColor: '#ffbf46'
           },
-          value:Number(carEchartsData.leaveCarRate),/* this.info.validRate*/
+          value:Number(carEchartsData.leaveOutsideTruckRate),/* this.info.validRate*/
         }
         this.renderClock(lkxjclvEcharts, this.xiaojiaocheRateObj)
         //======================================
-        // 内部车辆率
+        // 未离开内部轿车
         var wlknblvEcharts = document.getElementById('wlknblv')
         this.neibuRateObj = {
-          name: '内部车辆占有率',
+          name: '未离开内部轿车占有率',
           // color: '#0097ff',
           color: {
             startColor: '#0090ff',
             endColor: '#00e2ff'
           },
-          value: carEchartsData.notLeaveInsideRate,/*this.info.workPlanRate*/
+          value: carEchartsData.notLeaveInsideCarRate,/*this.info.workPlanRate*/
         }
         this.renderClock(wlknblvEcharts, this.neibuRateObj)
 
-        // 外部车辆率
+        // 内部货车占有率
         var wlkwblvEcharts = document.getElementById('wlkwblv')
         this.waibuRateObj = {
-          name: '外部车辆占有率',
+          name: '内部货车占有率',
           // color: '#ff8f19',
           color: {
-            startColor: '#E5085D',
-            endColor: '#FC5081'
+            startColor: '#0090ff',
+            endColor: '#00e2ff'
           },
-          value:carEchartsData.notLeaveOutsideRate, /*this.info.recordRate*/
+          value:carEchartsData.notLeaveInsideTruckRate, /*this.info.recordRate*/
         }
         this.renderClock(wlkwblvEcharts, this.waibuRateObj)
 
-        // 货车率
+        // 外部轿车占有率
         var wlkhclvEcharts = document.getElementById('wlkhclv')
         this.huocheRateObj = {
-          name: '货车占有率',
+          name: '外部轿车占有率',
           // color: '#0097ff',
           color: {
             startColor: '#ff7905',
             endColor: '#ffbf46'
           },
           // value: this.info.onWorkRate
-          value: carEchartsData.notLeaveTruckRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
+          value: carEchartsData.notLeaveOutsideCarRate,/*parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate*/
         }
         this.renderClock(wlkhclvEcharts, this.huocheRateObj)
 
-        // 小轿车率
+        // 外部货车占有率
         var wlkxjclvEcharts = document.getElementById('wlkxjclv')
         this.xiaojiaocheRateObj = {
-          name: '小轿车占有率',
+          name: '外部货车占有率',
           // color: '#ff8f19',
           color: {
-            startColor: '#2FC447',
-            endColor: '#36EBF5'
+            startColor: '#ff7905',
+            endColor: '#ffbf46'
           },
-          value:Number(carEchartsData.notLeaveCarRate),/* this.info.validRate*/
+          value:Number(carEchartsData.notLeaveOutsideTruckRate),/* this.info.validRate*/
         }
         this.renderClock(wlkxjclvEcharts, this.xiaojiaocheRateObj)
 
@@ -664,7 +702,7 @@
 <style lang="scss" scoped>
   .index{
     height:100%;
-    background-image: url(../assets/images/index_bg.png);
+    background-image: url(../../assets/images/index_bg.png);
     background-size: cover;
     color: rgb(255, 255, 255);
     background-repeat: no-repeat;
@@ -683,7 +721,7 @@
       /*background: url(../assets/images/body_title.png) no-repeat center center;*/
       background-size: auto 100%;
       img{display:inline-block;vertical-align: middle;width:50px;}
-      .title{font-size: 0.44rem;
+      .title{font-size: 0.44rem;cursor: pointer;
         color:#fff;font-weight:bold;}
       .time{
         width: 285px;
@@ -701,12 +739,23 @@
 			.button {
 				width: 90px;
 				height: 40px;
-				background: url(../assets/images/index_back.png) no-repeat;
+				background: url(../../assets/images/index_back.png) no-repeat;
 				position:fixed;
 				top:60px;
 				left:40px;
 				cursor:pointer;
 			}
+      .button2 {
+        width: 90px;
+        height: 40px;
+        line-height: 40px;
+        background:#1C3369;
+        border-radius: 10px;
+        position:fixed;
+        top:60px;
+        left:240px;
+        cursor:pointer;
+      }
     }
     &_main{
       position: fixed;
@@ -718,11 +767,13 @@
     }
     /*6s页面左侧盒子*/
     &_left{
-      width: 25%;float: left;height:100%;padding-right: 15px;
+      width: 25%;float: left;
+      height:100%;
+      padding-right: 15px;
       display: flex;flex-direction: column;flex-shrink: 0;
       /*6s页面左侧上部*/
       &_top{
-        flex: 5;
+        height: 250px;
         width:100%;
         background: rgba(39,69,111,0.3);
         border: 1px solid rgba(255,255,255,0.1);
@@ -732,8 +783,8 @@
           padding-left: 24px;
           font-weight: bold;
           font-size: 21px;
-          height: 32px;
-          line-height: 32px;
+          height: 36px;
+          line-height: 36px;
         }
         &_main{
           height: calc(100% - 47px);
@@ -742,11 +793,11 @@
 
           &_Cars{
             width: calc((100% - 45px)/0.7 );
-            height: 50%;
+            height: 40%;
             /*min-height: 90px;*/
            // background: rgba(39,69,111,0.3);
             margin-right: 100px;
-            .carsN{
+            /*.carsN{
             color: #49E664;
             }
             .carsX{
@@ -758,7 +809,7 @@
             .carsH{
               color: #FBD603;
               margin-right: 0;
-            }
+            }*/
             &_module {
               width: 100%;
               height: 100%;
@@ -766,21 +817,25 @@
 
               /*border: 1px solid #fff;*/
               &_num {
-                color: #fff;
+                /*color: #fff;*/
+                color:#01cbff;
                 text-align: center;
-                line-height: 38px;
-                font-size: 38px;
+                line-height: 40px;
+                font-size: 40px;
                 font-family: fontnameRegular;
+                vertical-align: middle;
+                display: inline-block;
+                margin-bottom: 3%;
               }
               & > p {
                 width: 100%;
-                margin-left: 18%;
+                margin-left: 15%;
                 margin-bottom: 5%;
                 /*text-align: center;*/
-                height: 30px;
+                height: 40px;
                 line-height: 30px;
                 font-weight: 300;
-                font-size: 24px;
+                font-size: 22px;
                 overflow: hidden;
                 img {
                   vertical-align: middle;
@@ -800,7 +855,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              background: url("../assets/images/cars_bg.png") no-repeat;
+              background: url("../../assets/images/cars_bg.png") no-repeat;
               background-position: center 90%;
               background-size: 90% 40%;
               img{
@@ -815,13 +870,14 @@
       }
       /*cars页面左侧下部*/
       &_bottom{
-        flex: 8;
+        /*flex:7;*/
         width:100%;
         overflow:hidden;
         background: rgba(39,69,111,0.3);
         border: 1px solid rgba(255,255,255,0.1);
         margin-top: 15px;
         padding: 15px;
+        height: calc(100% - 265px);
         /deep/ .el-table_1_column_1{
           color: #fff03e;
         }
@@ -843,13 +899,13 @@
         .search{
           width: 100%;
           /*float: right;*/
-          margin-top: -5px;
+          margin: 20px 0;
           text-align: right;
           overflow: hidden;
           .module {
             width: 30%;
             height: 100%;
-            margin-left: 20px;
+            margin-right: 45px;
             position: relative;
             display: inline-block;
             input {
@@ -883,7 +939,7 @@
               position: absolute;
               bottom: 4px;
               right: 4px;
-              background: url("../assets/images/rmReach.png") no-repeat center;
+              background: url("../../assets/images/rmReach.png") no-repeat center;
               background-size: 60% auto;
               cursor: pointer;
             }
@@ -917,7 +973,7 @@
             text-align: center;
             border-radius: 3px;
             border: 1px solid #2d6fbf;
-            margin-left: 20px;
+            /*margin-left: 15px;*/
             cursor: pointer;
             &:hover{
               background-color: rgba(42,111,191,0.8);
@@ -958,7 +1014,7 @@
 
         }
         &_main{
-          height: calc(85% - 50px);
+          height: calc(80% - 50px);
           overflow: hidden;
           .message{
             width:100%;
@@ -1026,8 +1082,8 @@
           color: #fff;
           cursor: default;
         }
-        /deep/ .el-select .el-input .el-select__caret {
-          //color: #1f5bd3;
+        /deep/ .el-select>.el-input{
+          width: 115%;
         }
         /deep/ .el-pagination .btn-next, .el-pagination .btn-prev {
           color: #1f5bd3;
@@ -1057,12 +1113,14 @@
       display: flex;flex-direction: column;flex-shrink: 0;background-color: rgba(39, 69, 111, 0.3);padding:15px;
       border:1px solid rgba(255,255,255,0.1);
       .checking_dashbordBox{
+        flex:1;
+        height: calc(33% - 38px);
         /*background-color: rgba(39, 69, 111, 0.3);padding:15px;*/
         /*border:1px solid rgba(255,255,255,0.1);*/
         .home_title{
           width:100%;position: relative;
           .checking_total{
-            font-size: 0.20rem;// font-size:24px;
+            font-size: 0.30rem;// font-size:24px;
             top:-5px;
             color:#fff;position: absolute;left:25px;font-weight:bold;
             em{
@@ -1090,22 +1148,24 @@
               font-weight:100;
             }
             .num{
-              font-size: 0.28rem;
+              font-size: 0.35rem;
               // font-size:35px;
               color:#02c9fc;font-family: fontnameRegular;
+              display: inline-block;
+              margin-bottom: 3%;
             }
             .lv{width:108px;height:108px;margin:0 auto;}
             .lvYellow{
-              background:url(../assets/images/index_clock-yellow.png)
+              background:url(../../assets/images/index_clock-yellow.png)
             }
             .lvBlue{
-              background:url(../assets/images/index_clock-blue.png)
+              background:url(../../assets/images/index_clock-blue.png)
             }
             .lvRed{
-              background:url(../assets/images/index_clock-red.png)
+              background:url(../../assets/images/index_clock-red.png)
             }
             .lvGreen{
-              background:url(../assets/images/index_clock-green.png)
+              background:url(../../assets/images/index_clock-green.png)
             }
             .lvText{
               color:#c4c4c4;
@@ -1116,13 +1176,14 @@
             .top{
               // height:105px;
               overflow: hidden;text-align:left;
+              margin: 28px 0;
               .item{
                 height:0.38rem;line-height:0.38rem;
                 .text{display: inline-block;vertical-align: middle;text-align: left;}
                 .num{display: inline-block;vertical-align: middle;margin-left: 5px;}
               }
             }
-            .bottom{margin-top:8px;}/*padding-bottom:10px;*/
+            .bottom{margin-top:15px;margin-bottom: 15px;}/*padding-bottom:10px;*/
             .single{
               text-align: center;
               .text{padding-top:5px;}

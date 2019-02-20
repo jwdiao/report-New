@@ -59,28 +59,7 @@ export default {
       if (item === '') {
         this.currentCenterName = this.subCompany
       }
-      this.$store.commit('changeCenterNameMut',item)
-
-      // 切换能源指标的数据
-        // 请求能源指标列表数据
-        if (this.$store.state.centername === '') { // 如果是全部
-          this.$store.dispatch('getEnergyListDataAction',{
-            centerName: this.$store.state.centername,
-            pageSize: this.$store.state.allCenterList.length
-          })
-        } else {
-          this.$store.dispatch('getEnergyListDataAction',{
-            centerName: this.$store.state.centername,
-            page: 1,
-            pageSize: 10
-          })
-        }
-        // 请求能源指标echarts图数据
-        // this.$store.dispatch('getEnergyDayDataAction')
-        // this.$store.dispatch('getEnergyMonthDataAction')
-        // this.$store.dispatch('getEnergyYearDataAction')
-
-        
+      this.$store.commit('changeCenterNameMut',item)        
       this.$emit('selectName', item)
     }
   }

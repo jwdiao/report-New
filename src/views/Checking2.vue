@@ -65,8 +65,12 @@
         <Checking :info="baseInfo" :isDayOrNigint="dayOrNightStatus" :kaoqinList="kaoqinList" :subCompany="selectedSumcompany" />
       </div>
       <div class="index_right">
-        <!-- <attendance :dayInfo="dayEchartsDataRight" :monthInfo="monthEchartsDataRight" :yearInfo="yearEchartsDataRight" /> -->
-        <EnergyStatistics :dayInfo="dayEchartsDataRight" :monthInfo="monthEchartsDataRight" :yearInfo="yearEchartsDataRight" />
+        <attendance
+        v-show="this.$store.state.selectedTabCheckingBetween!='energy'"
+        :dayInfo="dayEchartsDataRight" :monthInfo="monthEchartsDataRight" :yearInfo="yearEchartsDataRight" />
+        <EnergyStatistics
+        v-if="this.$store.state.selectedTabCheckingBetween=='energy'"
+        :dayInfo="dayEchartsDataRight" :monthInfo="monthEchartsDataRight" :yearInfo="yearEchartsDataRight" />
       </div>
     </div>
     <!-- main end -->
@@ -181,13 +185,13 @@ export default {
     this.$store.commit('changeSubcompanyMut','北京桩机')
 
     // 定时器刷新
-    this.timerId = setInterval(() => {
+    /* this.timerId = setInterval(() => {
       this.getBaseInfoData(this.centername)
       this.getYearLeftData(this.centername)
       this.getDayRightData(this.centername)
       this.getMonthRightData(this.centername)
       this.getYearRightData(this.centername)
-    }, 10000)
+    }, 10000) */
   },
   methods: {
     enterIndexPage (path) {
@@ -324,6 +328,36 @@ export default {
       this.getDayRightData(this.centername)
       this.getMonthRightData(this.centername)
       this.getYearRightData(this.centername)
+
+      // 切换能源指标的数据
+      if (this.$store.state.selectedTabCheckingBetween=='energy') {  
+        // 请求能源指标列表数据
+        if (this.$store.state.centername === '') { // 如果是全部
+          this.$store.dispatch('getEnergyListDataAction',{
+            centerName: this.$store.state.centername,
+            pageSize: this.$store.state.allCenterList.length
+          })
+        } else {
+          this.$store.dispatch('getEnergyListDataAction',{
+            centerName: this.$store.state.centername,
+            page: 1,
+            pageSize: 10
+          })
+        }
+        // 请求能源指标echarts图数据
+        this.$store.dispatch('getEnergyDayDataAction', {
+          centerName: this.$store.state.centername,
+          queryFlag: 'day'
+        })
+        this.$store.dispatch('getEnergyMonthDataAction', {
+          centerName: this.$store.state.centername,
+          queryFlag: 'month'
+        })
+        this.$store.dispatch('getEnergyYearDataAction', {
+          centerName: this.$store.state.centername,
+          queryFlag: 'year'
+        })
+      }
     },
     showSelectDialog () {
       this.selectDialogShow = true
