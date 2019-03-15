@@ -10,7 +10,7 @@ module.exports = {
     // 输出文件目录
     outputDir: 'sanyreport',
     // 不支持eslint
-    // lintOnSave: false,
+    lintOnSave: false,
     // 支持jquery
     configureWebpack: {
       plugins: [

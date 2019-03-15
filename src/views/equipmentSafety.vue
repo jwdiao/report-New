@@ -24,8 +24,10 @@
 							设备总数
 						</div>
 						<div class="charts equipmentCount">
-							<p class="num" v-html="chartData.totalCount"></p>
-							<p class="message">单位：台</p>
+							<div class="center_box">
+								<p class="num" v-html="chartData.totalCount"></p>
+								<p class="message">单位：台</p>
+							</div>
 						</div>
 					</div>
 					<div class="item">
@@ -33,8 +35,10 @@
 							在线数
 						</div>
 						<div class="charts onlineCount">
-							<p class="num" v-html="chartData.onLineCount"></p>
-							<p class="message">单位：台</p>
+						  <div class="center_box">
+								<p class="num" v-html="chartData.onLineCount"></p>
+								<p class="message">单位：台</p>
+							</div>	
 						</div>
 					</div>
 					<div class="item">
@@ -50,8 +54,10 @@
 							离线数
 						</div>
 						<div class="charts outlineCount">
-							<p class="num" v-html="chartData.outLineCount"></p>
-							<p class="message">单位：台</p>
+							<div class="center_box">
+								<p class="num" v-html="chartData.outLineCount"></p>
+								<p class="message">单位：台</p>
+							</div>
 						</div>
 					</div>
 					<div class="item">
@@ -66,8 +72,10 @@
 							在线时长
 						</div>
 						<div class="charts onlineTime">
-							<p class="num" v-html="onLineTotalHour"></p>
-							<p class="message">单位：h</p>
+							<div class="center_box">
+								<p class="num" v-html="onLineTotalHour"></p>
+								<p class="message">单位：h</p>
+							</div>	
 						</div>
 					</div>
 					<div class="item">
@@ -172,6 +180,11 @@
 			setInterval(() => {
 				this.currentTime = this.getCurrentDateTime();
 			}, 1000);
+			setInterval(() => {
+				this.getEchartsList();
+				this.getOnlineboard();
+				this.getOnlineRateEchart();
+			},60000)
 			this.getEchartsList();
 			this.getOnlineboard();
 			this.getOnlineRateEchart();
@@ -183,6 +196,9 @@
 			handleResize() {
 				echarts.init(document.getElementById('onlineCount')).resize();
 				echarts.init(document.getElementById('onlineLv')).resize();
+				echarts.init(document.getElementById('onlineLvClock')).resize();
+				echarts.init(document.getElementById('outlineLvClock')).resize();
+				echarts.init(document.getElementById('youXiaoClock')).resize();
 			},
 			getCurrentDateTime() {
 				return moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
@@ -199,7 +215,6 @@
 			/*在线统计表*/
 			async getEchartsList() {
 				const res = await basicstaticInfo();
-				console.log(res)
 				if (res && res.data.ret == 200) {
 					this.chartData = res.data.data;
 					this.onLineTotalHour = res.data.data.onLineTotalHour.toFixed(2);
@@ -215,6 +230,7 @@
 			async getOnlineboard() {
 				const res = await onlineboard();
 				if (res && res.data.ret == 200) {
+					console.log('看板信息：',res.data.data)
 					this.boardList = res.data.data
 					this.companyName = res.data.data[0].companyName
 					this.onLineXdata = res.data.data.map((item) => {
@@ -238,13 +254,14 @@
 			},
 			async getOnlineRateEchart() {
 				const res = await onlineRateEchart(this.companyCode);
+				console.log(res.data.data)
 				if (res && res.data.ret == 200) {
 					this.onLineDayXdata = res.data.data.xAxis;
 					this.onLineDayYdata = res.data.data.onLineCountArr;
 					this.onLineDayLvdata = res.data.data.onLineRateArr;
-					console.log(this.onLineDayXdata);
+					/* console.log(this.onLineDayXdata);
 					console.log(this.onLineDayYdata);
-					console.log(this.onLineDayLvdata);
+					console.log(this.onLineDayLvdata); */
 					this.renderEchartsOnlineLv(echarts.init(document.getElementById('onlineLv')), this.onLineDayXdata, this.onLineDayYdata,
 						this.onLineDayLvdata)
 				}
@@ -329,10 +346,12 @@
 					color: ['#3398DB'],
 					tooltip: {
 						trigger: 'axis',
-						axisPointer: { // 坐标轴指示器，坐标轴触发有效
-							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-						},
-						formatter: '{c}%'
+						axisPointer: {
+							type: 'cross',
+							crossStyle: {
+								color: '#999'
+							}
+						}
 					},
 					grid: {
 						left: '3%',
@@ -403,7 +422,7 @@
 
 					}],
 					series: [{
-						name: '掉线率',
+						name: '在线率',
 						type: 'bar',
 						barWidth: '60%', // 控制柱子的宽度
 						data: YData,
@@ -482,9 +501,9 @@
 						
 					}],
 					yAxis: [{
-							type: 'value',							
-							/* min: 0,
-							max: 250, */
+							type: 'value',
+							max:Math.max.apply(null,YData)+parseInt(Math.max.apply(null,YData)/20),
+							//max:Math.max.apply(null,YData),
 							//interval: 50,
 							axisLine: { // 控制y轴线的样式
 								lineStyle: {
@@ -597,10 +616,10 @@
 		.el-header {
 			color: #333;
 			text-align: center;
-			height: 110px !important;
+			height: 1.10rem !important;
 			background: url(../assets/images/body_title.png) no-repeat;
 			background-size: 100% 100%;
-			padding-top: 20px;
+			padding-top: 0.20rem;
 			position: relative;
 
 			.vision_title {
@@ -610,30 +629,30 @@
 				height: 100%;
 
 				span {
-					margin-left: 15px;
+					margin-left: 0.15rem;
 				}
 			}
 
 			.time {
-				width: 240px;
+				width: 2.40rem;
 				font-size: 0.32rem;
 				right: 44px;
 				color: #ababab;
 				position: absolute;
-				top: 70px;
+				top: 0.70rem;
 				z-index: 10;
 				text-align: left;
 				font-family: fontnameUnidreamLED !important;
 			}
 
 			.control {
-				width: 500px;
+				width: 5.00rem;
 				font-size: 0.32rem;
-				left: 44px;
+				left: 0.44rem;
 				color: #ababab;
 				position: absolute;
-				top: 70px;
-				height: 40px;
+				top: 0.70rem;
+				height: 0.40rem;
 
 				div {
 					float: left;
@@ -659,9 +678,9 @@
 				color: #fff;
 				font-size: 0.20rem;
 				font-weight: bold;
-				padding-left: 20px;
+				padding-left: 0.20rem;
 				position: relative;
-				margin-bottom: 8px;
+				margin-bottom: 0.08rem;
 			}
 
 			.title:before {
@@ -679,10 +698,10 @@
 
 			.chartsBox {
 				width: 100%;
-				height: 300px;
+				height: 3.00rem;
 				background: rgba(39, 69, 111, 0.3);
-				border: 1px solid rgba(255, 255, 255, 0.1);
-				margin-bottom: 15px;
+				border: 1px solid rgba(255, 255, 255, 0.1); 
+				margin-bottom: 0.15rem;
 				display: flex;
 				flex-direction: column;
 				padding: 10px 20px 15px 20px;
@@ -698,7 +717,7 @@
 						margin-right: 20px;
 						padding: 20px 25px 25px 25px;
 						background: rgba(39, 69, 111, 0.3);
-						border: 1px solid rgba(255, 255, 255, 0.1);
+						/* border: 1px solid rgba(255, 255, 255, 0.1); */
 
 						.title_article {
 							color: #D1D6D9;
@@ -711,14 +730,20 @@
 							width: 80%;
 							margin: 0 auto;
 							height: calc(100% - 42px);
-
+							position:relative;
+              .center_box{
+								position:absolute;
+								left:50%;
+								top:50%;
+								transform: translate(-50% , -50%);
+							}
 							p {
 								text-align: center;
 							}
 
 							.num {
-								height: 85px;
-								padding-top: 50px;
+								/* height: 0.85rem; */
+								/* padding-top: 0.50rem; */
 								color: #01C9FC;
 								font-weight: bold;
 								font-size: 0.30rem;
@@ -777,16 +802,16 @@
 
 			/*底部两个echarts和设备在线看板开始*/
 			.bottom_message {
-				height: calc(100% - 315px);
+				height: calc(100% - 3.15rem);
 				display: flex;
 				flex-direction: row;
 
 				#onlineLv {
-					height: calc(100% - 34px);
+					height: calc(100% - 0.34rem);
 				}
 
 				#onlineCount {
-					height: calc(100% - 34px);
+					height: calc(100% - 0.34rem);
 				}
 
 				.item:nth-of-type(1) {
@@ -812,7 +837,7 @@
 				.item:nth-of-type(2) {
 					background: rgba(39, 69, 111, 0.3);
 					border: 1px solid rgba(255, 255, 255, 0.1);
-					width: 1086px;
+					width: 10.86rem;
 					padding: 10px 20px 15px 20px;
 
 					.message {

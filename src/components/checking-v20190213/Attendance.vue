@@ -25,7 +25,7 @@ export default {
     dayInfo (val) {
       // 如果从后台返回数据成功开始渲染数据
       if (this.dayInfo && this.dayInfo.ret == 200) {
-        // 日echarts图    
+        // 日echarts图
         var maxBetween = parseInt(this.max(val.practical))+parseInt(this.max(val.practical)/3)
         var totalNum = val.total
         this.dayEchartsRightData = {
@@ -52,7 +52,7 @@ export default {
           // max: val.max + parseInt(val.max /3),
           max: maxBetween>totalNum?totalNum:maxBetween,
           xAxisLabelInterval: 3
-        }       
+        }
         this.renderMonthEcharts(this.monthEchartsRight, this.monthEchartsRightData) // 渲染echarts图
       }
     },
@@ -62,7 +62,13 @@ export default {
         // 年echarts图
         var maxBetween = parseInt(this.max(val.practical))+parseInt(this.max(val.practical)/3)
         var lvArr = val.practicalVal || 0
+				// var queQinArr = []
+				var queQinArr = val.practicalTotal || 0
         var newLvArr = []
+				/*val.practicalTotal.forEach((ele,index)=>{
+					    ele!=null?queQinArr.push(ele-val.practical[index]):queQinArr.push(null)
+				})*/
+				console.log('queqin人数：',queQinArr)
         newLvArr = lvArr.map((ele) => {
           return ele ? (ele*100).toFixed(2) : null
         })
@@ -71,10 +77,10 @@ export default {
           time: val.xAxis, // x轴数据
           shangganglv: newLvArr, // 出勤率
           shanggangren: val.practical, // 上岗人数
-					queqinrenshu:val.practicalTotal,//缺勤人数
+					queqinrenshu:queQinArr,//缺勤人数
           max: maxBetween>totalNum?totalNum:maxBetween,
           xAxisLabelInterval: 0
-        }     
+        }
         this.renderYearEcharts(this.yearEchartsRight, this.yearEchartsRightData) // 渲染echarts图
       }
     }
@@ -293,7 +299,7 @@ export default {
               }
             }
           }, */
-					
+
           {
             name: '考勤人数',
             type: 'bar',
@@ -586,7 +592,7 @@ export default {
      * 参数：(myChart, data) 参数一：echarts的dom，参数二：数据
      * 描述：人员考勤日/月/年统计echart图表渲染
      */
-    
+
     renderYearEcharts(myChart, data){
       var option = {
         tooltip: {
@@ -753,7 +759,7 @@ export default {
 						stack:'人数',
 						type: 'bar',
 						radius: '10%',
-						data: data.shanggangren,
+						data: data.queqinrenshu,
 						itemStyle: {
 							normal: {
 								barBorderRadius: [4, 4, 4, 4],

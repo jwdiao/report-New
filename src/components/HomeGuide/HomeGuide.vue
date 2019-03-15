@@ -1,11 +1,12 @@
 <template>
   <div class="home-page">
     <div class="home-page-wrap">
+      <!-- <div class="btnArea" @click="goTo('/TextOcx')" style="position:fixed;top:0;left:50%;z-index:10;">ocx test</div> -->
       <!-- 6s管理 -->
       <!-- <div class="btnArea" @click="goTo('/Monitor')"></div> -->
       <div class="btnArea" @click="goTo('/Manage6S')"></div>
       <!-- 人员考勤 -->
-      <div class="btnArea" @click="goTo('/CheckingV5')"></div>
+      <div class="btnArea" @click="goTo('/CheckingV7')"></div>
       <!-- 区域视频管理 -->
       <a class="btnArea" @click="goToVideoPage"></a>
       <!--设备安全统计-->
@@ -23,8 +24,12 @@
 </template>
 
 <script>
+import axios from 'axios'
   export default {
     name: "HomeGuide",
+    mounted() {
+      axios.defaults.baseURL = 'http://10.19.7.69:8083'
+    },
     methods:{
       goTo(path){
         this.$router.replace(path)

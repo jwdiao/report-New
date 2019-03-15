@@ -584,7 +584,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		background-image: url(../assets/images/index_bg.png);
+		background-image: url(../assets/images/body_bg.png);
 		background-size: 100% 100%;
 		color: rgb(255, 255, 255);
 		background-repeat: no-repeat;
@@ -596,7 +596,7 @@
 			text-align:center;
 		}
 		.time{
-			width:260px;
+			width:270px;
 			text-align: left;
 		}
 		.button {
@@ -634,6 +634,10 @@
 			height: 125px;
 			padding-top: 20px;
 			box-sizing: border-box;
+			background-image: url(../assets/images/body_title.png);
+			background-size:100% 90%;
+			background-repeat: no-repeat;
+			padding-bottom: 20px;
 			&_imgText {
 				display: inline-block;
 				cursor: pointer;

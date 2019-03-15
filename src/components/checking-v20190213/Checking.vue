@@ -390,14 +390,11 @@
 					this.renderEchartsCircle()
 				}
 			},
-			count(val){
-				/* console.log(val);
-				console.log(this.currentTab); */
-				if(val){				
-					this.redarList = val
-					this.getRecordRadarChart(this.redarList)
+			leidaData(val) {
+				if (val.length) {
+					this.redarList = this.$store.state.checkRadarList
+					this.getRecordRadarChart(this.$store.state.checkRadarList)
 				}
-				
 			},
 			subCompany(val) {
 				if (val !== '北京桩机') {
@@ -450,7 +447,7 @@
 		},
 		components: {},
 		computed: {
-       count(){
+       leidaData() {
 				 return this.$store.state.checkRadarList
 			 },
 			 centerName(){
@@ -462,7 +459,6 @@
 			window.addEventListener('resize', this.handleResize); // 给window对象绑定resize事件
 			this._focusColor();
 			this.$store.commit('changeSelectTabCheckingBetweenMut',this.currentTab)
-			//this.getRecordRadarChart(this.redarList);
 		},
 		methods: {
 			...mapActions([
@@ -962,7 +958,9 @@
 					})
 				}
 				 if(tab.name === 'leida'){
-					this.getRecordRadarChart(this.redarList)
+					this.$store.dispatch('getRadarChartsAction',{
+						end: this.$store.state.allCenterList.length
+					});
 				} 
 			},
 			handleCurrentChange(val) {

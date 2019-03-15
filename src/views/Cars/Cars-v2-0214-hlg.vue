@@ -259,7 +259,7 @@
   </div>
 </template>
 <script>
-  import CarsManageHLG from '../../components/CarsManage-HLG'
+  import CarsManageHLG from '../../components/CarsManage/CarsManage-HLG'
   import echarts from 'echarts'
   import moment from 'moment'
   import $ from 'jquery'

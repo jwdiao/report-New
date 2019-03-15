@@ -223,7 +223,6 @@ export default {
       this.getDayRightData(this.$store.state.centername)
       this.getMonthRightData(this.$store.state.centername)
       this.getYearRightData(this.$store.state.centername)
-			this.$store.dispatch('getRadarChartsAction',this.$store.state.allCenterList.length);
     }, 10000)
   },
   methods: {
@@ -331,8 +330,6 @@ export default {
         // 获取人员考勤列表
         this.getAbnormaData()
       }
-			//请求雷达数据
-     this.$store.dispatch('getRadarChartsAction',this.$store.state.allCenterList.length);
     },
     // 中间==人员考勤列表==加工中心为总桩机时显示各个加工中心的数据
     async getAbnormaData () {
@@ -377,7 +374,12 @@ export default {
       }
       
       // 获取离岗
-      const resOutList = await getOutList(centerNameFromCentername, 1, 1000)
+      // const resOutList = await getOutList(centerNameFromCentername, 1, 1000)
+      const resOutList = await getOutList({
+        centerName: centerNameFromCentername,
+        page: 1,
+        pagesize: 1000
+      })
       if (resOutList && resOutList.data.ret === '200') {
         // console.log('获取的离岗数据:', resOutList) // workno
         this.kaoqinListSubCenter.leaveData = {

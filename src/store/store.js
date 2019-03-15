@@ -41,6 +41,10 @@ export default new Vuex.Store({
       totalConsumPower: [] // 能耗
     }, // 能源本年数据
     /**========================考勤页面checking end==========================**/
+    /**========================考勤页面checkingHistory start==========================**/
+    checkingHistoryQueryDate: '', // 顶部查询日期
+    checkingHistoryQueryFlag: 'DAY' // 顶部白夜班标识
+    /**========================考勤页面checkingHistory end==========================**/
 
   },
   mutations: {
@@ -57,7 +61,7 @@ export default new Vuex.Store({
     changeSubcompanyMut (state, val){
       state.selectedSubcompany = val
     },
-    // 改变选中的能源列表
+    // 改变选中的tab
     changeSelectTabCheckingBetweenMut (state, val){
       state.selectedTabCheckingBetween = val
     },
@@ -133,8 +137,15 @@ export default new Vuex.Store({
 					   state.checkRadarList = res.data.data
 				} 
 			}
-		}
-		//考勤雷达图
+    },
+    // 改变考勤历史页面查询日期
+    changeCheckingHistoryQueryDateMut (state, val){
+      state.checkingHistoryQueryDate = val
+    },
+    // 改变考勤历史页面白夜班标识
+    changeCheckingHistoryQueryFlagMut (state, val){
+      state.checkingHistoryQueryFlag = val
+    },
     /**========================考勤页面checking end==========================**/
   },
   actions: {
@@ -163,9 +174,18 @@ export default new Vuex.Store({
       const res = await byDayMonthAndYearEnergy(param)
       commit('getEnergyYearDataMut', res)
     },
-		// 雷达图数据
-    async getRadarChartsAction({commit}, end){
+		// 雷达图数据（考勤页面和考勤历史页面都用）
+    /* async getRadarChartsAction({commit}, end){
       const res = await getRecordRadarChart(end)
+      commit('getRadarChartsMut', res)
+    }, */
+    async getRadarChartsAction({commit}, params){
+      let res = ''
+      if (params.queryDay){
+        res = await getRecordRadarChart(params.end, params.queryDay)
+      } else {
+        res = await getRecordRadarChart(params.end)
+      }
       commit('getRadarChartsMut', res)
     }
     /**========================考勤页面checking end==========================**/

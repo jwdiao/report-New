@@ -23,9 +23,8 @@ export function SPV_Uninit(ocxObj) {
  *            需要设置参数的ocx
  */
 export function SetLocalParam(ocxObj) {
-	var devPxRa = screen.deviceXDPI / screen.logicalXDPI, height = $(ocxObj)
-			.height()
-			* devPxRa, width = $(ocxObj).width() * devPxRa, xml = '<?xml version="1.0" encoding="UTF-8"?> '
+	var devPxRa = screen.deviceXDPI / screen.logicalXDPI, height = ocxObj.offsetHeight
+			* devPxRa, width = ocxObj.offsetWeight * devPxRa, xml = '<?xml version="1.0" encoding="UTF-8"?> '
 			+ '<localParam> '
 			+ '<width>'
 			+ width
@@ -65,10 +64,9 @@ export function getPreviewParamByUuid(camerauuid, from, isReviewImg, companyCode
  * @param isReviewImg
  *            是否需要获取 实时监控截图
  */
-export function getPreviewParam(name, type, from, camerauuid, isReviewImg, companyCode) {
+export function getPreviewParam(name, type, from, camerauuid, isReviewImg, companyCode,dom) {
 	var url = "http://10.19.7.69:8083/videoSource/getPreviewParamByCamerauuid?type=" + type + "&from="
 			+ from + '&isReviewImg=' + isReviewImg, returnObj;
-
 	if (name)
 		url += '&name=' + name;
 
@@ -79,7 +77,36 @@ export function getPreviewParam(name, type, from, camerauuid, isReviewImg, compa
 		url += '&companyCode=' + companyCode
 
 	url = encodeURI(encodeURI(url));
-	 $.ajax({
+    /* var myAjax = new XMLHttpRequest();
+	//步骤二:设置请求的url参数,参数一是请求的类型,参数二是请求的url,可以带参数,动态的传递参数starName到服务端
+	myAjax.open('get',url);
+	//步骤三:发送请求
+	myAjax.send();
+	//步骤四:注册事件 onreadystatechange 状态改变就会调用
+	myAjax.onreadystatechange = function () {
+		console.log(myAjax.readyState)
+	   if (myAjax.readyState==4 &&myAjax.status==200) {
+		//步骤五 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+	　　　//输入相应的内容  
+				var result = JSON.parse(myAjax.responseText)
+				var data = result.data, ret = result.ret;
+				if (parseInt(ret) === 200) {
+								   console.log(1)
+								if (isReviewImg) {
+									var path = data.path, imgUrl = data.imgUrl;
+									returnObj['path'] = path;
+									returnObj['imgUrl'] = imgUrl;
+								} else {
+									//dom.SPV_StartPreview(data.path);
+									returnObj = data.path;
+								}
+								 
+				}
+			
+			   
+	  　}
+	} */
+     $.ajax({
 		url : url,
 		type : "get",
 		dataType : "json",
@@ -95,14 +122,15 @@ export function getPreviewParam(name, type, from, camerauuid, isReviewImg, compa
 				} else {
 					returnObj = data.path;
 				}
+				console.log('returnObj:',returnObj)
 			}
 		},
 		error : function(e) {
 			console.log(e);
 		}
 	}); 
-  
 	return returnObj;
+	//console.log(';;;;',returnObj)
 }
 
 /**
@@ -129,7 +157,7 @@ export function getPreviewParamByName(cameraName, type, from, isReviewImg) {
 export function SetToolBar(ocxObj) {
 	var tbars = '0,1,2,3,4,5,6', ret = ocxObj.SPV_SetToolBar(tbars);
 	if (ret != 0) {
-		alert("设置工具条失败！");
+		console.log("设置工具条失败！");
 	}
 
 	return ret;

@@ -11,8 +11,17 @@ const CheckingV1 = () => import('../views/Checking/Checking-v20181201.vue'); // 
 // const CheckingV1 = () => import('../views/Checking.vue');
 const CheckingV2 = () => import('../views/Checking2.vue');
 const CheckingV3 = () => import('../views/CheckingSelectSubCompany.vue');
-const CheckingV4 = () => import('../views/Checking/Checking-v20190211.vue'); // 最新版本
-const CheckingV5 = () => import('../views/Checking/Checking-v20190213.vue'); // 当前正在开发版本
+const CheckingV4 = () => import('../views/Checking/Checking-v20190211.vue'); // 20190211版本
+const CheckingV5 = () => import('../views/Checking/Checking-v20190213.vue'); // 20190213版本
+const CheckingV6 = () => import('../views/Checking/Checking-v20190221.vue'); // 20190221版本
+const CheckingHistoryV6 = () => import('../views/Checking/CheckingHistory-v20190221.vue'); // 20190221版本
+const CheckingV7 = () => import('../views/Checking/Checking-v20190227.vue'); // 最新版本CheckingHistoryData
+const EnergyDeviceInfo = () => import('../views/EnergyDevice/index-v20190226.vue'); // 能源设备信息index-v20190311.vue
+const EnergyDeviceInfoV2 = () => import('../views/EnergyDevice/index-v20190311.vue'); // 能源设备信息==正在开发版本
+const CheckingHistoryData = () => import('../views/Checking/CheckingHistoryData.vue'); // 考勤历史数据页面
+
+// 回龙观园区考勤
+const CheckingV7hlg = () => import('../views/Checking/CheckingHLG-v20190307.vue'); // 回龙观园区考勤
 /* ===========================考勤页面 end========================================= */
 
 // 6S管理
@@ -21,9 +30,13 @@ const Manage6S = () => import('../views/Manage6S.vue');
 const CarsV10 = () => import('../views/Cars/Cars-v1-0117.vue');//南口车辆(第1.0版)
 const CarsV20 = () => import('../views/Cars/Cars-v2-0211.vue');//南口车辆(第2.0版)
 const CarsV21 = () => import('../views/Cars/Cars-v2-0131.vue');///南口车辆(第2.1版)
+const CarsNKV31 = () => import('../views/Cars/Cars-v3-0221-nk.vue');///南口车辆(第3.1版)
 const CarshlgV21 = () => import('../views/Cars/Cars-v2-0214-hlg.vue');//回龙观车辆(第2.1版)
 const CarsHLGV30 = () => import('../views/Cars/Cars-v3-0215.vue');//回龙观车辆(第3.0版)
-const CarsHLGV31 = () => import('../views/Cars/Cars-v3-0218.vue');//回龙观车辆(第3.1版)
+const CarsHLGV31 = () => import('../views/Cars/Cars-v3-0218-hlg.vue');//回龙观车辆(第3.1版)
+
+const CarsHistoryInfor = () => import('../views/CarsHistoryInformation/CarsHistoryInfor-hlg.vue') //车辆历史统计
+const CarsHistoryInforNK = () => import('../views/CarsHistoryInformation/CarsHistoryInfor-nk.vue') //车辆历史统计
 
 // 设备监控
 const Monitor = () => import('../views/Monitor.vue');
@@ -36,18 +49,9 @@ const DeviceSafeOnline = () => import('../views/DeviceSafeOnline.vue');
 //视觉设备安全在线
 const equipmentSafety = () => import('../views/equipmentSafety.vue');
 
+// testocx
+const TextOcx = () => import('../views/TextOcx.vue');
 
-
-
-// import Checking from '../views/CheckingSelectSubCompany.vue'
-// import Manage6S from '../views/Manage6S.vue'
-// import Cars from '../views/Cars.vue'
-// import Monitor from '../views/Monitor.vue'
-
-// import HomeGuide from '../components/HomeGuide/HomeGuide.vue'
-
-// import Device from '../views/Device.vue'
-// import CameraMonitoring from '../views/CameraMonitoring.vue'
 
 Vue.use(Router)
 
@@ -82,7 +86,36 @@ export default new Router({
       name: 'checkingv5',
       component: CheckingV5
     },
-
+    {
+      path: '/CheckingV6',
+      name: 'checkingv6',
+      component: CheckingV6
+    },
+    {
+      path: '/CheckingHistoryV6',
+      name: 'CheckingHistoryV6',
+      component: CheckingHistoryV6
+    },
+    {
+      path: '/CheckingHistoryData',
+      name: 'checkingHistoryData',
+      component: CheckingHistoryData
+    },
+    {
+      path: '/CheckingV7',
+      name: 'checkingv7',
+      component: CheckingV7
+    },
+    {
+      path: '/EnergyDeviceInfo',
+      name: 'energyDeviceInfo',
+      component: EnergyDeviceInfoV2
+    },
+    {
+      path: '/CheckingV7hlg',
+      name: 'CheckingV7hlg',
+      component: CheckingV7hlg
+    },
     {
       path: '/Manage6S',
       name: 'manage6S',
@@ -118,6 +151,21 @@ export default new Router({
       name: 'carshlgv31',
       component: CarsHLGV31
     },
+    {
+      path: '/CarsNKV31',
+      name: 'carsnkv31',
+      component: CarsNKV31
+    },
+    {
+      path: '/CarsHistoryInfor',
+      name: 'carshistoryinfor',
+      component: CarsHistoryInfor
+    },
+    {
+      path: '/CarsHistoryInforNK',
+      name: 'carshistoryinfornk',
+      component: CarsHistoryInforNK
+    },
 		 {
 		 	path: '/Monitor',
 		 	name: 'montior',
@@ -152,11 +200,11 @@ export default new Router({
 			path: '/HVList',
 			name: 'HistoryVersion',
 			component: HistoryVersion
-		},
-    /* {
-      path: '/device',
-      name: 'device',
-      component: Device
-    } */
+    },
+    {
+			path: '/TextOcx',
+			name: 'TextOcx',
+			component: TextOcx
+		}
   ]
 })

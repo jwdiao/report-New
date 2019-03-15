@@ -40,7 +40,7 @@ function checkCode(res) {
     }
     //  if(res.data && (res.data.ret != 200)) {
     if(res.data) {
-      console.log(res.data.msg)   
+    //   console.log(res.data.msg) 
     }
     return res
 }

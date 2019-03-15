@@ -237,7 +237,7 @@
   </div>
 </template>
 <script>
-  import CarsManage from '../../components/CarsManage-HLG.vue'
+  import CarsManage from '../../components/CarsManage/CarsManage-HLG.vue'
   import echarts from 'echarts'
   import moment from 'moment'
   import $ from 'jquery'

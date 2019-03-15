@@ -202,7 +202,7 @@
 		getScreenWidthAndHeight,
 		getPreviewParamByUuid,
 		getPreviewParam
-	} from '../assets/js/ocx.js'
+	} from '../assets/js/ocx2.js'
 	import {searchCameraList,getOption} from '../api'
 	export default {
 		name: 'monitor',
@@ -381,11 +381,12 @@
 			countTableSize(){//通过对滚动组件切换类名来实现有滚动条和没滚动条的高度自适应
 				if(this.tableData.length>18){
 					this.isScroll=true;
-					const myHeight = $('.table').height()-50		
-					$('.minHeight').height(myHeight);
+					const myHeight = document.getElementsByClassName('table')[0].offsetHeight-50;
+					document.getElementsByClassName('minHeight')[0].style.height = myHeight + 'px';
 				}else{
-					const tbHeight = this.tableData.length*35
-					$('.minHeight').css({minHeight:'90px',height:""})
+					const tbHeight = this.tableData.length*35;
+					document.getElementsByClassName('minHeight')[0].style.minHeight = "90px";
+					document.getElementsByClassName('minHeight')[0].style.height = "";
 				}
 			},
 			
@@ -525,9 +526,9 @@
 		color: rgb(255, 255, 255);
 		background-repeat: no-repeat;
 		overflow: hidden;
-		padding: 10px 20px;
+		padding: 0.10rem 0.20rem;
 		.header {
-			height: 110px;
+			height: 1.1rem;
 			.manage6s_imgText {
 				background-image: url(../assets/images/body_title.png);
 				background-size:100% 100%;
@@ -536,15 +537,15 @@
 				font-weight: bold;
 				text-align: center;
 				height: 100%;
-				line-height: 110px;
+				line-height: 1.10rem;
 			}
 			.time {
-				width: 230px;
+				width: 2.50rem;
 				font-size: 0.32rem;
 				right: 1.9rem;
 				color: #ababab;
 				position: fixed;
-				top: 60px;
+				top: 0.60rem;
 				z-index: 10;
 				text-align: left;
 				font-family: fontnameUnidreamLED !important;
@@ -554,8 +555,8 @@
 				height: 40px;
 				background: url(../assets/images/index_back.png) no-repeat;
 				position:fixed;
-				top:60px;
-				left:15px;
+				top:0.60rem;
+				left:0.15rem;
 				cursor:pointer;
 			}
 		}
@@ -566,39 +567,39 @@
 			flex-direction: row;
 
 			.message {
-				width: 606px;
+				width: 6.06rem;
 				display: flex;
 				flex-direction: column;
 				overflow: hidden;
 				.search {
-					min-height: 110px;
-					width: 606px;
+					min-height: 1.10rem;
+					width: 6.06rem;
 					overflow: hidden;
 					display: flex;
 					flex-direction: row;
 					flex-wrap: wrap;
 
 					.item {
-						height: 55px;
+						height: 0.55rem;
 						width: 25%;
 						display: flex;
 						flex-direction: column;
-						padding-right: 5px;
+						padding-right: 0.05rem;
 
 						.title {
-							font-size: 13px;
-							margin-bottom: 5px;
-							height: 17px;
+							font-size: 0.13rem;
+							margin-bottom: 0.05rem;
+							height: 0.17rem;
 
 						}
 						 .form {
-							height: 30px;
+							height: 0.30rem;
 							/deep/ .el-input {
 								display: block;
 
 								.el-input__inner {
-									height: 30px;
-									line-height: 30px;
+									height: 0.30rem;
+									line-height: 0.30rem;
 								}
 							}
 
@@ -606,17 +607,17 @@
 								display: block;
 
 								/deep/ .el-input__inner {
-									height: 30px;
+									height: 0.30rem;
 								}
 
 								/deep/ .el-input__icon {
-									line-height: 30px;
+									line-height: 0.30rem;
 								}
 							}
 
 							/deep/ .el-button {
 								display: block;
-								height: 30px;
+								height: 0.30rem;
 								line-height: 0;
 							}
 						} 

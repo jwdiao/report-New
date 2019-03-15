@@ -58,5 +58,35 @@ export const reqCenterThreeTimesCarsData = () =>http.get('http://10.19.8.22:8100
 export const reqThreeTimesEchartsData = () =>http.get('http://10.19.8.22:8100/threerelism/sanyBussCar/getExceptionCarOfmonth')
 //回龙观车辆v3.0--	中间--下面echarts 接口
 export const reqAllSearchData = (date,carNumber,carBelong,carType,isLeave,searchType,page,pageSize) =>http.post('http://10.19.8.22:8100/threerelism/sanyBussCar/getListBySearch',{'date':date,'carNumber':carNumber,'carBelong':carBelong,'carType':carType,'isLeave':isLeave,'searchType':searchType,'page':page,'pageSize':pageSize})
+//南口车辆v3.0--	中间--上面6个数据  接口
+export const reqCenterTopSixData = () =>http.get('/carPlater/getExceptionCarData')
+//南口车辆v3.0--	左侧下面十天内echarts--  接口
+export const reqLetBottomTenDayEchartsData = () =>http.get('/carPlater/getExceptionCarOfmonth')
+//南口车辆v3.0--	中间下面综合查询--  接口
+export const reqCenterBottomAllSearchData = (date,ccode,carbelong,cartype,isoutstatus,searchType,page,pagesize) =>http.post('/carPlater/getSanyCarDataListOfNew',{date,ccode,carbelong,cartype,isoutstatus,searchType,page,pagesize})
 
 
+// 设备页面(EnergyDevive)-----设备表格数据
+export const getDeviceByCenter = (params) => http.post('/deviceSgCamera/getDeviceByCenter',{
+	centerName: params.centerName,
+	page: params.page,
+	pageSize: params.pageSize
+})
+// 设备页面(EnergyDevive)-----单个设备工作状态信息接口
+export const getSingleDeviceInfo = (deviceCode,centerName) => centerName?http.post('/energy/getSingleDeviceInfo',{centerName:centerName,deviceCode:deviceCode}):http.post('/energy/getSingleDeviceInfo',{deviceCode:deviceCode})
+// 派工信息接口
+export const getWorkPlanByDeviceCode = (deviceCode) => http.post('/sanyMachine/getWorkPlanByDeviceCode',{deviceCode:deviceCode})
+
+
+// 电流
+export const getNewCurrentInfo = (id) => http.post('http://10.19.8.22:8100/interin/current/getNewCurrent',{deviceUuid: id})
+export const getNewCurrentsInfo2 = (id) => http.post('http://10.19.8.22:8100/interin/current/getNewCurrents',{deviceUuid: id});
+// 雷达图
+export const getRecordRadarChartByCenter = (centerName) => http.post('/sanyAttendanceData/getRecordRadarChartByCenter',{centerName: centerName});
+
+//回龙观车辆历史车辆统计--	--  接口
+export const reqHistoryCarsInformationData = (startDate,endDate) =>http.post('http://10.19.8.22:8100/threerelism/sanyBussCar/getHistoryCarData',{startDate,endDate})
+//南口车辆历史车辆统计--	--  接口
+export const reqHistoryCarsInformationNKData = (startDate,endDate) =>http.post('/carPlater/getHistoryCarData',{startDate,endDate})
+//三一桩机三现历史数据--	--  接口
+export const reqnSanyHistoryData = (centerName,startTime,endTime) =>http.post('/sanyAttendanceNewData/list',{centerName,startTime,endTime})
