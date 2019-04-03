@@ -2,6 +2,7 @@
   <div class="maching-center">
     <div class="home_head-btn" @click="bostmachcenter">
       <span v-show="$store.state.centername===''">{{this.$store.state.selectedSubcompany}}</span>
+      <!-- <span v-show="$store.state.centername===''">{{titleText}}</span> -->
       <span v-show="$store.state.centername!==''">{{currentCenterName}}</span>
       <!--默认向下展开三角-->
       <div class="triangle_top" v-show="flag"></div>
@@ -30,11 +31,13 @@ export default {
   props: ['allCenterList'],
   data () {
     return {
+      titleText: '',
       flag: true, // 加工中心显示
       currentCenterName: this.$store.state.selectedSubcompany
     }
   },
   mounted () {
+    this.titleText = localStorage.getItem('companyNameCheckingSelectedSubcompany')
   },
   methods: {
     bostmachcenter () {

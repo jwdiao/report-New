@@ -3,10 +3,10 @@
     <!-- 头部 搜索start -->
     <div class="index_top">
       <div class="index_imgText">
-        <span class="title" style="cursor:pointer;" @click="switchData('/CarsNKV31')">北京三一桩机三现历史数据</span><!--南口•南大门-->
+        <span class="title" style="cursor:pointer;" @click="switchHistoryData()">{{titleText}}三现数据中心</span>
       </div>
       <em class="time" v-text="currentTime"></em>
-      <div class="button" @click="enterIndexPage('/CheckingV7')"></div>
+      <div class="button" @click="enterIndexPage('/Checking')"></div>
       <!--日期start-->
       <el-date-picker  class="buttonDateOne"
                        v-model="valueDateStart"
@@ -23,6 +23,49 @@
       <div class="buttonSearch" @click="searchAll">确定</div>
       <!--日期end-->
     </div>
+    <!-- 头部下拉 start -->
+    <div class="index_selectDialog" v-show="selectDialogShow">
+      <ul>
+        <li>
+          <p class="title">事业部</p>
+          <div class="common_select">
+            <el-select
+              v-model="careerValue"
+              @change="careerChange"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in careerOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </li>
+        <li>
+          <p class="title">子公司</p>
+          <div class="common_select">
+            <el-select
+              v-model="companyValue"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in companyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </li>
+        <li>
+          <span class="btn confirm" @click="handleConfirm">确定</span>
+          <span class="btn cancel" @click="handleCancel">取消</span>
+        </li>
+      </ul>
+    </div>
+    <!-- 头部下拉 end -->
     <div class="index_main">
       <!--标题-->
       <div class="index_center">
@@ -43,6 +86,11 @@
                     <p class="leaveNumP">日期</p><!--{{carAllData.strandedTruckNum}}-->
                   </div>
                 </div>
+                <div class="index_center_top_main_Cars">
+                  <div class="index_center_top_main_Cars_module carsN">
+                    <p>派工率</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -52,11 +100,7 @@
             </p>
             <div class="index_center_top_main">
               <div class="iconbg">
-                <div class="index_center_top_main_Cars">
-                  <div class="index_center_top_main_Cars_module carsN">
-                    <p>派工率</p>
-                  </div>
-                </div>
+
                 <div class="index_center_top_main_Cars">
                   <div class="index_center_top_main_Cars_module carsN">
                     <p>出勤率</p>
@@ -97,11 +141,6 @@
             </p>
             <div class="index_center_top_main">
               <div class="iconbg">
-                <div class="index_center_top_main_Cars">
-                  <div class="index_center_top_main_Cars_module carsN">
-                    <p>派工率</p>
-                  </div>
-                </div>
                 <div class="index_center_top_main_Cars">
                   <div class="index_center_top_main_Cars_module carsN">
                     <p>出勤率</p>
@@ -154,6 +193,11 @@
                         <p class="leaveNumP" style="cursor: pointer;text-decoration: underline">{{item.date}}</p>
                       </div>
                     </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.newWorkPlanRate}}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -162,32 +206,27 @@
                   <div class="iconbg">
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.workPlanRate}}</p>
+                        <p v-if="item.day">{{item.day.recordRate}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.recordRate}}</p>
+                        <p v-if="item.day">{{item.day.onWorkRate}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.onWorkRate}}</p>
+                        <p v-if="item.day">{{item.day.validRate}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.validRate}}</p>
+                        <p v-if="item.day">{{item.day.lateNum}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.lateNum}}</p>
-                      </div>
-                    </div>
-                    <div class="index_center_bottom_main_Cars">
-                      <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.absentNum}}</p>
+                        <p v-if="item.day">{{item.day.absentNum}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
@@ -201,39 +240,35 @@
               <div class="third" style=" border-radius:0 0 5px 5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 0px">
                 <div class="index_center_bottom_main">
                   <div class="iconbg">
+
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.workPlanRate}}</p>
+                        <p v-if="item.night">{{item.night.recordRate}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.recordRate}}</p>
+                        <p v-if="item.night">{{item.night.onWorkRate}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.onWorkRate}}</p>
+                        <p v-if="item.night">{{item.night.validRate}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.validRate}}</p>
+                        <p v-if="item.night">{{item.night.lateNum}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.lateNum}}</p>
+                        <p v-if="item.night">{{item.night.absentNum}}</p>
                       </div>
                     </div>
                     <div class="index_center_bottom_main_Cars">
                       <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.absentNum}}</p>
-                      </div>
-                    </div>
-                    <div class="index_center_bottom_main_Cars">
-                      <div class="index_center_bottom_main_Cars_module carsN">
-                        <p>{{item.day.abnormalNum}}</p>
+                        <p v-if="item.night">{{item.night.abnormalNum}}</p>
                       </div>
                     </div>
                   </div>
@@ -257,7 +292,7 @@
   import {
     reqnSanyHistoryData
   }from'../../api'
-
+  import axios from 'axios'
   export default {
     name: 'cars',
 
@@ -268,12 +303,25 @@
         valueDateStart:'', //开始时间
         valueDateEnd:'', //结束时间
         CarsHistoryArr:[],
+        selectDialogShow:false,//头部下拉
+        careerValue: '', // 点击标题下拉事业部选中值
+        careerOptions: [ // 事业部下拉option
+          {label:'重机事业部',value:'zhongji'},
+          {label:'泵送事业部',value:'bengsong'},
+          {label:'重能事业部',value:'zhongneng'},
+          {label:'重起事业部',value:'zhongqi'},
+          {label:'三一重卡',value:'zhongka'},
+          {label:'港机事业部',value:'gangji'},
+        ],
+        companyValue: '', // 子公司选中值
+        companyOptions: [], // 子公司option
+        titleText: '北京桩机',
 
         currentTime: '',    // 系统当前时间
         currentDate: '',    // 系统当前日期
         pickerOptionsStart: {
           disabledDate(time) {
-            return time.getTime() > Date.now() - 1000*60*60*24 || time.getTime() < Date.now() - 1000*60*60*24*19;
+            return time.getTime() > Date.now() - 1000*60*60*24;
           }
         },
         pickerOptionsEnd: {
@@ -289,6 +337,10 @@
     created() {
       this.setDefaultDateStart()
       this.setDefaultDateEnd()
+
+      const ipAddrReq = localStorage.getItem('ipAddrCheckingSelectedSubcompany')
+      axios.defaults.baseURL = ipAddrReq
+      this.titleText = localStorage.getItem('companyNameCheckingSelectedSubcompany')
     },
     mounted() {
       // 顶部日期时间
@@ -352,13 +404,14 @@
       },
       //点击跳转页面
       skipToHistory(date){
-        this.$router.replace({name:'CheckingHistoryV6',params:{dateData:date}})
+        this.$router.replace({name:'CheckingHistory',params:{dateData:date}})
       },
 
 
       enterIndexPage(path) {
         // 路径从state中获取
         this.$router.replace(path)
+        // this.$router.push(path)
       },
       // 时间格式化
       getCurrentDateTime() {
@@ -368,6 +421,126 @@
       getCurrentDate() {
         return moment(new Date()).format('YYYY-MM-DD')
       },
+      //头部下拉------------start------------------------------
+      //点击头部
+      switchHistoryData(){
+        this.selectDialogShow = true
+      },
+      careerChange (val) {
+        // console.log(`选择的事业部是：${val}`)
+        this.companyOptions = []
+        this.companyValue = ''
+        if (val === 'bengsong') {
+          this.companyOptions = [
+            {label:'长沙泵送',value:'长沙泵送',},
+            {label:'邵阳湖汽',value:'邵阳湖汽'},
+            {label:'娄底中源',value:'娄底中源'},
+            {label:'娄底中兴',value:'娄底中兴'},
+            {label:'益阳中阳',value:'益阳中阳'}
+          ]
+        } else if (val === 'zhongji') {
+          this.companyOptions = [
+            {label:'北京桩机',value:'北京桩机'},
+            {label:'常熟索特',value:'常熟索特'},
+            {label:'临港中挖',value:'临港中挖'},
+            {label:'昆山重机',value:'昆山重机'},
+          ]
+        } else if (val === 'zhongneng') {
+          this.companyOptions = [
+            {label:'三一重能',value:'三一重能'},
+            {label:'三一叶片',value:'三一叶片'}
+          ]
+        } else if (val === 'zhongqi') {
+          this.companyOptions = [
+            {label:'宁乡起重机',value:'宁乡起重机'}
+          ]
+        } else if (val === 'zhongka') {
+          this.companyOptions = [
+            {label:'三一重卡',value:'三一重卡'}
+          ]
+        } else if (val === 'gangji') {
+          this.companyOptions = [
+            {label:'长沙港机',value:'长沙港机'},
+            {label:'珠海港机',value:'珠海港机'}
+          ]
+        }
+      },
+      handleConfirm () {
+        // console.log('选择的子公司是：',this.companyValue)
+        if (!this.careerValue) {
+          this.$message({
+            type: 'warning',
+            message: '请选择事业部!',
+            customClass: 'messageInfo'
+          });
+          return;
+        }
+        if (this.companyValue === '') {
+          this.$message({
+            type: 'warning',
+            message: '请选择子公司!'
+          });
+          return;
+        }
+
+        let BaseUrlReq = ''
+        let code = ''
+        if (this.companyValue === '长沙泵送'){
+          BaseUrlReq = 'http://10.0.91.50:8083'
+          code = '0201'
+        } else if (this.companyValue === '邵阳湖汽'){
+          BaseUrlReq = 'http://10.13.136.22:8083'
+          code = '0206'
+        } else if (this.companyValue === '娄底中源'){
+          BaseUrlReq = 'http://10.14.0.17:8083'
+          code = '0202'
+        } else if (this.companyValue === '北京桩机') {
+          BaseUrlReq = 'http://10.19.7.69:8083'
+          code = '0303'
+        } else if (this.companyValue === '常熟索特') {
+          BaseUrlReq = 'http://10.15.150.21:8083'
+          code = '0306'
+        } else if (this.companyValue === '三一重能') {
+          BaseUrlReq = 'http://10.19.7.70:8083'
+          code = '0701'
+        } else if (this.companyValue === '宁乡起重机') {
+          BaseUrlReq = 'http://10.16.1.65:8083'
+          code = '0502'
+        } else if (this.companyValue === '三一重卡') {
+          BaseUrlReq = 'http://10.192.29.12:8083'
+          code = '0101'
+        } else if (this.companyValue === '娄底中兴') {
+          BaseUrlReq = 'http://10.193.88.6:8083'
+          code = '0303'
+        } else if (this.companyValue === '三一叶片') {
+          BaseUrlReq = 'http://10.19.220.179:8083'
+        } else if (this.companyValue === '益阳中阳') {
+          BaseUrlReq = 'http://10.22.33.100:8083'
+        } else if (this.companyValue === '长沙港机') {
+          BaseUrlReq = 'http://10.1.91.1:8083'
+        } else if (this.companyValue === '临港中挖') {
+          BaseUrlReq = 'http://10.11.16.187:8083'
+        } else if (this.companyValue === '昆山重机') {
+          BaseUrlReq = 'http://10.11.16.187:8083'
+        } else if (this.companyValue === '珠海港机') {
+          BaseUrlReq = 'http://10.193.4.244:8083'
+        }
+        axios.defaults.baseURL = BaseUrlReq
+        localStorage.setItem('ipAddrCheckingSelectedSubcompany',BaseUrlReq)
+        localStorage.setItem('companyNameCheckingSelectedSubcompany',this.companyValue)
+
+        this.selectDialogShow = false // 关闭弹窗
+        this.titleText = `${this.companyValue}` // 顶部显示的文字
+
+        this.CarsHistoryArr = []
+        var centerName = this.$store.state.centername
+        this.getCarsHistoryData(centerName,this.valueDateStart,this.valueDateEnd)
+      },
+      // 关闭顶部选择事业部弹窗
+      handleCancel () {
+        this.selectDialogShow = false
+      },
+      //头部下拉------------end------------------------------
       //查询
       searchAll(){
         var startTime = new Date(this.valueDateStart).getTime()
@@ -381,15 +554,40 @@
           return
         }
         var centerName = this.$store.state.centername
-        this.CarsHistoryArr = []
+         this.CarsHistoryArr = []
         this.getCarsHistoryData(centerName,this.valueDateStart,this.valueDateEnd)
       },
       async getCarsHistoryData(centerName,startTime,endTime){
         const res = await reqnSanyHistoryData(centerName,startTime,endTime)
         // const res = await http.post('http://10.88.195.191:8083/sanyAttendanceNewData/list',{centerName,startTime,endTime})
         if(res&&res.data.ret==='200'){
-          this.CarsHistoryArr = res.data.data
-          console.log('this.CarsHistoryArr:',this.CarsHistoryArr)
+          const result = res.data.data
+          const newResultArr = []
+          result.forEach(element => {
+            let itemData = {
+              date: element.date,
+              day: element.day
+            }
+            if(!element.night || JSON.stringify(element.night)=="{}") {
+              itemData.night = {
+              abnormalNum: "0",
+              absentNum: "0",
+              lateNum: "0",
+              newWorkPlanRate: "0",
+              onWorkRate: "0",
+              recordRate: "0",
+              validRate: "0",
+              workPlanRate: "0"
+              }
+            } else {
+               itemData.night = element.night
+            }
+            newResultArr.push(itemData)
+          });
+          this.CarsHistoryArr = newResultArr
+          // console.log('this.CarsHistoryArr:',this.CarsHistoryArr)
+        }else{
+          this.$message({message:res.data.msg})
         }
       },
     }
@@ -474,6 +672,32 @@
         font-size: 14px;
       }
     }
+    &_selectDialog{
+      background-color: rgba(9, 20, 40, 0.8);border:1px solid #6bb9d5;
+      position:fixed;top:105px;z-index:999;left:50%;transform: translateX(-50%);
+      padding:28px 60px 48px;
+      width:420px;margin:0 auto;font-size:12px;
+      .title{font-size:20px;color:#fff;margin-top:20px;}
+      .common_select{margin-top:10px;}
+      .el-select{
+        width:100%;
+      }
+      /deep/ .el-input__inner {
+        height: 38px !important;
+        line-height: 38px !important;
+      }
+      .btn{
+        height:40px;line-height:40px;display: inline-block;font-size:20px;
+        text-align: center;border-radius: 4px;margin-top:30px;width:48%;
+      }
+      .confirm{
+        background-color: #0088ff;color:#fff;cursor: pointer;
+      }
+      .cancel{
+        margin-left:4%;
+        background-color: #b3b3bd;color:#0c1932;cursor: pointer;
+      }
+    }
     &_main{
       position: fixed;
       top:110px;
@@ -503,13 +727,13 @@
           border-radius: 0 20px 0 0;
         }
         .first{
-          flex: 2;
+          flex: 1;
         }
         .second{
-          flex: 7;
+          flex: 2;
         }
         .third{
-          flex: 7;
+          flex: 2;
         }
 
         .home_title{
@@ -538,9 +762,9 @@
                 height: 40px;
                 line-height: 43px;
                 font-weight: bold;
-                font-size: 16px;
+                font-size: 17px;
                 overflow: hidden;
-                color: #53E3FD;
+                color: #53e3fd;
               }
 
             }
@@ -586,13 +810,13 @@
           background:rgba(42,75,133,0.4);
         }
         .first{
-          flex: 2;
+          flex: 1;
         }
         .second{
-          flex: 7;
+          flex: 2;
         }
         .third{
-          flex: 7;
+          flex: 2;
         }
 
         .home_title{
@@ -621,7 +845,7 @@
                 margin-left: 0%;
                 height: 35px;
                 line-height: 35px;
-                font-weight: bold;
+                /*font-weight: bold;*/
                 font-size: 16px;
                 overflow: hidden;
                 color: #53E3FD;
@@ -698,4 +922,5 @@
       background-color:#285e8c!important;
     }
   }
+
 </style>

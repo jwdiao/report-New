@@ -663,7 +663,7 @@
                 margin-left: 0%;
                 height: 35px;
                 line-height: 35px;
-                font-weight: bold;
+                /*font-weight: bold;*/
                 font-size: 16px;
                 overflow: hidden;
                 color: #53E3FD;

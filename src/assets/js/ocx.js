@@ -157,7 +157,7 @@ export function getPreviewParamByName(cameraName, type, from, isReviewImg) {
 export function SetToolBar(ocxObj) {
 	var tbars = '0,1,2,3,4,5,6', ret = ocxObj.SPV_SetToolBar(tbars);
 	if (ret != 0) {
-		console.log("设置工具条失败！");
+		// console.log("设置工具条失败！");
 	}
 
 	return ret;

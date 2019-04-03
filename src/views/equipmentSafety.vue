@@ -194,11 +194,11 @@
 		},
 		methods: {
 			handleResize() {
-				echarts.init(document.getElementById('onlineCount')).resize();
+				/* echarts.init(document.getElementById('onlineCount')).resize();
 				echarts.init(document.getElementById('onlineLv')).resize();
 				echarts.init(document.getElementById('onlineLvClock')).resize();
 				echarts.init(document.getElementById('outlineLvClock')).resize();
-				echarts.init(document.getElementById('youXiaoClock')).resize();
+				echarts.init(document.getElementById('youXiaoClock')).resize(); */
 			},
 			getCurrentDateTime() {
 				return moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
@@ -317,8 +317,13 @@
 							},
 							length: 6
 						},
-						splitLine: {
-							show: false
+						splitLine: { // 网格线
+							show: true,
+							lineStyle: {
+							  color: ['#2c4264'],
+							  width: 1,
+							  type: 'dotted'
+							}
 						},
 						pointer: {
 							width: 4
@@ -414,9 +419,9 @@
 						splitLine: { // 网格线
 							show: true,
 							lineStyle: {
-								color: ['rgba(132,144,165,.5)'],
-								width: 1,
-								type: 'dotted'
+							  color: ['#2c4264'],
+							  width: 1,
+							  type: 'dotted'
 							}
 						},
 
@@ -522,11 +527,11 @@
 								verticalAlign: 'middle'
 							},
 							splitLine: { // 网格线
-								show: false,
+								show: true,
 								lineStyle: {
-									color: ['rgba(132,144,165,.5)'],
-									width: 1,
-									type: 'dotted'
+								  color: ['#2c4264'],
+								  width: 1,
+								  type: 'dotted'
 								}
 							},
 						},
@@ -698,7 +703,7 @@
 
 			.chartsBox {
 				width: 100%;
-				height: 3.00rem;
+				height: 3.20rem;
 				background: rgba(39, 69, 111, 0.3);
 				border: 1px solid rgba(255, 255, 255, 0.1); 
 				margin-bottom: 0.15rem;
@@ -729,9 +734,9 @@
 						.charts {
 							width: 80%;
 							margin: 0 auto;
-							height: calc(100% - 42px);
+							height: calc(100% - 50px);
 							position:relative;
-              .center_box{
+                        .center_box{
 								position:absolute;
 								left:50%;
 								top:50%;

@@ -5,7 +5,7 @@
 			<!--标头-->
 			<div class="vision_title">
 				<!-- <span @click="enterIndexPage">北京三一视觉考勤</span> -->
-				<span>三现数据安全管理</span>
+				<span @click="showSelectDialog">三现数据安全管理</span>
 			</div>
 			<!--右上角时间-->
 			<em class="time" v-text="currentTime"></em>
@@ -69,7 +69,7 @@
 						:picker-options="pickerOptionsEnd"></el-date-picker>
 						 <i v-show="isRm2" data-index="2" @click="clearVal"></i>
 					</label>
-					<button class="search-btn" @click="gerTableList">搜索</button>
+					<button class="search-btn" @click="getTableList">搜索</button>
 					<button class="search-btn" @click="clearTableList">清空</button>
 				</div>
 				<!--查询条件结束-->
@@ -100,12 +100,54 @@
         <!--分页结束-->
 			</div>
 		</el-main>
+		<div class="index_selectDialog" v-show="selectDialogShow">
+		  <ul>
+		    <li>
+		      <p class="title">事业部</p>
+		      <div class="common_select">
+		        <el-select
+		        v-model="careerValue"
+		        @change="careerChange"
+		        placeholder="请选择"
+		        >
+		          <el-option
+		            v-for="item in careerOptions"
+		            :key="item.value"
+		            :label="item.label"
+		            :value="item.value">
+		          </el-option>
+		        </el-select>
+		      </div>
+		    </li>
+		    <li>
+		      <p class="title">子公司</p>
+		      <div class="common_select">
+		        <el-select
+		        v-model="companyValue"
+		        placeholder="请选择"
+		        >
+		          <el-option
+		            v-for="item in companyOptions"
+		            :key="item.value"
+		            :label="item.label"
+		            :value="item.value">
+		          </el-option>
+		        </el-select>
+		      </div>
+		    </li>
+		    <li>
+		      <span class="btn confirm" @click="handleConfirm">确定</span>
+		      <span class="btn cancel" @click="handleCancel">取消</span>
+		    </li>
+		  </ul>
+		</div>
 	</el-container>
 </template>
 
 <script>
 	import echarts from 'echarts'
 	import moment from 'moment'
+	import axios from 'axios'
 	import http from '../api/http'
 	import {getSanyCameraSysLogStaticList,getSanyCameraSysLogStaticCharts} from '../api'
 	export default {
@@ -132,14 +174,28 @@
 				topEchartsList: [],//操作类型统计饼图关联数据
 				middleEchartsList: [],//IP登录统计关联数据
 				bottomEchartsList: [],//用户名登录统计关联数据
+				selectDialogShow: false, // 是否显示顶部事业部子公司弹窗
+				companyValue:'',
+				timer:null,
+				companyOptions:[],
+				careerValue: '', // 点击标题下拉事业部选中值
+				careerOptions: [ // 事业部下拉option
+				  {label:'重机事业部',value:'zhongji'},
+					{label:'泵送事业部',value:'bengsong'},
+					{label:'重能事业部',value:'zhongneng'},
+					{label:'重起事业部',value:'zhongqi'},
+					{label:'三一重卡',value:'zhongka'},
+					{label:'港机事业部',value:'gangji'},
+				],
 				pickerOptionsStart: {
 					disabledDate(time) {
 						return time.getTime() > Date.now();
 					}
 				},
+        /*time.getTime() < new Date(this.valueStart).getTime() - 3600*1000*24 ||*/
 				pickerOptionsEnd:{
 					disabledDate(time){
-						return time.getTime() < new Date(this.valueStart).getTime() - 3600*1000*24 || time.getTime() > Date.now();
+						return  time.getTime() > Date.now();
 					}
 				},
 				/* selectHide:falue, */
@@ -154,17 +210,24 @@
 			};
 		},
 		mounted() {
+			this.endTime = this.getCurrentDateTime();
+			this.startTime = this.getStartTime();
 			this.currentTime = this.getCurrentDateTime();
 			setInterval(() => {
 				this.currentTime = this.getCurrentDateTime();
 			}, 1000);
-				this.getSanyCameraSysLogList();
+		        this.getSanyCameraSysLogList();
 				this.getSanyCameraSysLogStatic();
 			setInterval(() => {
-				/* this.currentPage = 1; */
+				 /* this.currentPage = 1; */
+				
 				this.getSanyCameraSysLogList();
 				this.getSanyCameraSysLogStatic();
 			}, 10000);
+			this.timer = setInterval(() => {
+				this.endTime = this.getCurrentDateTime();
+				this.startTime = this.getStartTime();
+			},9000);
 			window.addEventListener('resize', this.handleResize); //给window对象绑定resize事件
 
 		},
@@ -175,11 +238,131 @@
 					ele.resize();
 				})
 			},
+			getStartTime(){
+				return moment(new Date().getTime() - 604800000).format('YYYY-MM-DD HH:mm:ss');
+			},
 			getCurrentDateTime() {
 				return moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
 			},
 			getRightTime(time){
 				return moment(time).format('YYYY-MM-DD HH:mm:ss');
+			},
+			showSelectDialog () {
+			  this.selectDialogShow = true
+			},
+			careerChange (val) {
+			  // console.log(`选择的事业部是：${val}`)
+			  this.companyOptions = []
+			  this.companyValue = ''
+			  if (val === 'bengsong') {
+					this.companyOptions = [
+						{label:'长沙泵送',value:'长沙泵送',},
+						{label:'邵阳湖汽',value:'邵阳湖汽'},
+						{label:'娄底中源',value:'娄底中源'},
+						{label:'娄底中兴',value:'娄底中兴'},
+						{label:'益阳中阳',value:'益阳中阳'}
+					]
+				} else if (val === 'zhongji') {
+					this.companyOptions = [
+						{label:'北京桩机',value:'北京桩机'},
+						{label:'常熟索特',value:'常熟索特'},
+						{label:'临港中挖',value:'临港中挖'},
+						{label:'昆山重机',value:'昆山重机'},
+					]
+				} else if (val === 'zhongneng') {
+					this.companyOptions = [
+						{label:'三一重能',value:'三一重能'},
+						{label:'三一叶片',value:'三一叶片'}
+					]
+				} else if (val === 'zhongqi') {
+					this.companyOptions = [
+						{label:'宁乡起重机',value:'宁乡起重机'}
+					]
+				} else if (val === 'zhongka') {
+					this.companyOptions = [
+						{label:'三一重卡',value:'三一重卡'}
+					]
+				} else if (val === 'gangji') {
+					this.companyOptions = [
+						{label:'长沙港机',value:'长沙港机'},
+						{label:'珠海港机',value:'珠海港机'}
+					]
+				}
+			},
+			handleConfirm () {
+			  // console.log('选择的子公司是：',this.companyValue)
+			  if (!this.careerValue) {
+			    this.$message({
+			      type: 'warning',
+			      message: '请选择事业部!',
+			      customClass: 'messageInfo'
+			    });
+			    return;
+			  }
+			  if (this.companyValue === '') {
+			    this.$message({
+			      type: 'warning',
+			      message: '请选择子公司!'
+			    });
+			    return;
+			  }
+			
+			  let BaseUrlReq = ''
+				let code = ''
+				if (this.companyValue === '长沙泵送'){
+					BaseUrlReq = 'http://10.0.91.50:8083'
+					code = '0201'
+				} else if (this.companyValue === '邵阳湖汽'){
+					BaseUrlReq = 'http://10.13.136.22:8083'
+					code = '0206'
+				} else if (this.companyValue === '娄底中源'){
+					BaseUrlReq = 'http://10.14.0.17:8083'
+					code = '0202'
+				} else if (this.companyValue === '北京桩机') {
+					BaseUrlReq = 'http://10.19.7.69:8083'
+					code = '0303'
+				} else if (this.companyValue === '常熟索特') {
+					BaseUrlReq = 'http://10.15.150.21:8083'
+					code = '0306'
+				} else if (this.companyValue === '三一重能') {
+					BaseUrlReq = 'http://10.19.7.70:8083'
+					code = '0701'
+				} else if (this.companyValue === '宁乡起重机') {
+					BaseUrlReq = 'http://10.16.1.65:8083'
+					code = '0502'
+				} else if (this.companyValue === '三一重卡') {
+					BaseUrlReq = 'http://10.192.29.12:8083'
+					code = '0101'
+				} else if (this.companyValue === '娄底中兴') {
+					BaseUrlReq = 'http://10.193.88.6:8083'
+					code = '0303'
+				} else if (this.companyValue === '三一叶片') {
+					BaseUrlReq = 'http://10.19.220.179:8083'
+				} else if (this.companyValue === '益阳中阳') {
+					BaseUrlReq = 'http://10.22.33.100:8083'
+				} else if (this.companyValue === '长沙港机') {
+					BaseUrlReq = 'http://10.1.91.1:8083'
+				} else if (this.companyValue === '临港中挖') {
+					BaseUrlReq = 'http://10.11.16.187:8083'
+				} else if (this.companyValue === '昆山重机') {
+					BaseUrlReq = 'http://10.11.16.187:8083'
+				} else if (this.companyValue === '珠海港机') {
+					BaseUrlReq = 'http://10.193.4.244:8083'
+				}
+			  this.companyCode = code;
+			  axios.defaults.baseURL = BaseUrlReq
+			 
+			
+			  clearInterval(this.refreshDataId)
+			  this.selectDialogShow = false // 关闭弹窗
+			
+			  
+				this.getSanyCameraSysLogList();
+				this.getSanyCameraSysLogStatic();
+			},
+			// 关闭顶部选择事业部弹窗
+			handleCancel () {
+			  this.selectDialogShow = false
 			},
 			clearVal(){
 				event.target.getAttribute('data-index')==1?this.startTime = "":this.endTime = ""
@@ -203,8 +386,10 @@
 					pageNo: this.currentPage,
 					pageSize: this.pageSize,
 					masterTypeCode: this.typeMessageValue,
-					startTime: this.startTime!=''?this.getRightTime(new Date(this.startTime)):'',
-					endTime: this.endTime!=''?this.getRightTime(new Date(this.endTime)):'',
+					/* startTime: this.startTime!=''?this.getRightTime(new Date(this.startTime)):'',
+					endTime: this.endTime!=''?this.getRightTime(new Date(this.endTime)):'', */
+					startTime: this.getRightTime(new Date(this.startTime)),
+					endTime: this.getRightTime(new Date(this.endTime)),
 					userName: this.userName,
 					loginIp: this.loginIp,
 					content: this.content
@@ -228,30 +413,43 @@
 					this.topEchartsList = [];
 					this.middleEchartsList = [];
 					this.bottomEchartsList = [];
-					res.data.typeval.forEach((ele, index) => {
-						this.topEchartsList.push({
-							value: ele
+					if(res.data.typeval instanceof Array){
+						res.data.typeval.forEach((ele, index) => {
+							this.topEchartsList.push({
+								value: ele
+							})
 						})
-					})
-					res.data.typename.forEach((ele, index) => {
-						this.topEchartsList[index].name = ele
-					})
-					res.data.ipval.forEach((ele, index) => {
-						this.middleEchartsList.push({
-							value: ele
+					}
+					if(res.data.typename instanceof Array){
+						res.data.typename.forEach((ele, index) => {
+							this.topEchartsList[index].name = ele
 						})
-					})
-					res.data.ipname.forEach((ele, index) => {
-						this.middleEchartsList[index].name = ele
-					})
-					res.data.userval.forEach((ele, index) => {
-						this.bottomEchartsList.push({
-							value: ele
+					}
+					if(res.data.ipval instanceof Array){
+						res.data.ipval.forEach((ele, index) => {
+							this.middleEchartsList.push({
+								value: ele
+							})
 						})
-					})
-					res.data.username.forEach((ele, index) => {
-						this.bottomEchartsList[index].name = ele
-					})
+					}
+					if(res.data.ipname instanceof Array){
+						res.data.ipname.forEach((ele, index) => {
+							this.middleEchartsList[index].name = ele
+						})
+					}
+					if(res.data.userval instanceof Array){
+						res.data.userval.forEach((ele, index) => {
+							this.bottomEchartsList.push({
+								value: ele
+							})
+						})
+					}
+					if(res.data.username instanceof Array){
+						res.data.username.forEach((ele, index) => {
+							this.bottomEchartsList[index].name = ele
+						})
+					}
+					
 					this.renderChart('top', this.topEchartsList);
 					this.renderChartPie('middle', this.middleEchartsList, 'ip登录');
 					this.renderChartPie('bottom', this.bottomEchartsList, '用户名登录');
@@ -278,7 +476,14 @@
 								},
 								labelLine: {
 									show: true
-								}
+								},
+								color:function(params){
+									var colorList = [
+										'#16c329','#c23835','#16c329','#4f06eb','#0dc79e','#078ceb','#61a0a9','#c9862b'
+									]
+									return colorList[params.dataIndex]
+								},
+								borderColor:'rgba(19,38,68,1)'
 							},
 							emphasis: {
 								label: {
@@ -318,6 +523,13 @@
 						center: ['50%', '60%'],
 						data: data,
 						itemStyle: {
+							color:function(params){
+								var colorList = [
+									'#c23835','#16c329','#4f06eb','#0dc79e','#078ceb','#61a0a9','#c9862b'
+								]
+								return colorList[params.dataIndex]
+							},
+							
 							emphasis: {
 								shadowBlur: 10,
 								shadowOffsetX: 0,
@@ -357,7 +569,8 @@
 			typeMessageFn() { //查询类型change事件
         this.getSanyCameraSysLogList()
 			},
-			gerTableList() { //查询按钮事件
+			getTableList() { //查询按钮事件
+                clearInterval(this.timer)
 				this.currentPage = 1;
 				this.getSanyCameraSysLogList()
 			},
@@ -369,7 +582,7 @@
 				this.startTime = '';
 				this.endTime = '';
 				this.currentPage = 1;
-        this.getSanyCameraSysLogList();
+                this.getSanyCameraSysLogList();
 			}
 		}
 	}
@@ -463,8 +676,20 @@
 						padding-left: 24px;
 						font-weight: bold;
 						font-size: 20px;
-						color: white;
-						background: url(../assets/images/index_title-blue.png) 0% 50% no-repeat;
+						color: white;                                                              
+						position:relative;
+					}
+					.item_home_title:after{
+						display: block;
+						content: '';
+						position: absolute;
+						width: 12px;
+						height: 12px;
+						border-radius: 12px;
+						background: #31E6FF;
+						left: 0px;
+						top: 43%;
+						margin-top: -5px;
 					}
 					.chartBox {
 						height: calc(100% - 29px);
@@ -697,5 +922,32 @@
 			/*右侧表格结束*/
 		}
 		/*中间部分结束*/
+		
+		.index_selectDialog{
+		  background-color: rgba(9, 20, 40, 0.8);border:1px solid #6bb9d5;
+		  position:fixed;top:105px;z-index:999;left:50%;transform: translateX(-50%);
+		  padding:28px 60px 48px;
+		  width:420px;margin:0 auto;font-size:12px;
+		  .title{font-size:20px;color:#fff;margin-top:20px;}
+		  .common_select{margin-top:10px;}
+		  .el-select{
+		    width:100%;
+		  }
+		  /deep/ .el-input__inner {
+		      height: 38px !important;
+		      line-height: 38px !important;
+		  }
+		  .btn{
+		    height:40px;line-height:40px;display: inline-block;font-size:20px;
+		    text-align: center;border-radius: 4px;margin-top:30px;width:48%;
+		  }
+		  .confirm{
+		    background-color: #0088ff;color:#fff;cursor: pointer;
+		  }
+		  .cancel{
+		    margin-left:4%;
+		    background-color: #b3b3bd;color:#0c1932;cursor: pointer;
+		  }
+		}
 	}
 </style>

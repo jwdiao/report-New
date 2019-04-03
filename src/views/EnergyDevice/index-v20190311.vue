@@ -2,7 +2,7 @@
   <div class="energyDevice">
     <!-- 头部 start -->
     <div class="energyDevice_top">
-      <div class="back" @click="$router.push('/CheckingV7')"></div>
+      <div class="back" @click="$router.replace('/Checking')"></div>
       <div class="title"><span @click="showSelectDialog"  v-text="titleText"></span></div>
       <em class="time" v-text="currentTime"></em>
     </div>

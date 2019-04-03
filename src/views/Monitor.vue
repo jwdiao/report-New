@@ -94,11 +94,11 @@
 					</div>
 				</div>
 	      <!--下拉列表查询条件结束-->
-				<!--表格开始-->				
+				<!--表格开始-->
 					<div class="common_table table" style="position:relative;">
 						<div style="position:absolute;height:40px;overflow: hidden;width:100%;z-index: 100;">
 							<template>
-								<el-table :data="tableData" border style="width: 100%" 
+								<el-table :data="tableData" border style="width: 100%"
 								@row-click="handleRowClick"
 								:row-class-name="tableRowClassName"
 								:row-style="selectedHighlight"
@@ -119,11 +119,11 @@
 									</el-table-column>
 								</el-table>
 							</template>
-						</div> 
-						
+						</div>
+
 						<el-scrollbar :class="{isScroll:isScroll,minHeight:true}">
 							<template>
-								<el-table :data="tableData" border style="width: 100%" 
+								<el-table :data="tableData" border style="width: 100%"
 								@row-click="handleRowClick"
 								:row-class-name="tableRowClassName"
 								:row-style="selectedHighlight"
@@ -149,17 +149,17 @@
 						<div class="common_paginaton" v-show="pageShow">
 							<template>
 									<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage"
-									:page-sizes="[10,18, 30, 40, 50]" :page-size="pageSize" 
-									layout="total, sizes, prev, pager, next" 
+									:page-sizes="[10,18, 30, 40, 50]" :page-size="pageSize"
+									layout="total, sizes, prev, pager, next"
 									:total="tableTotal"
 									style="height:100%;">
 									</el-pagination>
 							</template>
 						</div>
 						<!--分页结束-->
-					</div>			
+					</div>
 				<!--表格结束-->
-				
+
 			</div>
 			  <!--视频开始-->
 			<div :class="{monitor:true,isAllScreen:allScreen}">
@@ -211,8 +211,8 @@
 				currentTime: '',//与时间绑定的数据
 				labelPosition: 'top',//使表单上下排列
 				allScreen:false,//是否全屏显示开关
-				screenMessage:'点击查看全屏',	//全屏按钮文字		
-				flag: true,	
+				screenMessage:'点击查看全屏',	//全屏按钮文字
+				flag: true,
 				monitorViewMessage:{},//右侧监控左上部分信息
 				secondeGroupOptions:[],//二级工艺数组
 				orgOptions: [], //事业部数组
@@ -223,6 +223,9 @@
 					value: '',
 					label: '请选择工艺'
 				}, {
+          value: '00',
+          label: '重点'
+        }, {
 					value: '01',
 					label: '下料'
 				}, {
@@ -251,7 +254,7 @@
 					label: '公共'
 				}],
 				tableData: [],//左下部表格数组
-				groupValue: '',//工艺value值
+				groupValue: '00',//工艺value值
 				secondGroupValue:'',//二级工艺
 				orgValue: '',//事业部value值
 				companyValue: '',//子公司value值
@@ -264,7 +267,7 @@
 				currentPage: 1,//当前页默认为第一页
 				pageSize:18,//每页默认18条
 				pageShow:false//是否显示分页
-								
+
 			};
 		},
 		mounted(){
@@ -272,11 +275,11 @@
 			setInterval(() => {
 				this.currentTime = this.getCurrentDateTime();
 			}, 1000)
-			window.addEventListener('resize', this.handleResize); //给window对象绑定resize事件  
+			window.addEventListener('resize', this.handleResize); //给window对象绑定resize事件
 			//页面首次加载获取事业部下拉列表数据
 			this.getOptions(0, 'org', '请选择事业部','/sanybasicorg/getOrg/');
 			//页面首次加载表格内加载摄像头信息
-			this.getMonitor(); 
+			this.getMonitor();
 			// oct =====
 			var ocxObj = document.getElementById('spv'),
 				initRet = InitSpvx(ocxObj);
@@ -285,14 +288,16 @@
 				var localParamRet = SetLocalParam(ocxObj);
 				if (localParamRet === 0) {
 					// 设置工具栏
-					setTimeout(function() {
-						SetToolBar(ocxObj);
-					}, 500);
+					// setTimeout(function() {
+					// 	SetToolBar(ocxObj);
+					// }, 500);
 					 var minHeight = getScreenWidthAndHeight(false,
 					     false);
 				}
 			}
-		   
+      //页面首次加载请选择二级工艺
+      this.emptySelect('group');
+      this.getOptions(this.groupValue, 'group', '请选择二级工艺','/cameraGroup/getGroup/');
 			// ocx =====
 		},
 		methods: {
@@ -334,7 +339,7 @@
 					this.getOptions(this.factoryValue, 'camera', '请选择设备','/camera/getCameraByFactoryCode/');
 			},
 			facility(){//设备名称change事件
-				
+
 			},
 			allScreenLook(){//全屏按钮点击事件函数
 				this.allScreen=!this.allScreen;
@@ -373,7 +378,7 @@
 					 this.cameraNameValue='';
 						 break;
 					case 'facility':
-					 this.cameraNameValue='';	 
+					 this.cameraNameValue='';
 					default:
 						break;
 				}
@@ -389,12 +394,12 @@
 					document.getElementsByClassName('minHeight')[0].style.height = "";
 				}
 			},
-			
+
 			/*函数名：getMonitor
 			参数：num:请求携带参数;type:change事件来源于谁;message:不同选择器被制空后默认显示的提示信息;url:请求地址
 			描述：查询后将摄像头信息展示到表格内
 			*/
-		 
+
 			async getOptions(num, type, message,url) {
 				const res = await getOption(url , num);
 				if (res && res.data.ret == 200) {
@@ -405,39 +410,39 @@
 								value: ele.cameraName,
 								label: ele.cameraName
 							}
-							list.push(obj);							
+							list.push(obj);
 						}else if(type=='group'){
 							const obj = {
 								value:ele.groupCode,
 								label:ele.groupName
 							}
 							list.push(obj);
-						}else{							
+						}else{
 							const obj = {
 								value: ele.orgCode,
 								label: ele.orgName
 							}
 							list.push(obj);
-						}						
-						
+						}
+
 					})
 					list.unshift({
 						value: '',
 						label: message
 					});
 					if (type == 'org') {
-						this.orgOptions = list;					
+						this.orgOptions = list;
 					} else if (type == "company") {
 					  this.companyValue = '';
-						this.companyOptions = list;						
+						this.companyOptions = list;
 					} else if (type == "factory") {
 						this.factoryValue = ''
-						this.factoryOptions = list;						
-					} else if (type=="camera"){						
-						this.cameraValue = '';	
+						this.factoryOptions = list;
+					} else if (type=="camera"){
+						this.cameraValue = '';
 						this.cameraOptions = list;
 					} else if (type=='group'){
-						this.secondGroupValue = '';	
+						this.secondGroupValue = '';
 						this.secondeGroupOptions = list;
 					}
 				}
@@ -451,7 +456,7 @@
 			描述：查询后将摄像头信息展示到表格内
 			*/
 			async getMonitor() { //表格数据
-			  this.getIndex = 0;//每次调用之后都默认显示第一行 
+			  this.getIndex = 0;//每次调用之后都默认显示第一行
 				/* const cameraserchObj = {
 					'secondGroupCode':this.secondGroupValue,//二级工艺
 					'orgCode': this.orgValue || '',//事业部
@@ -467,8 +472,9 @@
 				if (res && res.data.ret == 200) {
 				  res.data.data.list.forEach((ele,index)=>{
 						    ele.num = (this.currentPage-1)*this.pageSize+index+1;
-					}) 
-					this.tableData = res.data.data.list; 
+					})
+					this.tableData = res.data.data.list;
+				  // console.log('tableData:',this.tableData)
 					this.tableTotal = res.data.data.totalCount;
 					if(this.tableData.length>0){
 						this.pageShow=true;
@@ -478,7 +484,7 @@
 					}else{
 						this.pageShow=false;
 					}
-					
+
 				}
 			},
 			/*函数名：playVideo
@@ -500,15 +506,15 @@
 			selectedHighlight({row,rowIndex}){
 				if((this.getIndex===rowIndex)){//如果this.getIndex==当前行索引当前行加高亮背景色
 					return{
-						"background-color" : "#CAE1FF"		
+						"background-color" : "#CAE1FF"
 					}
 				}
 			},
-			handleRowClick(row, event, column) {		
-				this.monitorViewMessage=row	//将每一行的字典赋值给	this.monitorViewMessage即监控视频左上方文字描述字典			
+			handleRowClick(row, event, column) {
+				this.monitorViewMessage=row	//将每一行的字典赋值给	this.monitorViewMessage即监控视频左上方文字描述字典
 				this.getIndex = row.index//将选中行的索引赋值给this.getIndex
-				this.playVideo(row);//调用ocx组件播放方法，并将当前行的uid和code传递 
-			}		
+				this.playVideo(row);//调用ocx组件播放方法，并将当前行的uid和code传递
+			}
 		},
 		beforeDestroy() {
 			window.removeEventListener('resize', this.handleResize)
@@ -533,7 +539,7 @@
 				background-image: url(../assets/images/body_title.png);
 				background-size:100% 100%;
 				font-size: 0.44rem;
-				color: #fff;	
+				color: #fff;
 				font-weight: bold;
 				text-align: center;
 				height: 100%;
@@ -620,15 +626,15 @@
 								height: 0.30rem;
 								line-height: 0;
 							}
-						} 
+						}
 					}
 				}
 
 				.table {
 					margin: 10px 0px;
-          flex:1; 
+          flex:1;
 					/* max-height:400px; */
-					/* overflow-y:auto; 
+					/* overflow-y:auto;
 					width:650px; */
 					/*如果需要滚动条则给固定高度*/
 					/* /deep/ .isScroll.minHeight{
@@ -660,8 +666,8 @@
 				}
 
 				.common_paginaton {
-					height: 40px;	
-					margin-top:10px;					
+					height: 40px;
+					margin-top:10px;
 				}
 			}
 
@@ -693,7 +699,7 @@
 				.bottom {
 					flex: 1;
 				}
-				
+
 			}
 			.monitor.isAllScreen{
 				position:fixed;

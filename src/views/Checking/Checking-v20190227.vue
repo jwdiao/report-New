@@ -2,17 +2,19 @@
   <div class="index">
     <!-- 头部 start -->
     <div class="index_top">
-      <div class="title"><span @click="showSelectDialog"  v-text="titleText"></span></div>
+      <div class="title"><span @click="showSelectDialog">{{this.$store.state.selectedSubcompany}}三现数据中心</span></div>
       <!-- <div class="title"><span @click="showSelectDialog">{{`${this.companyValue}三现数据中心`}}</span></div> -->
 
       <div class="leftInfo">
-        <div class="back" @click="enterIndexPage('/HomeGuide')"><img src="../../assets/images/index_back.png"></div>
+        <!-- <div class="back" @click="window.history.go(1)"><img src="../../assets/images/index_back.png"></div> -->
+        <div class="back" @click="$router.back()"><img src="../../assets/images/index_back.png"></div>
+        <!-- <div class="back" @click="enterIndexPage('/CheckingJt')"><img src="../../assets/images/index_back.png"></div> -->
         <div class="dayOrnight">
           <img v-show="dayOrNightStatus ==='白班'" src="../../assets/images/index_sun.png" />
           <img v-show="dayOrNightStatus ==='夜班'" src="../../assets/images/index_moon.png" />
           <span v-text="dayOrNightStatus">白班</span>
         </div>
-         <div class="historyBtn" @click="enterCheckHistory">历史记录</div>
+        <div class="historyBtn" @click="enterCheckHistory">历史记录</div>
       </div>
       <em class="time" v-text="currentTime"></em>
     </div>
@@ -153,15 +155,16 @@ export default {
       selectDialogShow: false, // 是否显示顶部事业部子公司弹窗
       careerValue: '', // 点击标题下拉事业部选中值
       careerOptions: [ // 事业部下拉option
-        {label:'三一重机事业部',value:'zhongji'},
+        {label:'重机事业部',value:'zhongji'},
         {label:'泵送事业部',value:'bengsong'},
         {label:'重能事业部',value:'zhongneng'},
         {label:'重起事业部',value:'zhongqi'},
-        {label:'三一重卡',value:'zhongka'}
+        {label:'三一重卡',value:'zhongka'},
+        {label:'港机事业部',value:'gangji'},
       ],
       companyValue: '', // 子公司选中值
+      companyCode: '', // 子公司选中值的code码
       companyOptions: [], // 子公司option
-      titleText: '北京三一桩机三现数据中心',
       kaoqinList: { // 中间==人员考勤列表==全部工作中心时
         lateList: [], // 迟到
         leaveList: [], // 早退
@@ -199,7 +202,14 @@ export default {
     }, 1000)
 
     this.$store.commit('changeCenterNameMut','') // 加工中心为''
-    this.$store.commit('changeSubcompanyMut','北京桩机')
+
+    let subompanyName = localStorage.getItem('companyNameCheckingSelectedSubcompany')
+    axios.defaults.baseURL = localStorage.getItem('ipAddrCheckingSelectedSubcompany')
+    // if(subompanyName){
+    //   subompanyName = localStorage.setItem('companyNameCheckingSelectedSubcompany')
+    // }
+    this.$store.commit('changeSubcompanyMut',subompanyName)
+
     this.$store.commit('changeSelectTabCheckingBetweenMut','kaoqin') // 中间选中的tab设置为考勤列表
 
     // 基本信息顶部
@@ -488,19 +498,23 @@ export default {
       this.companyValue = ''
       if (val === 'bengsong') {
         this.companyOptions = [
-          {label:'长沙泵送',value:'长沙泵送'},
+          {label:'长沙泵送',value:'长沙泵送',},
           {label:'邵阳湖汽',value:'邵阳湖汽'},
           {label:'娄底中源',value:'娄底中源'},
           {label:'娄底中兴',value:'娄底中兴'},
+          {label:'益阳中阳',value:'益阳中阳'}
         ]
       } else if (val === 'zhongji') {
         this.companyOptions = [
           {label:'北京桩机',value:'北京桩机'},
           {label:'常熟索特',value:'常熟索特'},
+          {label:'临港中挖',value:'临港中挖'},
+          {label:'昆山重机',value:'昆山重机'},
         ]
       } else if (val === 'zhongneng') {
         this.companyOptions = [
-          {label:'三一重能',value:'三一重能'}
+          {label:'三一重能',value:'三一重能'},
+          {label:'三一叶片',value:'三一叶片'}
         ]
       } else if (val === 'zhongqi') {
         this.companyOptions = [
@@ -509,6 +523,11 @@ export default {
       } else if (val === 'zhongka') {
         this.companyOptions = [
           {label:'三一重卡',value:'三一重卡'}
+        ]
+      } else if (val === 'gangji') {
+        this.companyOptions = [
+          {label:'长沙港机',value:'长沙港机'},
+          {label:'珠海港机',value:'珠海港机'}
         ]
       }
     },
@@ -530,29 +549,56 @@ export default {
         return;
       }
 
+      let BaseUrlReq = ''
+      let code = ''
       if (this.companyValue === '长沙泵送'){
-        axios.defaults.baseURL = 'http://10.0.91.50:8083'
+        BaseUrlReq = 'http://10.0.91.50:8083'
+        code = '0201'
       } else if (this.companyValue === '邵阳湖汽'){
-        axios.defaults.baseURL = 'http://10.13.136.22:8083'
+        BaseUrlReq = 'http://10.13.136.22:8083'
+        code = '0206'
       } else if (this.companyValue === '娄底中源'){
-        axios.defaults.baseURL = 'http://10.14.0.17:8083'
+        BaseUrlReq = 'http://10.14.0.17:8083'
+        code = '0202'
       } else if (this.companyValue === '北京桩机') {
-        axios.defaults.baseURL = 'http://10.19.7.69:8083'
+        BaseUrlReq = 'http://10.19.7.69:8083'
+        code = '0303'
       } else if (this.companyValue === '常熟索特') {
-        axios.defaults.baseURL = 'http://10.15.150.21:8083'
+        BaseUrlReq = 'http://10.15.150.21:8083'
+        code = '0306'
       } else if (this.companyValue === '三一重能') {
-        axios.defaults.baseURL = 'http://10.19.7.70:8083'
+        BaseUrlReq = 'http://10.19.7.70:8083'
+        code = '0701'
       } else if (this.companyValue === '宁乡起重机') {
-        axios.defaults.baseURL = 'http://10.16.1.65:8083'
+        BaseUrlReq = 'http://10.16.1.65:8083'
+        code = '0502'
       } else if (this.companyValue === '三一重卡') {
-        axios.defaults.baseURL = 'http://10.192.29.12:8083'
+        BaseUrlReq = 'http://10.192.29.12:8083'
+        code = '0101'
       } else if (this.companyValue === '娄底中兴') {
-        axios.defaults.baseURL = 'http://10.193.88.6:8083'
+        BaseUrlReq = 'http://10.193.88.6:8083'
+        code = '0303'
+      } else if (this.companyValue === '三一叶片') {
+        BaseUrlReq = 'http://10.19.220.179:8083'
+      } else if (this.companyValue === '益阳中阳') {
+        BaseUrlReq = 'http://10.22.33.100:8083'
+      } else if (this.companyValue === '长沙港机') {
+        BaseUrlReq = 'http://10.1.91.1:8083'
+      } else if (this.companyValue === '临港中挖') {
+        BaseUrlReq = 'http://10.11.16.187:8083'
+      } else if (this.companyValue === '昆山重机') {
+        BaseUrlReq = 'http://10.11.16.187:8083'
+      } else if (this.companyValue === '珠海港机') {
+        BaseUrlReq = 'http://10.193.4.244:8083'
       }
+      this.companyCode = code;
+      axios.defaults.baseURL = BaseUrlReq
+      localStorage.setItem('ipAddrCheckingSelectedSubcompany',BaseUrlReq)
+      localStorage.setItem('companyNameCheckingSelectedSubcompany',this.companyValue)
+      // localStorage.setItem('codeCheckingSelectedSubcompany',BaseUrlReq)
 
       clearInterval(this.refreshDataId)
       this.selectDialogShow = false // 关闭弹窗
-      this.titleText = `${this.companyValue}三现数据中心` // 顶部显示的文字
 
       this.$store.commit('changeCenterNameMut','') // 重置加工中心为全部
       this.$store.commit('changeSubcompanyMut',this.companyValue) // 选中的子公司
@@ -571,7 +617,7 @@ export default {
     },
     // 回到历史页面
     enterCheckHistory () {
-      this.$router.push('/CheckingHistoryData')
+      this.$router.replace('/CheckingHistoryData')
     }
   },
   destroyed () {

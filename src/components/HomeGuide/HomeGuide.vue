@@ -6,13 +6,14 @@
       <!-- <div class="btnArea" @click="goTo('/Monitor')"></div> -->
       <div class="btnArea" @click="goTo('/Manage6S')"></div>
       <!-- 人员考勤 -->
-      <div class="btnArea" @click="goTo('/CheckingV7')"></div>
+      <div class="btnArea" @click="goTo('/CheckingJt')"></div>
       <!-- 区域视频管理 -->
       <a class="btnArea" @click="goToVideoPage"></a>
       <!--设备安全统计-->
       <a class="btnArea" @click="goTo('/equipmentSafety')"></a>
       <!-- 监控设备查询 -->
-      <a class="btnArea" @click="goTo('/Monitor')"></a>
+     <!-- <a class="btnArea" @click="goTo('/Monitor')"></a> -->
+	  <router-link class="btnArea" to="/Monitor"></router-link>
       <!-- <a class="btnArea" @click="goToControlPage"></a> -->
       <!-- 车辆信息 -->
       <!--<div class="btnArea" @click="goTo('/CarshlgV21')"></div>-->
@@ -29,10 +30,12 @@ import axios from 'axios'
     name: "HomeGuide",
     mounted() {
       axios.defaults.baseURL = 'http://10.19.7.69:8083'
+      localStorage.setItem('ipAddrCheckingSelectedSubcompany', 'http://10.19.7.69:8083')
+      localStorage.setItem('companyNameCheckingSelectedSubcompany','北京桩机')
     },
     methods:{
       goTo(path){
-        this.$router.replace(path)
+		  this.$router.push(path)	
       },
       goToVideoPage () {
         window.location.href = `${this.$store.state.baseUrl}/videodemo` // 视频

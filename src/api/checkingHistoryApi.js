@@ -2,7 +2,7 @@ import http from './http'
 
 // 基本信息
 export const getAttendanceData = (centername, queryDay, queryFlag) => http.post('/sanyAttendanceData/getAttendanceData/history', {
-  centername: centername,
+  centerName: centername,
   queryDay: queryDay,
   queryFlag: queryFlag
 })

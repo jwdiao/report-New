@@ -30,7 +30,7 @@ export const getEventInforStatisday = (querySign) => http.post('/sanySanyEventIn
 //6s管理getSelectList1实时事件抓拍列表(Manage6S.vue)
 export const getSelectList1 = (eventtype,page,pagesize) => http.post('/sanySanyEventInfor/getSelectList1',{eventtype,page,pagesize})
 //数据安全管理设备信息列表接口(ControlLog.vue)http://10.19.8.22:8083
-export const getSanyCameraSysLogStaticList = (query) => http.post('http://10.19.8.22:8083/sanyCameraSysLog/getSanyCameraSysLogList',{
+export const getSanyCameraSysLogStaticList = (query) => http.post('/sanyCameraSysLog/getSanyCameraSysLogList',{
 	state:query.state,pageNo:query.pageNo,pageSize:query.pageSize,masterTypeCode:query.masterTypeCode,
 	startTime:query.startTime,endTime:query.endTime,loginIp:query.loginIp,content:query.content
 })

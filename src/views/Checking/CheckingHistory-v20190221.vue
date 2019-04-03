@@ -2,15 +2,16 @@
   <div class="index">
     <!-- 头部 start -->
     <div class="index_top">
-      <div class="title"><span  @click="showSelectDialog"  v-text="titleText"></span></div>
+      <div class="title"><span  @click="showSelectDialog">{{titleText}}三现数据中心</span></div>
       <div class="leftInfo">
-        <div class="back" @click="enterIndexPage('/HomeGuide')"><img src="../../assets/images/index_back.png"></div>
+        <div class="back" @click="enterIndexPage('/CheckingHistoryData')"><img src="../../assets/images/index_back.png"></div>
         <div class="historyTime">
           <el-date-picker
             v-model="historyDateValue"
             type="date"
             value-format="yyyy-MM-dd"
             @change="handleHistoryTimeFun"
+            :picker-options="pickerOptionsEnd"
             placeholder="选择日期">
           </el-date-picker>
         </div>
@@ -80,7 +81,8 @@
         <AbnormalStatistics :info="baseInfo" :monthData="monthDataLeft" :yearData="yearDataLeft" />
       </div>
       <div class="index_con">
-        <Checking :info="baseInfo" :isDayOrNigint="dayOrNightStatus" :kaoqinList="kaoqinList" :kaoqinListSubCenter="kaoqinListSubCenter" />
+        <!-- <Checking :info="baseInfo" :isDayOrNigint="dayOrNightStatus" :kaoqinList="kaoqinList" :kaoqinListSubCenter="kaoqinListSubCenter" /> -->
+        <Checking :info="baseInfo" :isDayOrNight="selectedDayOrNight" :kaoqinList="kaoqinList" :kaoqinListSubCenter="kaoqinListSubCenter" />
       </div>
       <div class="index_right">
         <attendance
@@ -102,11 +104,17 @@
 <script>
 import moment from 'moment'
 import axios from 'axios'
-import AbnormalStatistics from '@/components/checking-v20190221/AbnormalStatisticsHistory'
+/* import AbnormalStatistics from '@/components/checking-v20190221/AbnormalStatisticsHistory'
 import Attendance from '@/components/checking-v20190221/AttendanceHistory'
 import EnergyStatistics from '@/components/checking-v20190221/EnergyStatisticsHistory'
 import Checking from '@/components/checking-v20190221/CheckingHistory'
-import MachingCenter from '@/components/checking-v20190221/MachingCenterHistory'
+import MachingCenter from '@/components/checking-v20190221/MachingCenterHistory' */
+
+import AbnormalStatistics from '@/components/checking-v20190227/AbnormalStatisticsHistory'
+import Attendance from '@/components/checking-v20190227/AttendanceHistory'
+import EnergyStatistics from '@/components/checking-v20190227/EnergyStatisticsHistory'
+import Checking from '@/components/checking-v20190227/CheckingHistory'
+import MachingCenter from '@/components/checking-v20190227/MachingCenterHistory'
 
 import {
   getAttendanceData,
@@ -128,13 +136,16 @@ export default {
   components: {
     AbnormalStatistics,
     Attendance,
-    // EnergyStatistics,
     Checking,
     MachingCenter
   },
   data () {
     return {
-      // timerId: '', // 系统时间定时器
+      pickerOptionsEnd: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 1000*60*60*24 /*|| time.getTime() < new Date(this.valueDateStart).getTime()*/
+        }
+      },
       currentTime: '', // 系统当前时间
       allCenterList: [], // 所有加工中心列表
       dayOrNightStatus: '', // 白班或夜班
@@ -169,12 +180,16 @@ export default {
       selectDialogShow: false, // 是否显示顶部事业部子公司弹窗
       careerValue: '', // 点击标题下拉事业部选中值
       careerOptions: [ // 事业部下拉option
-        {label:'三一重机事业部',value:'zhongji'},
-        {label:'泵送事业部',value:'bengsong'}
+        {label:'重机事业部',value:'zhongji'},
+        {label:'泵送事业部',value:'bengsong'},
+        {label:'重能事业部',value:'zhongneng'},
+        {label:'重起事业部',value:'zhongqi'},
+        {label:'三一重卡',value:'zhongka'},
+        {label:'港机事业部',value:'gangji'},
       ],
       companyValue: '', // 子公司选中值
       companyOptions: [], // 子公司option
-      titleText: '北京三一桩机三现数据中心',
+      titleText: '北京桩机',
       kaoqinList: { // 中间==人员考勤列表==全部工作中心时
         lateList: [], // 迟到
         leaveList: [], // 早退
@@ -206,8 +221,12 @@ export default {
   },
   created () {
     this.getHistoryDate()
+    this.titleText = localStorage.getItem('companyNameCheckingSelectedSubcompany')
   },
   mounted () {
+    // const ipAddrReq = localStorage.getItem('ipAddrCheckingSelectedSubcompany')
+    axios.defaults.baseURL = localStorage.getItem('ipAddrCheckingSelectedSubcompany')
+    
 
     // 顶部日期时间
     this.currentTime = this.getCurrentDateTime() // 显示顶部时间
@@ -227,7 +246,9 @@ export default {
     }
 
     this.$store.commit('changeCenterNameMut','')
-    this.$store.commit('changeSubcompanyMut','北京桩机')
+
+    const companyName = localStorage.getItem('companyNameCheckingSelectedSubcompany')
+    this.$store.commit('changeSubcompanyMut',companyName)
 
     // 基本信息顶部
     this.getBaseInfoData()
@@ -251,6 +272,7 @@ export default {
     //获取日期
     getHistoryDate(){
       this.historyDateValue = this.$route.params.dateData
+      this.$store.commit('changeCheckingHistoryQueryDateMut', this.historyDateValue)
     },
     // 时间格式化
     getCurrentDateTime () {
@@ -400,6 +422,12 @@ export default {
     },
     // 中间==人员考勤列表==加工中心为子工作中心时（旷工、迟到、离岗、未派工）列表
     async getAbsentLateLeaveChangeworkList () {
+      let selectedDayOrNightText = ''
+      if (this.selectedDayOrNight=='DAY'){
+        selectedDayOrNightText = '白班'
+      } else if(this.selectedDayOrNight=='NIGHT'){
+        selectedDayOrNightText = '夜班'
+      }
       let centerNameFromCentername = this.$store.state.centername
       // let currentTimeDate = this.currentTime.substring(0,10)
       // let queryDay = this.$store.state.checkingHistoryQueryDate
@@ -414,7 +442,7 @@ export default {
       let currentTimeDate = this.$store.state.checkingHistoryQueryDate?this.$store.state.checkingHistoryQueryDate:actualQueryDay
       let ligangDate = this.getYMDHMS(this.$store.state.checkingHistoryQueryDate)
       // 获取旷工
-      const resAbsentList = await getAbsentList1(centerNameFromCentername,this.dayOrNightStatus, currentTimeDate, 1, 1000)
+      const resAbsentList = await getAbsentList1(centerNameFromCentername,selectedDayOrNightText, currentTimeDate, 1, 1000)
       if (resAbsentList && resAbsentList.data.ret === '200') {
         // console.log('获取的旷工数据:', res)
         this.kaoqinListSubCenter.absentData = {
@@ -426,7 +454,7 @@ export default {
       }
 
       // 获取迟到
-      const resLateList = await getLateList(centerNameFromCentername,this.dayOrNightStatus, currentTimeDate, 1, 1000)
+      const resLateList = await getLateList(centerNameFromCentername,selectedDayOrNightText, currentTimeDate, 1, 1000)
       if (resLateList && resLateList.data.ret === '200') {
         // console.log('获取的迟到数据:', resLateList) // workno
         this.kaoqinListSubCenter.lateData = {
@@ -458,7 +486,7 @@ export default {
       }
 
       // 获取未派工
-      const resChangeWorkList = await getChangeWorkList(centerNameFromCentername,this.dayOrNightStatus, currentTimeDate, 1, 1000)
+      const resChangeWorkList = await getChangeWorkList(centerNameFromCentername,selectedDayOrNightText, currentTimeDate, 1, 1000)
       if (resChangeWorkList && resChangeWorkList.data.ret === '200') {
         // console.log('获取的未派工即调班数据:', resChangeWorkList) // workno
         this.kaoqinListSubCenter.abnormalData = {
@@ -532,11 +560,37 @@ export default {
       this.companyValue = ''
       if (val === 'bengsong') {
         this.companyOptions = [
-          {label:'长沙泵送',value:'长沙泵送'},
+          {label:'长沙泵送',value:'长沙泵送',},
           {label:'邵阳湖汽',value:'邵阳湖汽'},
+          {label:'娄底中源',value:'娄底中源'},
+          {label:'娄底中兴',value:'娄底中兴'},
+          {label:'益阳中阳',value:'益阳中阳'}
         ]
       } else if (val === 'zhongji') {
-        this.companyOptions = [{label:'北京桩机',value:'北京桩机'},]
+        this.companyOptions = [
+          {label:'北京桩机',value:'北京桩机'},
+          {label:'常熟索特',value:'常熟索特'},
+          {label:'临港中挖',value:'临港中挖'},
+          {label:'昆山重机',value:'昆山重机'},
+        ]
+      } else if (val === 'zhongneng') {
+        this.companyOptions = [
+          {label:'三一重能',value:'三一重能'},
+          {label:'三一叶片',value:'三一叶片'}
+        ]
+      } else if (val === 'zhongqi') {
+        this.companyOptions = [
+          {label:'宁乡起重机',value:'宁乡起重机'}
+        ]
+      } else if (val === 'zhongka') {
+        this.companyOptions = [
+          {label:'三一重卡',value:'三一重卡'}
+        ]
+      } else if (val === 'gangji') {
+        this.companyOptions = [
+          {label:'长沙港机',value:'长沙港机'},
+          {label:'珠海港机',value:'珠海港机'}
+        ]
       }
     },
     handleConfirm () {
@@ -557,17 +611,56 @@ export default {
         return;
       }
 
+      let BaseUrlReq = ''
+      let code = ''
       if (this.companyValue === '长沙泵送'){
-        axios.defaults.baseURL = 'http://10.0.91.50:8083'
+        BaseUrlReq = 'http://10.0.91.50:8083'
+        code = '0201'
       } else if (this.companyValue === '邵阳湖汽'){
-        axios.defaults.baseURL = 'http://10.13.136.22:8083'
+        BaseUrlReq = 'http://10.13.136.22:8083'
+        code = '0206'
+      } else if (this.companyValue === '娄底中源'){
+        BaseUrlReq = 'http://10.14.0.17:8083'
+        code = '0202'
       } else if (this.companyValue === '北京桩机') {
-        axios.defaults.baseURL = 'http://10.19.7.69:8083'
+        BaseUrlReq = 'http://10.19.7.69:8083'
+        code = '0303'
+      } else if (this.companyValue === '常熟索特') {
+        BaseUrlReq = 'http://10.15.150.21:8083'
+        code = '0306'
+      } else if (this.companyValue === '三一重能') {
+        BaseUrlReq = 'http://10.19.7.70:8083'
+        code = '0701'
+      } else if (this.companyValue === '宁乡起重机') {
+        BaseUrlReq = 'http://10.16.1.65:8083'
+        code = '0502'
+      } else if (this.companyValue === '三一重卡') {
+        BaseUrlReq = 'http://10.192.29.12:8083'
+        code = '0101'
+      } else if (this.companyValue === '娄底中兴') {
+        BaseUrlReq = 'http://10.193.88.6:8083'
+        code = '0303'
+      } else if (this.companyValue === '三一叶片') {
+        BaseUrlReq = 'http://10.19.220.179:8083'
+      } else if (this.companyValue === '益阳中阳') {
+        BaseUrlReq = 'http://10.22.33.100:8083'
+      } else if (this.companyValue === '长沙港机') {
+        BaseUrlReq = 'http://10.1.91.1:8083'
+      } else if (this.companyValue === '临港中挖') {
+        BaseUrlReq = 'http://10.11.16.187:8083'
+      } else if (this.companyValue === '昆山重机') {
+        BaseUrlReq = 'http://10.11.16.187:8083'
+      } else if (this.companyValue === '珠海港机') {
+        BaseUrlReq = 'http://10.193.4.244:8083'
       }
+      axios.defaults.baseURL = BaseUrlReq
+      localStorage.setItem('ipAddrCheckingSelectedSubcompany',BaseUrlReq)
+      localStorage.setItem('companyNameCheckingSelectedSubcompany',this.companyValue)
+
+      this.titleText = `${this.companyValue}` // 顶部显示的文字
 
       clearInterval(this.refreshDataId)
       this.selectDialogShow = false // 关闭弹窗
-      this.titleText = `${this.companyValue}三现数据中心` // 顶部显示的文字
 
       this.$store.commit('changeCenterNameMut','') // 重置加工中心为全部
       this.$store.commit('changeSubcompanyMut',this.companyValue) // 选中的子公司
@@ -586,7 +679,8 @@ export default {
     },
     // 回到实时页面
     enterChecking () {
-      this.$router.push('/CheckingV6')
+      // this.$router.push('/Checking')
+      this.$router.replace('/Checking')
     },
     handleHistoryTimeFun (val) {
       // console.log('hhhhhhhh:', val)
@@ -640,7 +734,7 @@ export default {
       } else { // 子加工中心
         this.getAbsentLateLeaveChangeworkList()
       }
-    }
+    },
   },
   destroyed () {
     // clearInterval(this.timerId)

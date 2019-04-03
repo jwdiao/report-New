@@ -15,7 +15,7 @@
 		<div class="manage6s_main">
 			<div class="manage6s_left">
 				<div class="manage6s_left_top">
-					<p class="home_title home_title-blue">6S统计</p>
+					<p class="home_title">6S统计</p>
 					<div  class="count">
 						<span >总数</span>
 						<span >{{alleventnum}}</span>
@@ -35,7 +35,7 @@
 					</div>
 				</div>
 				<div class="manage6s_left_bottom">
-					<p class="home_title home_title-zhuapai">实时事件抓拍</p>
+					<p class="home_title ">实时事件抓拍</p>
 					<div class="manage6s_capture">
 						<div :class="{image:true}" @click="bigImg" title="点击放大">
 							<img :src="eventsnapimg" alt="">
@@ -43,7 +43,7 @@
 					  <div class="imageBig" title="点击还原" v-show="bigImgShow" @click="bigImgHide">
 							  <img :src="eventsnapimgBig" alt="">
 						</div>
-						<div class="message">
+						<div class="message manage6s_eventCaptureTable">
 							<!--事件选择下拉框开始-->
 							<div class="common_select">
 								  <el-select v-model="value" placeholder="请选择" @change="change()">
@@ -59,8 +59,9 @@
 							  
 							<!--事件选择下拉框结束-->
 							
-						<!--实时事件抓拍表格开始-->
-							<div class="title">
+
+							<!--实时事件抓拍表格开始 old start-->
+							<!-- <div class="title">
 								<span style="width:15%;text-align:center;">序号</span>
 								<span style="width:30%;">事件名称</span>
 								<span style="width:35%;">抓拍地点</span>
@@ -75,6 +76,27 @@
 										<span v-text="item.eventname" style="width:30%;"></span>
 										<span v-text="item.souevents" style="width:35%;"></span>
 										<span v-text="item.eventstarttimestr" style="width:20%;"></span>
+									</div>
+							</el-scrollbar> -->
+						<!--实时事件抓拍表格结束 old end-->
+						<!--实时事件抓拍表格开始 物料乱放  noHelmet-->
+							<div class="title" :class="value=='noHelmet'?'title-aqm':''">
+								<span class="num">序号</span>
+								<span class="eventName">事件名称</span>
+								<span class="captureAddr">抓拍地点</span>
+								<span class="captureTime">抓拍时间</span>
+								<span class="username">姓名/工号</span>
+								<span class="centername">部门</span>
+							</div>
+							<div v-show="warnShow" class="warnshow" >该事件暂无数据</div>
+							<el-scrollbar class="manage6s_capture-con" :class="value=='noHelmet'?' manage6s_capture-conAQM':''">								 
+									<div :class="{title_message:true,title_active:index==activeIndex}" v-for="(item, index) in snapEventListArr" :key="item.id" @click="addImg(index)">
+										<span class="num" v-text="item.num"></span>
+										<span class="eventName" v-text="item.eventname"></span>
+										<span class="captureAddr" v-text="item.souevents"></span>
+										<span class="captureTime" v-text="item.eventstarttimestr"></span>
+										<span class="username">{{item.username}}{{item.username?'/':''}}{{item.workno}}</span>
+										<span class="centername">{{item.department}}</span>
 									</div>
 							</el-scrollbar>
 						<!--实时事件抓拍表格结束-->
@@ -96,15 +118,15 @@
 			<div class="manage6s_right">
 				<div class="attendance">
 					<div class="attendance-item">
-						<p class="home_title home_title-date">6S事件日统计</p>
+						<p class="home_title ">6S事件日统计</p>
 						<div class="day" id="manage6s-day-echarts"></div>
 					</div>
 					<div class="attendance-item">
-						<p class="home_title home_title-mouth">6S事件月统计</p>
+						<p class="home_title ">6S事件月统计</p>
 						<div class="month" id="manage6s-mouth-echarts"></div>
 					</div>
 					<div class="attendance-item">
-						<p class="home_title home_title-year">6S事件年统计</p>
+						<p class="home_title ">6S事件年统计</p>
 						<div class="year" id="manage6s-year-echarts"></div>
 					</div>
 				</div>
@@ -127,6 +149,8 @@
 		name: 'manage6S',
 		data() {
 			return {
+				refreshDataId: '',
+				refreshDataId2: '',
 				currentTime: '', // 系统当前时间
 				snapEventListArr: [], // 实时事件抓拍
 				eventsnapimg: '', //实时事件抓拍第一张图片
@@ -186,7 +210,7 @@
 		mounted() {
 			// 顶部日期时间
 			this.currentTime = this.getCurrentDateTime();
-			setInterval(() => {
+			this.refreshDataId = setInterval(() => {
 				this.currentTime = this.getCurrentDateTime();
 			}, 1000)
 			//左上6s统计数据
@@ -202,7 +226,7 @@
 			this.getDayMonthYearRightData('MON');
 			this.getDayMonthYearRightData('YEAR');
 			
-		  setInterval(()=>{
+		  this.refreshDataId2 = setInterval(()=>{
 				this.getSelectList(this.value,this.currentPage,this.pageSize);
 				this.getEventCount();			
 				this.getDayRightData();
@@ -440,7 +464,8 @@
 						</span>&nbsp;{a0} : {c0}`
 					},
 					grid: {
-						bottom: 20
+						bottom: 20,
+						top:10
 					},
 					legend: {
 						data: [{
@@ -499,14 +524,14 @@
 									color: '#556BA2'
 								}
 							},
-							splitLine: { //网格线
-								show: false,
-								lineStyle: {
-									color: ['#56AFFB'],
-									width: 1,
-									type: 'dotted'
-								}
-							}
+							splitLine: { // 网格线
+                show: true,
+                lineStyle: {
+                  color: ['#2c4264'],
+                  width: 1,
+                  type: 'dotted'
+                }
+              }
 						},
 						{
 							type: 'value',
@@ -575,7 +600,10 @@
 		beforeDestroy() {
 			window.removeEventListener('resize', this.handleResize)
 		},
-		destroyed() {},
+		destroyed() {
+			clearInterval(this.refreshDataId)
+    	clearInterval(this.refreshDataId2)
+		},
 
 	}
 </script>
@@ -611,24 +639,8 @@
 		.title{
 			margin:0px auto;
 		}
-		.home_title{
-			background: url(../assets/images/icon.png) 0px 0px no-repeat;
-		}
-		.home_title-blue{
-		   background-position-y: 7px;
-		}
-		.home_title-zhuapai{
-			background-position-y: -23px;
-		}
-		.home_title-date{
-			background-position-y: -54px;
-		}
-		.home_title-mouth{
-			background-position-y: -84px;
-		}
-		.home_title-year{
-			background-position-y: -114px;
-		}
+		
+		
 		&_top {
 			text-align: center;
 			height: 125px;
@@ -811,8 +823,8 @@
 					height: 30px;
 					font-size:16px;
 					span {
-						display: inline-block;
-						width: 24%;
+						// display: inline-block;
+						// width: 24%;
 						height: 30px;
 						/* padding-left: 30px; */
 						box-sizing: border-box;
@@ -842,8 +854,8 @@
 						border-top:0.5px solid rgba(0,0,0,.3);
 						color: #31a0ff;
 						span {
-							display: inline-block;
-							width: 24%;
+							// display: inline-block;
+							// width: 24%;
 							height: 32px;
 							/* padding-left: 30px; */
 							box-sizing: border-box;
@@ -898,5 +910,43 @@
 			}
 		}
 		/*实时事件抓拍结束*/
+
+		&_eventCaptureTable{
+			.title, .manage6s_capture-con{
+				span{
+					display: inline-block
+				}
+				.num{width:15%;text-align:center}
+				.eventName{width:30%;}
+				.captureAddr{width:35%;}
+				.captureTime{width:20%;}
+				.username{display: none}
+				.centername{display: none}
+			}
+			.title-aqm, .manage6s_capture-conAQM{
+				.num{width:10% !important;text-align:center}
+				.eventName{width:14% !important;}
+				.captureAddr{width:21% !important;}
+				.captureTime{width:15% !important;}
+				.username{width:20% !important;display: inline-block}
+				.centername{width:20% !important;display: inline-block}
+			}
+			.manage6s_capture-conAQM .title_message span{font-size:14px !important;}
+		}
+	}
+  .home_title{
+		position:relative;
+	}
+	.home_title:after{
+		display: block;
+		content: '';
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		border-radius: 12px;
+		background: #31E6FF;
+		left: 0px;
+		top: 42%;
+		margin-top: -5px;
 	}
 </style>

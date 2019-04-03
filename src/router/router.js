@@ -1,27 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Checking from '../views/Checking.vue'
 
 // 主页
 const HomeGuide = () => import('../components/HomeGuide/HomeGuide.vue');
 //历史版本
 const HistoryVersion = () => import('../components/HomeGuide/HistoryVersion.vue');
 /* ===========================考勤页面(所有版本) start========================================= */
-const CheckingV1 = () => import('../views/Checking/Checking-v20181201.vue'); // (第1.0版)
-// const CheckingV1 = () => import('../views/Checking.vue');
+// 不用了的（后期要删除）
+// const EnergyDeviceInfo = () => import('../views/EnergyDevice/index-v20190226.vue'); // 能源设备信息index-v20190311.vue
+
+
 const CheckingV2 = () => import('../views/Checking2.vue');
 const CheckingV3 = () => import('../views/CheckingSelectSubCompany.vue');
 const CheckingV4 = () => import('../views/Checking/Checking-v20190211.vue'); // 20190211版本
 const CheckingV5 = () => import('../views/Checking/Checking-v20190213.vue'); // 20190213版本
 const CheckingV6 = () => import('../views/Checking/Checking-v20190221.vue'); // 20190221版本
-const CheckingHistoryV6 = () => import('../views/Checking/CheckingHistory-v20190221.vue'); // 20190221版本
 const CheckingV7 = () => import('../views/Checking/Checking-v20190227.vue'); // 最新版本CheckingHistoryData
-const EnergyDeviceInfo = () => import('../views/EnergyDevice/index-v20190226.vue'); // 能源设备信息index-v20190311.vue
-const EnergyDeviceInfoV2 = () => import('../views/EnergyDevice/index-v20190311.vue'); // 能源设备信息==正在开发版本
-const CheckingHistoryData = () => import('../views/Checking/CheckingHistoryData.vue'); // 考勤历史数据页面
 
-// 回龙观园区考勤
+// 考勤历史列表数据页面
+const CheckingHistoryData = () => import('../views/Checking/CheckingHistoryData.vue'); // 考勤历史列表数据页面（点击首页历史记录按钮进入该页面）
+// 考勤历史数据界面
+const CheckingHistory = () => import('../views/Checking/CheckingHistory-v20190221.vue'); // 考勤历史数据界面（从考勤历史列表界面点击时间）
+
+
+// 能源设备信息
+const EnergyDeviceInfo = () => import('../views/EnergyDevice/index-v20190311.vue'); // 能源设备信息（从首页能源指标列表点击进去该页面）
+
+// 回龙观园区考勤（这个没有挂到链接上，领导专用）
 const CheckingV7hlg = () => import('../views/Checking/CheckingHLG-v20190307.vue'); // 回龙观园区考勤
+
+// 全集团考勤
+const CheckingJt = () => import('../views/Checking/CheckingJt.vue'); // 全集团考勤数据页面===========正在开发中
+const CheckingJtSubcompany = () => import('../views/Checking/CheckingJtSubcompany.vue'); // 全集团考勤数据页面(给子公司用的没有返回按钮)===========正在开发中
+
 /* ===========================考勤页面 end========================================= */
 
 // 6S管理
@@ -49,9 +60,6 @@ const DeviceSafeOnline = () => import('../views/DeviceSafeOnline.vue');
 //视觉设备安全在线
 const equipmentSafety = () => import('../views/equipmentSafety.vue');
 
-// testocx
-const TextOcx = () => import('../views/TextOcx.vue');
-
 
 Vue.use(Router)
 
@@ -62,9 +70,9 @@ export default new Router({
       redirect: 'HomeGuide',
     },
     {
-      path: '/CheckingV1',
-      name: 'checkingv1',
-      component: CheckingV1
+      path: '/Checking',
+      name: 'checkingLatest',
+      component: CheckingV7
     },
     {
       path: '/CheckingV2',
@@ -92,24 +100,25 @@ export default new Router({
       component: CheckingV6
     },
     {
-      path: '/CheckingHistoryV6',
-      name: 'CheckingHistoryV6',
-      component: CheckingHistoryV6
+      path: '/CheckingV7',
+      name: 'checkingv7',
+      component: CheckingV7
+    },
+    {
+      path: '/CheckingHistory',
+      name: 'CheckingHistory',
+      component: CheckingHistory
     },
     {
       path: '/CheckingHistoryData',
       name: 'checkingHistoryData',
       component: CheckingHistoryData
     },
-    {
-      path: '/CheckingV7',
-      name: 'checkingv7',
-      component: CheckingV7
-    },
+    
     {
       path: '/EnergyDeviceInfo',
       name: 'energyDeviceInfo',
-      component: EnergyDeviceInfoV2
+      component: EnergyDeviceInfo
     },
     {
       path: '/CheckingV7hlg',
@@ -202,9 +211,14 @@ export default new Router({
 			component: HistoryVersion
     },
     {
-			path: '/TextOcx',
-			name: 'TextOcx',
-			component: TextOcx
-		}
+			path: '/CheckingJt',
+			name: 'CheckingJt',
+			component: CheckingJt
+    },
+    {
+      path: '/CheckingJtSubcompany',
+			name: 'CheckingJtSubcompany',
+			component: CheckingJtSubcompany
+    }
   ]
 })

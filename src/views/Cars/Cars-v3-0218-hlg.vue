@@ -16,27 +16,34 @@
           <div style=" border-radius:5px;background-color: rgba(42, 75, 133, 0.3);">
             <p class="home_title" style="background:rgba(58, 96, 133, 0.9);display: flex;justify-content: space-between;border-radius:5px 5px 0 0;">
               <span><span style="margin-left:5px;font-size: 32px; color: #02c9fc;">•</span> 超过24小时未离开总数</span>
-              <span style="color:#02c9fc;font-size:32px;font-family: fontnameRegular;">{{carAllData.strandedTotalNum}}</span>
+              <span style="color:#02c9fc;font-size:32px;font-family: fontnameRegular;">{{carAllData.strandedTotalNum ||0}}</span>
             </p>
             <div class="index_left_top_main">
               <div>
                 <div class="index_left_top_main_Cars">
                   <div class="index_left_top_main_Cars_module carsN">
-                    <p>内部小车&nbsp;&nbsp;&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideCarNum}}</span></p>
+                    <p>内部小车&nbsp;&nbsp;&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideCarNum||0}}</span></p>
+
+                  </div>
+                </div>
+                <div class="index_left_top_main_Cars ">
+                  <div class="index_left_top_main_Cars_module carsW">
+                    <p>外部小车&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideCarNum||0}}</span></p>
+
+                  </div>
+                </div>
+
+              </div>
+              <div>
+                <div class="index_left_top_main_Cars ">
+                  <div class="index_left_top_main_Cars_module carsW">
+                    <p>内部大货车&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideTruckNum||0}}</span></p>
 
                   </div>
                 </div>
                 <div class="index_left_top_main_Cars ">
                   <div class="index_left_top_main_Cars_module carsH">
-                    <p>外部大货车&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideTruckNum}}</span></p>
-
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="index_left_top_main_Cars ">
-                  <div class="index_left_top_main_Cars_module carsW">
-                    <p>内部大货车&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideTruckNum}}</span></p>
+                    <p>外部大货车&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideTruckNum||0}}</span></p>
 
                   </div>
                 </div>
@@ -69,12 +76,12 @@
               <div>
                 <div class="index_center_top_main_Cars">
                   <div class="index_center_top_main_Cars_module carsN">
-                    <p>进入数量&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carTimeNumObj.yet6EnterTruckNum}}</span></p>
+                    <p>进入车次&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carTimeNumObj.yet6EnterTruckNum||0}} </span></p>
                   </div>
                 </div>
                 <div class="index_center_top_main_Cars ">
                   <div class="index_center_top_main_Cars_module carsH">
-                    <p class="leaveNumP">离开数量&nbsp;&nbsp; <span class="index_center_top_main_Cars_module_num">{{carTimeNumObj.yet6LeaveTruckNum}}</span></p><!--{{carAllData.strandedTruckNum}}-->
+                    <p class="leaveNumP">离开车次&nbsp;&nbsp; <span class="index_center_top_main_Cars_module_num">{{carTimeNumObj.yet6LeaveTruckNum||0}}</span></p><!--{{carAllData.strandedTruckNum}}-->
                   </div>
                 </div>
               </div>
@@ -88,12 +95,12 @@
               <div>
                 <div class="index_center_top_main_Cars">
                   <div class="index_center_top_main_Cars_module carsN">
-                    <p>进入数量&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carTimeNumObj.yet9EnterCarNum}}</span></p>
+                    <p>进入车次&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carTimeNumObj.yet9EnterCarNum||0}}</span></p>
                   </div>
                 </div>
                 <div class="index_center_top_main_Cars ">
                   <div class="index_center_top_main_Cars_module carsH">
-                    <p>离开数量&nbsp;&nbsp; <span class="index_center_top_main_Cars_module_num">{{carTimeNumObj.yet9LeaveCarNum}}</span></p>
+                    <p>离开车次&nbsp;&nbsp; <span class="index_center_top_main_Cars_module_num">{{carTimeNumObj.yet9LeaveCarNum||0}}</span></p>
                   </div>
                 </div>
               </div>
@@ -107,12 +114,12 @@
               <div>
                 <div class="index_center_top_main_Cars">
                   <div class="index_center_top_main_Cars_module carsN">
-                    <p>进入数量&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carTimeNumObj.todayUpEnterNum || 0}}</span></p>
+                    <p>进入车次&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carTimeNumObj.todayUpEnterNum || 0}}</span></p>
                   </div>
                 </div>
                 <div class="index_center_top_main_Cars ">
                   <div class="index_center_top_main_Cars_module carsH">
-                    <p>离开数量&nbsp;&nbsp; <span class="index_center_top_main_Cars_module_num">{{carTimeNumObj.todayUpLeaveNum || 0}}</span></p><!--{{carTimeNumObj.yet9LeaveCarNum}}-->
+                    <p>离开车次&nbsp;&nbsp; <span class="index_center_top_main_Cars_module_num">{{carTimeNumObj.todayUpLeaveNum || 0}}</span></p><!--{{carTimeNumObj.yet9LeaveCarNum}}-->
                   </div>
                 </div>
               </div>
@@ -122,7 +129,7 @@
 
         <div class="checking_dashbordBox">
           <p class="home_title" style="display: flex;justify-content: space-between;">
-            <span><span style="margin-left:5px;font-size: 32px; color: #02c9fc;">•</span> 今日进入总数</span>
+            <span><span style="margin-left:5px;font-size: 32px; color: #02c9fc;">•</span> 今日进入总车次</span>
             <span style="color:#02c9fc;font-size:32px;font-family: fontnameRegular;margin-right: 50px">{{carEchartsData.enterTotalNum}} <span  style="font-size: 18px;font-weight: lighter"></span></span>
           </p>
           <div class="checking_dashbord">
