@@ -181,7 +181,10 @@
 								<span class="text">有效在岗时间</span>
 							</div>
 							<div class="item item-row2">
-								<p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-3px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
+								<!-- 等后台改了之间放开注释用注释，不用下面的两条判断 -->
+                <p class="num" v-show="info&&info.onWorkTime&&(info.onWorkTime<=info.recordTime)" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
+                <p class="num" v-show="info&&info.onWorkTime&&(info.onWorkTime>info.recordTime)" style="letter-spacing:-1px;">{{Math.round(info.recordTime*100)/100}}h</p>
+								<!-- <p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-3px;">{{Math.round(info.onWorkTime*100)/100}}h</p> -->
 								<p class="num" v-show="!info || !info.onWorkTime">0</p>
 							</div>
 						</div>
@@ -980,7 +983,13 @@
 							var objhtml = params.data.name+'<br />';
 							var lvArr = params.data.value;
 							// console.log('lvArr:',lvArr)
-							for(var i=0;i<lvArr.length;i++){
+							objhtml+='派工率：' + lvArr[0]+'%<br />'
+							objhtml+='上岗率：' + lvArr[2]+'%<br />'
+							objhtml+='在岗率：' + lvArr[3]+'%<br />'
+							objhtml+='出勤率：' + lvArr[4]+'%<br />'
+							objhtml+='正常率：' + lvArr[1]+'%'
+						
+							/* for(var i=0;i<lvArr.length;i++){
 								if(i===0){
 									let str = '派工率：' + lvArr[i]+'%<br />';
 									objhtml+=str
@@ -996,9 +1005,8 @@
 								}else if(i===4){
 									let str = '出勤率：' + lvArr[i]+'%'
 									objhtml+=str
-								}
-								
-							}
+								}								
+							} */
 							return objhtml;
 						}
 					},
@@ -1080,7 +1088,7 @@
 							let yichangNum = parseFloat(ele.lateNum)+parseFloat(ele.absentNum)+parseFloat(ele.outNum)+parseFloat(ele.abnormalNum)
 							let zhengchangNum = parseFloat(ele.totalNum)-parseFloat(ele.lateNum)-parseFloat(ele.absentNum)-parseFloat(ele.outNum)-parseFloat(ele.abnormalNum)
 							let yichangLv = ((zhengchangNum/parseFloat(ele.totalNum))*100).toFixed(2) // 异常率
-							let paigongLv = ele.workPlanRate<=100?ele.workPlanRate:100 // 派工率
+							let paigongLv = ele.newWorkPlanRate<=100?ele.newWorkPlanRate:100 // 派工率
 							let shanggangLv = ele.validRate<=100?ele.validRate:100 // 上岗率
 							let zaigangLv = ele.onWorkRate<=100?ele.onWorkRate:100 // 在岗率
 							let chuqinLv = ele.recordRate<=100?ele.recordRate:100 // 出勤率
@@ -1106,7 +1114,7 @@
 							let yichangNum = parseFloat(ele.lateNum)+parseFloat(ele.absentNum)+parseFloat(ele.outNum)+parseFloat(ele.abnormalNum)
 							let zhengchangNum = parseFloat(ele.totalNum)-parseFloat(ele.lateNum)-parseFloat(ele.absentNum)-parseFloat(ele.outNum)-parseFloat(ele.abnormalNum)
 							let yichangLv = ((zhengchangNum/parseFloat(ele.totalNum))*100).toFixed(2) // 异常率
-							let paigongLv = ele.workPlanRate<=100?ele.workPlanRate:100 // 派工率
+							let paigongLv = ele.newWorkPlanRate<=100?ele.newWorkPlanRate:100 // 派工率
 							let shanggangLv = ele.validRate<=100?ele.validRate:100 // 上岗率
 							let zaigangLv = ele.onWorkRate<=100?ele.onWorkRate:100 // 在岗率
 							let chuqinLv = ele.recordRate<=100?ele.recordRate:100 // 出勤率

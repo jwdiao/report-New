@@ -5,7 +5,10 @@
 			<!--标头-->
 			<div class="vision_title">
 				<!-- <span @click="enterIndexPage">北京三一视觉考勤</span> -->
-				<span @click="showSelectDialog">三现数据安全管理</span>
+				<span @click="showSelectDialog">三现数据安全管理
+				<span v-show='companyValue'>({{companyValue}})</span>
+				<span v-show='!companyValue'>(北京桩机)</span>
+				</span>
 			</div>
 			<!--右上角时间-->
 			<em class="time" v-text="currentTime"></em>
@@ -57,6 +60,7 @@
 						<el-date-picker type="datetime" placeholder="开始时间"
 						v-model="startTime"
 						style="width: 100%;"
+						value-format="yyyy-MM-dd HH:mm:ss"
 						:clearable = "false"
 						:picker-options="pickerOptionsStart"></el-date-picker>
 					 <i v-show="isRm1" data-index="1" @click="clearVal"></i>
@@ -66,6 +70,7 @@
 						v-model="endTime"
 						style="width: 100%;"
 						:clearable = "false"
+						 value-format="yyyy-MM-dd HH:mm:ss"
 						:picker-options="pickerOptionsEnd"></el-date-picker>
 						 <i v-show="isRm2" data-index="2" @click="clearVal"></i>
 					</label>
@@ -76,6 +81,9 @@
 				<!--表格开始-->
 				<div class="title"><span>序号</span><span>用户名</span><span>子系统</span><span>操作类型</span><span>IP</span><span>日期</span><span>日志详情</span></div>
 				<div class="index_left_bottom_main">
+					<div v-show="warnMessage" style="color: #e6e6e6;
+                                text-align: center;
+                                padding: 20px;">暂无数据</div>
 					<el-scrollbar class="message" style="overflow-x: hidden;">
 						<div class="title_message" v-for="(item,index) in tableList" :key="index">
 							<span style="color:#fff03e;">{{(index+1)+(currentPage-1)*pageSize}}</span>
@@ -177,10 +185,11 @@
 				selectDialogShow: false, // 是否显示顶部事业部子公司弹窗
 				companyValue:'',
 				timer:null,
+				warnMessage:false,
 				companyOptions:[],
 				careerValue: '', // 点击标题下拉事业部选中值
 				careerOptions: [ // 事业部下拉option
-				  {label:'重机事业部',value:'zhongji'},
+				    {label:'重机事业部',value:'zhongji'},
 					{label:'泵送事业部',value:'bengsong'},
 					{label:'重能事业部',value:'zhongneng'},
 					{label:'重起事业部',value:'zhongqi'},
@@ -210,24 +219,22 @@
 			};
 		},
 		mounted() {
-			this.endTime = this.getCurrentDateTime();
 			this.startTime = this.getStartTime();
+			this.endTime = this.getCurrentDateTime1();
 			this.currentTime = this.getCurrentDateTime();
 			setInterval(() => {
 				this.currentTime = this.getCurrentDateTime();
 			}, 1000);
-		        this.getSanyCameraSysLogList();
-				this.getSanyCameraSysLogStatic();
+			this.getSanyCameraSysLogList(this.getStartTime(),this.getCurrentDateTime1());
+			this.getSanyCameraSysLogStatic();
 			setInterval(() => {
-				 /* this.currentPage = 1; */
-				
-				this.getSanyCameraSysLogList();
+				this.getSanyCameraSysLogList(this.startTime,this.endTime);
 				this.getSanyCameraSysLogStatic();
-			}, 10000);
+			}, 1000*60*2);
 			this.timer = setInterval(() => {
-				this.endTime = this.getCurrentDateTime();
+				this.endTime = this.getCurrentDateTime1();
 				this.startTime = this.getStartTime();
-			},9000);
+			},1000*60*2-1000);
 			window.addEventListener('resize', this.handleResize); //给window对象绑定resize事件
 
 		},
@@ -240,6 +247,9 @@
 			},
 			getStartTime(){
 				return moment(new Date().getTime() - 604800000).format('YYYY-MM-DD HH:mm:ss');
+			},
+			getCurrentDateTime1(){
+				return moment(new Date().getTime() - 1000*60*5).format('YYYY-MM-DD HH:mm:ss');
 			},
 			getCurrentDateTime() {
 				return moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
@@ -266,7 +276,7 @@
 					this.companyOptions = [
 						{label:'北京桩机',value:'北京桩机'},
 						{label:'常熟索特',value:'常熟索特'},
-						{label:'临港中挖',value:'临港中挖'},
+						// {label:'临港中挖',value:'临港中挖'},
 						{label:'昆山重机',value:'昆山重机'},
 					]
 				} else if (val === 'zhongneng') {
@@ -276,7 +286,8 @@
 					]
 				} else if (val === 'zhongqi') {
 					this.companyOptions = [
-						{label:'宁乡起重机',value:'宁乡起重机'}
+						{label:'宁乡起重机',value:'宁乡起重机'},
+						{label:'湖州装备',value:'湖州装备'}
 					]
 				} else if (val === 'zhongka') {
 					this.companyOptions = [
@@ -306,7 +317,7 @@
 			    });
 			    return;
 			  }
-			
+
 			  let BaseUrlReq = ''
 				let code = ''
 				if (this.companyValue === '长沙泵送'){
@@ -330,7 +341,9 @@
 				} else if (this.companyValue === '宁乡起重机') {
 					BaseUrlReq = 'http://10.16.1.65:8083'
 					code = '0502'
-				} else if (this.companyValue === '三一重卡') {
+				} else if (this.companyValue === '湖州装备') {
+          BaseUrlReq = 'http://10.29.77.240:8083'
+        } else if (this.companyValue === '三一重卡') {
 					BaseUrlReq = 'http://10.192.29.12:8083'
 					code = '0101'
 				} else if (this.companyValue === '娄底中兴') {
@@ -351,13 +364,13 @@
 				}
 			  this.companyCode = code;
 			  axios.defaults.baseURL = BaseUrlReq
-			 
-			
+
+
 			  clearInterval(this.refreshDataId)
 			  this.selectDialogShow = false // 关闭弹窗
-			
-			  
-				this.getSanyCameraSysLogList();
+
+
+				this.getSanyCameraSysLogList(this.startTime,this.endTime);
 				this.getSanyCameraSysLogStatic();
 			},
 			// 关闭顶部选择事业部弹窗
@@ -380,7 +393,7 @@
          content	false	String	日志详情
 
 			*/
-			async getSanyCameraSysLogList() {
+			async getSanyCameraSysLogList(startTime,endTime) {
 				const logQuery = {
 					state: this.index.toString(),
 					pageNo: this.currentPage,
@@ -388,17 +401,28 @@
 					masterTypeCode: this.typeMessageValue,
 					/* startTime: this.startTime!=''?this.getRightTime(new Date(this.startTime)):'',
 					endTime: this.endTime!=''?this.getRightTime(new Date(this.endTime)):'', */
-					startTime: this.getRightTime(new Date(this.startTime)),
-					endTime: this.getRightTime(new Date(this.endTime)),
+					/* startTime: this.getRightTime(new Date(this.startTime)),
+					endTime: this.getRightTime(new Date(this.endTime)), */
+					startTime,
+					endTime,
 					userName: this.userName,
 					loginIp: this.loginIp,
 					content: this.content
 				}
 				const res = await getSanyCameraSysLogStaticList(logQuery)
 				if (res && res.data.ret == 200) {
-					res.data.data.length>0?this.pageShow = true :this.pageShow = false
-					this.tableList = res.data.data
-					this.tableListTotal = res.data.total
+					if(res.data.data!=null){
+						res.data.data.length>0?this.pageShow = true :this.pageShow = false
+						this.tableList = res.data.data
+						this.tableListTotal = res.data.total
+						this.warnMessage = false
+					}else{
+						this.tableList = []
+						this.tableListTotal = 0
+						this.pageShow=false
+						this.warnMessage = true
+					}
+
 				}
 
 			},
@@ -449,7 +473,7 @@
 							this.bottomEchartsList[index].name = ele
 						})
 					}
-					
+
 					this.renderChart('top', this.topEchartsList);
 					this.renderChartPie('middle', this.middleEchartsList, 'ip登录');
 					this.renderChartPie('bottom', this.bottomEchartsList, '用户名登录');
@@ -529,7 +553,7 @@
 								]
 								return colorList[params.dataIndex]
 							},
-							
+
 							emphasis: {
 								shadowBlur: 10,
 								shadowOffsetX: 0,
@@ -545,14 +569,14 @@
 				this.selectShow = true;
 				this.currentPage = 1;
 				this.getSanyCameraSysLogStatic();
-				this.getSanyCameraSysLogList();
+				this.getSanyCameraSysLogList(this.startTime,this.endTime);
 			},
 			configClick() {
 				this.index = 2;
 				this.selectShow = false;
 				this.currentPage = 1;
 				this.getSanyCameraSysLogStatic();
-				this.getSanyCameraSysLogList();
+				this.getSanyCameraSysLogList(this.startTime,this.endTime);
 			},
 			enterIndexPage(path) {
         this.$router.replace(path)
@@ -560,29 +584,29 @@
 			handleSizeChange(val) {
 				this.pageSize = val
 				this.currentPage = 1;
-				this.getSanyCameraSysLogList()
+				this.getSanyCameraSysLogList(this.startTime,this.endTime)
 			},
 			handleCurrentChange(val) {
 				this.currentPage = val
-				this.getSanyCameraSysLogList()
+				this.getSanyCameraSysLogList(this.startTime,this.endTime)
 			},
 			typeMessageFn() { //查询类型change事件
-        this.getSanyCameraSysLogList()
+        this.getSanyCameraSysLogList(this.startTime,this.endTime)
 			},
 			getTableList() { //查询按钮事件
                 clearInterval(this.timer)
 				this.currentPage = 1;
-				this.getSanyCameraSysLogList()
+				this.getSanyCameraSysLogList(this.startTime,this.endTime)
 			},
 			clearTableList() { //清除按钮点击事件
-				this.typeMessageValue = 2;
+				/* this.typeMessageValue = 2; */
 				this.userName = '';
 				this.loginIp = '';
 				this.content = '' ;
 				this.startTime = '';
 				this.endTime = '';
 				this.currentPage = 1;
-                this.getSanyCameraSysLogList();
+                this.getSanyCameraSysLogList(this.startTime,this.endTime);
 			}
 		}
 	}
@@ -676,7 +700,7 @@
 						padding-left: 24px;
 						font-weight: bold;
 						font-size: 20px;
-						color: white;                                                              
+						color: white;
 						position:relative;
 					}
 					.item_home_title:after{
@@ -922,7 +946,7 @@
 			/*右侧表格结束*/
 		}
 		/*中间部分结束*/
-		
+
 		.index_selectDialog{
 		  background-color: rgba(9, 20, 40, 0.8);border:1px solid #6bb9d5;
 		  position:fixed;top:105px;z-index:999;left:50%;transform: translateX(-50%);

@@ -377,11 +377,12 @@ export default {
 
 
     // 定时器刷新
-    /* this.refreshDataId = setInterval(() => {
+    this.refreshDataId = setInterval(() => {
       this.getTotalRecordDataFun()
+      this.getRecordDataOfMonthFun()
       this.getRecordDataOfDayFun()
       this.getRecordRadarChartDataFun()
-    }, 10000) */
+    }, 10000)
 
   },
   computed: {
@@ -1213,7 +1214,12 @@ export default {
             var objhtml = params.data.name+'<br />';
             var lvArr = params.data.value;
             // console.log('lvArr:',lvArr)
-            for(var i=0;i<lvArr.length;i++){
+            objhtml+='派工率：' + lvArr[0]+'%<br />'
+            objhtml+='上岗率：' + lvArr[2]+'%<br />'
+            objhtml+='在岗率：' + lvArr[3]+'%<br />'
+            objhtml+='出勤率：' + lvArr[4]+'%<br />'
+            objhtml+='正常率：' + lvArr[1]+'%'
+            /* for(var i=0;i<lvArr.length;i++){
               if(i===0){
                 let str = '派工率：' + lvArr[i]+'%<br />';
                 objhtml+=str
@@ -1229,9 +1235,8 @@ export default {
               }else if(i===4){
                 let str = '出勤率：' + lvArr[i]+'%'
                 objhtml+=str
-              }
-              
-            }
+              }             
+            } */
             return objhtml;
           }
         },
@@ -1313,7 +1318,7 @@ export default {
             let yichangNum = parseFloat(ele.latenum)+parseFloat(ele.absentnum)+parseFloat(ele.outnum)+parseFloat(ele.abnormalnum)
             let zhengchangNum = parseFloat(ele.totalnum)-parseFloat(ele.latenum)-parseFloat(ele.absentnum)-parseFloat(ele.outnum)-parseFloat(ele.abnormalnum)
             let yichangLv = ((zhengchangNum/parseFloat(ele.totalnum))*100).toFixed(2) // 异常率
-            let paigongLv = ele.workplanrate<=100?ele.workplanrate:100 // 派工率
+            let paigongLv = ele.newworkplanrate<=100?ele.newworkplanrate:100 // 派工率
             let shanggangLv = ele.validrate<=100?ele.validrate:100 // 上岗率
             let zaigangLv = ele.onworkrate<=100?ele.onworkrate:100 // 在岗率
             let chuqinLv = ele.recordrate<=100?ele.recordrate:100 // 出勤率
@@ -1339,7 +1344,7 @@ export default {
             let yichangNum = parseFloat(ele.latenum)+parseFloat(ele.absentnum)+parseFloat(ele.outnum)+parseFloat(ele.abnormalnum)
             let zhengchangNum = parseFloat(ele.totalnum)-parseFloat(ele.latenum)-parseFloat(ele.absentnum)-parseFloat(ele.outnum)-parseFloat(ele.abnormalnum)
             let yichangLv = ((zhengchangNum/parseFloat(ele.totalnum))*100).toFixed(2) // 异常率
-            let paigongLv = ele.workplanrate<=100?ele.workplanrate:100 // 派工率
+            let paigongLv = ele.newworkplanrate<=100?ele.newworkplanrate:100 // 派工率
             let shanggangLv = ele.validrate<=100?ele.validrate:100 // 上岗率
             let zaigangLv = ele.onworkrate<=100?ele.onworkrate:100 // 在岗率
             let chuqinLv = ele.recordrate<=100?ele.recordrate:100 // 出勤率

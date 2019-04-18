@@ -15,7 +15,7 @@
 								<em class="num" v-show="!info || !info.totalPlanNum">0</em>
 								<div class="dayNightNumBox">
 									<div class="line"></div>
-									<div class="con">									
+									<div class="con">
 											<p>
 												白
 												<span v-text="info.dayPlanTotalNum">0</span>
@@ -33,7 +33,7 @@
 								<em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;">
 									<!-- ({{isDayOrNigint.substring(0,1)}}) -->
 									({{isDayOrNight==='NIGHT'?'夜':'白'}})
-								</em>								
+								</em>
 							</div>
 						</div>
 						<div class="bottom">
@@ -193,8 +193,8 @@
 							<ul class="checking_item-wrapper">
 								<el-scrollbar style="height:100%;">
 									<li v-for="item in kaoqinListSubCenter.abnormalData.abnormalList" :key="item.id">
-										<span v-text="item.username"></span>
-										<em v-text="item.workno"></em>
+										<span v-text="item.workName"></span>
+										<em v-text="item.workNo"></em>
 									</li>
 								</el-scrollbar>
 							</ul>
@@ -294,7 +294,7 @@
               </el-pagination>
               </div>
             </div>
-          </div>         
+          </div>
         </el-tab-pane> -->
 				<el-tab-pane label="人员考勤查询" v-if="this.$store.state.selectedSubcompany=='北京桩机'" name="guiji">
 					<div class="checking_cameramap">
@@ -824,14 +824,14 @@
 						queryFlag: 'year'
 					})
 				}
-				
+
 				if(tab.name === 'leida'){ // 请求雷达数据
 					const ymdhms = this.getYMDHMS(this.$store.state.checkingHistoryQueryDate)
 					this.$store.dispatch('getRadarChartsAction',{
 						end: this.$store.state.allCenterList.length,
 						queryDay: ymdhms
 					});
-				} 
+				}
 			},
 			// 雷达图渲染
 			rederEchartsRadar(dom, inDicatorArr, zhengzhibiaoArr, centerName) {
@@ -845,13 +845,7 @@
 							var objhtml = params.data.name+'<br />';
 							var lvArr = params.data.value;
 							// console.log('lvArr:',lvArr)
-							objhtml+='派工率：' + lvArr[0]+'%<br />'
-							objhtml+='上岗率：' + lvArr[2]+'%<br />'
-							objhtml+='在岗率：' + lvArr[3]+'%<br />'
-							objhtml+='出勤率：' + lvArr[4]+'%<br />'
-							objhtml+='正常率：' + lvArr[1]+'%'
-						
-							/* for(var i=0;i<lvArr.length;i++){
+							for(var i=0;i<lvArr.length;i++){
 								if(i===0){
 									let str = '派工率：' + lvArr[i]+'%<br />';
 									objhtml+=str
@@ -867,8 +861,9 @@
 								}else if(i===4){
 									let str = '出勤率：' + lvArr[i]+'%'
 									objhtml+=str
-								}								
-							} */
+								}
+
+							}
 							return objhtml;
 						}
 					},
@@ -939,7 +934,7 @@
 			},
 			// 雷达图组织数据
       getRecordRadarChart(myArr){
-				
+
 				if(myArr instanceof Array){
 					// debugger;
 					let newMyArr = []
@@ -965,7 +960,7 @@
 					var myRadarCharts = [];
 					this.fuZhiBiaoList = [];
 					this.indicatorList = [];
-					// 派工率-workPlanRate			
+					// 派工率-workPlanRate
 					// 异常率=（总数-迟到-旷工(未到)-离岗-调班）/总数 = totalNum-lateNum-absentNum-outNum-abnormalNum
 					// 上岗率-validRate
 					// 在岗率-onWorkRate
@@ -1015,7 +1010,7 @@
 					})
 					// console.log('fuZhiBiaoList:',this.fuZhiBiaoList)
 					// console.log('indicatorList:',this.indicatorList)
-					
+
 					var that = this
 					setTimeout(function() {
 						that.redarList.forEach(function(ele, index) {
@@ -1023,10 +1018,10 @@
                  	that.rederEchartsRadar(document.getElementById("radarChart" + index), that.indicatorList[index], that.fuZhiBiaoList[index], ele.centerName)
 							}
 						})
-						
+
 					})
 				}
-				 
+
 			},
 			// 能源分页===当切换为子工作中心时
 			handleCurrentChange(val) {
@@ -1620,7 +1615,7 @@
 					text-align: center;
 					background-color: #2a4b85;
 				}
-        
+
 				.checking_item-wrapper {
 					background-color: rgba(42, 75, 133, 0.3);
 					font-size: 16px;
@@ -1657,7 +1652,7 @@
 
 			/* 	 .checking_item-wrapper.radarChartBox {
 						 background: url(../../assets/images/leida.png) no-repeat;
-						background-position: 50% 50%; 
+						background-position: 50% 50%;
 						width:230px;
 						height:194px;
 					} */

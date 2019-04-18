@@ -16,11 +16,14 @@ const CheckingV4 = () => import('../views/Checking/Checking-v20190211.vue'); // 
 const CheckingV5 = () => import('../views/Checking/Checking-v20190213.vue'); // 20190213版本
 const CheckingV6 = () => import('../views/Checking/Checking-v20190221.vue'); // 20190221版本
 const CheckingV7 = () => import('../views/Checking/Checking-v20190227.vue'); // 最新版本CheckingHistoryData
+const CheckingV71 = () => import('../views/Checking/Checking-v20190410.vue'); // 最新版本CheckingHistoryData 20190410新测试接口
 
 // 考勤历史列表数据页面
 const CheckingHistoryData = () => import('../views/Checking/CheckingHistoryData.vue'); // 考勤历史列表数据页面（点击首页历史记录按钮进入该页面）
+const CheckingHistoryData20190410 = () => import('../views/Checking/CheckingHistoryData20190410.vue'); // 考勤历史列表数据页面（点击首页历史记录按钮进入该页面）20190410新测试接口
 // 考勤历史数据界面
 const CheckingHistory = () => import('../views/Checking/CheckingHistory-v20190221.vue'); // 考勤历史数据界面（从考勤历史列表界面点击时间）
+const CheckingHistoryNEW = () => import('../views/Checking/CheckingHistory-v20190410.vue'); // 考勤历史数据界面（从考勤历史列表界面点击时间）20190410新测试接口
 
 
 // 能源设备信息
@@ -31,8 +34,6 @@ const CheckingV7hlg = () => import('../views/Checking/CheckingHLG-v20190307.vue'
 
 // 全集团考勤
 const CheckingJt = () => import('../views/Checking/CheckingJt.vue'); // 全集团考勤数据页面===========正在开发中
-const CheckingJtSubcompany = () => import('../views/Checking/CheckingJtSubcompany.vue'); // 全集团考勤数据页面(给子公司用的没有返回按钮)===========正在开发中
-
 /* ===========================考勤页面 end========================================= */
 
 // 6S管理
@@ -105,16 +106,31 @@ export default new Router({
       component: CheckingV7
     },
     {
+      path: '/CheckingV71',
+      name: 'checkingv71',
+      component: CheckingV71
+    },
+    {
       path: '/CheckingHistory',
       name: 'CheckingHistory',
       component: CheckingHistory
+    },
+    {
+      path: '/CheckingHistoryNEW',
+      name: 'CheckingHistoryNEW',
+      component: CheckingHistoryNEW
     },
     {
       path: '/CheckingHistoryData',
       name: 'checkingHistoryData',
       component: CheckingHistoryData
     },
-    
+    {
+      path: '/CheckingHistoryData20190410',
+      name: 'CheckingHistoryData20190410',
+      component: CheckingHistoryData20190410
+    },
+
     {
       path: '/EnergyDeviceInfo',
       name: 'energyDeviceInfo',
@@ -214,11 +230,6 @@ export default new Router({
 			path: '/CheckingJt',
 			name: 'CheckingJt',
 			component: CheckingJt
-    },
-    {
-      path: '/CheckingJtSubcompany',
-			name: 'CheckingJtSubcompany',
-			component: CheckingJtSubcompany
     }
   ]
 })

@@ -5,17 +5,100 @@
 				人员考勤看板
 				<span class="checking_total">计件总人数<em v-show="info && info.totalNum" v-text="info.totalNum"></em></span>
 			</p>
+<!-- 			<div class="checking_dashbord">
+				<ul>
+					<li>
+						<div class="top">
+
+							<div class="item" v-show="isDayOrNigint==='白班'">
+								<span class="text">派工人数(白)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
+								<em class="num" v-show="!info || !info.planNum">0</em>
+							</div>
+							<div class="item" v-show="isDayOrNigint==='白班'">
+								<span class="text">派工人数(夜)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.nightPlanTotalNum" v-text="info.nightPlanTotalNum"></em>
+								<em class="num" v-show="!info || !info.nightPlanTotalNum">0</em>
+							</div>
+
+							<div class="item" v-show="isDayOrNigint==='夜班'">
+								<span class="text">派工人数(白)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.dayPlanTotalNum" v-text="info.dayPlanTotalNum"></em>
+								<em class="num" v-show="!info || !info.dayPlanTotalNum">0</em>
+							</div>
+							<div class="item" v-show="isDayOrNigint==='夜班'">
+								<span class="text">派工人数(夜)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
+								<em class="num" v-show="!info || !info.planNum">0</em>
+							</div>
+
+						</div>
+						<div class="bottom">
+							<div class="lv lvBlue" id="jhkqlv"></div>
+							<p class="lvText">派工率</p>
+						</div>
+					</li>
+					<li>
+						<div class="top">
+							<div class="item">
+								<span class="text">考勤人数</span>
+								<em class="num" v-show="info&&info.userRecordNum" v-text="info.userRecordNum"></em>
+								<em class="num" v-show="!info || !info.userRecordNum">0</em>
+							</div>
+							<div class="item">
+								<span class="text">考勤时间</span>
+								<em class="num" v-show="info&&info.recordTime" style="letter-spacing:-3px;">{{Math.round(info.recordTime*10)/10}}h</em>
+								<em class="num" v-show="!info || !info.recordTime">0</em>
+							</div>
+						</div>
+						<div class="bottom">
+							<div class="lv lvYellow" id="kaoqinlv"></div>
+							<p class="lvText">出勤率</p>
+						</div>
+					</li>
+					<li>
+						<div class="top" style="text-align:center;">
+							<div class="item">
+								<span class="text">有效在岗时间</span>
+							</div>
+							<div class="item">
+								<p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-3px;">{{Math.round(info.onWorkTime*10)/10}}h</p>
+								<p class="num" v-show="!info || !info.onWorkTime">0</p>
+							</div>
+						</div>
+						<div class="bottom">
+							<div class="lv lvBlue" id="zaiganglv"></div>
+							<p class="lvText">在岗率</p>
+						</div>
+					</li>
+					<li>
+						<div class="top" style="text-align:center;">
+							<div class="item">
+								<span class="text">有效在岗人数</span>
+							</div>
+							<div class="item">
+								<p class="num" v-show="info&&info.validNum" v-text="info.validNum"></p>
+								<p class="num" v-show="!info || !info.validNum">0</p>
+							</div>
+						</div>
+						<div class="bottom">
+							<div class="lv lvYellow" id="yxsglv"></div>
+							<p class="lvText">有效上岗率</p>
+						</div>
+					</li>
+				</ul>
+			</div> -->
 			<div class="checking_dashbord2">
 				<ul>
 					<li>
 						<div class="top">
 							<div class="item item-row1">
 								<span class="text">派工人数</span>
-								<em class="num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum">0</em>
+								<em class="num" style="letter-spacing:-2px;" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum">0</em>
 								<em class="num" v-show="!info || !info.totalPlanNum">0</em>
 								<div class="dayNightNumBox">
 									<div class="line"></div>
-									<div class="con">									
+									<div class="con">
 											<p>
 												白
 												<span v-text="info.dayPlanTotalNum">0</span>
@@ -31,10 +114,43 @@
 								<span class="text">实时派工</span>
 								<em class="num" style="letter-spacing:-3px;">{{info.planNum}}</em>
 								<em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;">
-									<!-- ({{isDayOrNigint.substring(0,1)}}) -->
-									({{isDayOrNight==='NIGHT'?'夜':'白'}})
-								</em>								
+									({{isDayOrNigint.substring(0,1)}})
+								</em>
 							</div>
+
+
+
+							<!-- 白班 -->
+							<!-- <div class="item" v-show="isDayOrNigint==='白班'">
+								<span class="text">派工人数(白)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
+								<em class="num" v-show="!info || !info.planNum">0</em>
+								<div class="dayNightNumBox">
+									<div>
+										<p>白268</p>
+										<p>夜268</p>
+									</div>
+								</div>
+							</div>
+							<div class="item" v-show="isDayOrNigint==='白班'">
+								<span class="text">派工人数(夜)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.nightPlanTotalNum" v-text="info.nightPlanTotalNum"></em>
+								<em class="num" v-show="!info || !info.nightPlanTotalNum">0</em>
+							</div> -->
+
+							<!-- 白班 end -->
+							<!-- 夜班 -->
+							<!-- <div class="item" v-show="isDayOrNigint==='夜班'">
+								<span class="text">派工人数(白)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.dayPlanTotalNum" v-text="info.dayPlanTotalNum"></em>
+								<em class="num" v-show="!info || !info.dayPlanTotalNum">0</em>
+							</div>
+							<div class="item" v-show="isDayOrNigint==='夜班'">
+								<span class="text">派工人数(夜)</span>
+								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
+								<em class="num" v-show="!info || !info.planNum">0</em>
+							</div> -->
+							<!-- 夜班 end -->
 						</div>
 						<div class="bottom">
 							<div class="lv lvBlue" id="jhkqlv"></div>
@@ -91,6 +207,7 @@
 					</li>
 				</ul>
 			</div>
+
 		</div>
 
 		<div class="checking_wrapper">
@@ -151,8 +268,8 @@
 							<ul class="checking_item-wrapper">
 								<el-scrollbar style="height:100%;">
 									<li v-for="item in kaoqinListSubCenter.lateData.lateList" :key="item.id">
-										<span v-text="item.workname"></span>
-										<em v-text="item.workno"></em>
+										<span v-text="item.workName"></span>
+										<em v-text="item.workNo"></em>
 									</li>
 								</el-scrollbar>
 							</ul>
@@ -193,14 +310,15 @@
 							<ul class="checking_item-wrapper">
 								<el-scrollbar style="height:100%;">
 									<li v-for="item in kaoqinListSubCenter.abnormalData.abnormalList" :key="item.id">
-										<span v-text="item.username"></span>
-										<em v-text="item.workno"></em>
+										<span v-text="item.workName"></span>
+										<em v-text="item.workNo"></em>
 									</li>
 								</el-scrollbar>
 							</ul>
 						</div>
 					</div>
 				</el-tab-pane>
+				<!-- && $store.state.selectedTabCheckingBetween==='leida'" -->
 				<el-tab-pane label="人员雷达图" name="leida" v-if="$store.state.centername===''">
 					<el-scrollbar class="checking_job-allCenter" style="height:100%;" >
 						<!--雷达图-->
@@ -220,14 +338,15 @@
 					</el-scrollbar>
 
 				</el-tab-pane>
-				<!-- <el-tab-pane
+				<!-- isShowEnergyTab -->
+				<el-tab-pane
           label="能源指标列表"
           name="energy"
           v-if="this.$store.state.selectedSubcompany=='北京桩机'"
         >
         <div class="checking_energy">
             <el-scrollbar style="height:100%;" v-show="$store.state.centername===''">
-              <div class="checking_item" v-for="(item, index) in $store.state.energyListData.list" :key="index">
+              <div class="checking_item" v-for="(item, index) in $store.state.energyListData.list" :key="index" style="position:relative">
                 <p class="checking_item-title">
                   <span class="title" v-text="item.centerName"></span>
                   <span class="numAndUnit">
@@ -256,9 +375,10 @@
                     <em>{{item.totalConsumPower}}</em>
                   </li>
                 </ul>
+								<div style="cursor:pointer;position:absolute;bottom:15px;right:6px;z-index:2;color:#0088ff;border:1px solid #0088ff;font-size:12px;padding:1px 4px;" @click="handleLookDevicePage(item.centerName)">更多</div>
               </div>
             </el-scrollbar>
-            <div class="checking_energyTable" v-show="$store.state.centername!==''">
+            <!-- <div class="checking_energyTable" v-show="$store.state.centername!==''">
               <table>
                 <thead>
                 <tr>
@@ -285,6 +405,7 @@
                 </tr>
                 </tbody>
               </table>
+
               <div class="common_paginaton">
                 <el-pagination
                 @current-change="handleCurrentChange"
@@ -293,9 +414,45 @@
                 :total="$store.state.energyListData.totalCount">
               </el-pagination>
               </div>
-            </div>
-          </div>         
-        </el-tab-pane> -->
+            </div> -->
+						<div class="checking_energyTable" v-show="$store.state.centername!==''">
+							<div class="energyTable_head">
+								<span style="width:10%">序号</span>
+								<span style="width:20%;text-align:center;">设备名称</span>
+								<span style="width:10%">开机(h)</span>
+								<span style="width:10%">作业(h)</span>
+								<span style="width:10%">开机率(%)</span>
+								<span style="width:10%">作业率(%)</span>
+								<span style="width:15%">总耗电量(度)</span>
+								<span style="width:15%;text-align:center;">当前状态</span>
+							</div>
+							<el-scrollbar style="height:calc(100% - 80px);">
+							<div class="energyTable_body">
+								<div v-for="(item, index) in $store.state.energyListData.list" :key="index">
+								<!-- <span style="width:10%">{{index+1}}</span> -->
+								<span style="width:10%">{{(index+1)+($store.state.energyListData.page-1)*15}}</span>
+								<span style="width:20%;text-align:center;">{{item.deviceName}}</span>
+								<span style="width:10%">{{(item.bootHours/3600).toFixed(2)}}h</span>
+								<span style="width:10%">{{(item.workHours/3600).toFixed(2)}}h</span>
+								<span style="width:10%">{{item.bootRate}}</span>
+								<span style="width:10%">{{item.workRate}}</span>
+								<span style="width:15%">{{item.totalConsumPower}}</span>
+								<span style="width:15%;text-align:center;">{{deviceStatusText(item.deviceStatus)}}</span>
+								</div>
+							</div>
+							</el-scrollbar>
+							<div class="common_paginaton">
+                <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page.sync="$store.state.energyListData.page"
+                layout="total, prev, pager, next"
+								:page-size="15"
+                :total="$store.state.energyListData.totalCount">
+              </el-pagination>
+              </div>
+						</div>
+        </div>
+        </el-tab-pane>
 				<el-tab-pane label="人员考勤查询" v-if="this.$store.state.selectedSubcompany=='北京桩机'" name="guiji">
 					<div class="checking_cameramap">
 						<div class="checking_list-search">
@@ -361,7 +518,6 @@
 </template>
 
 <script>
-	import moment from 'moment'
 	import echarts from 'echarts'
 	import {
 		searchUserRecordHis
@@ -372,7 +528,7 @@
 	} from 'vuex'
 	export default {
 		name: 'checking',
-		props: ['info', 'isDayOrNight', 'kaoqinList', 'kaoqinListSubCenter'],
+		props: ['info', 'isDayOrNigint', 'kaoqinList', 'kaoqinListSubCenter'],
 		watch: {
 			info() {
 				// 如果有基本信息，渲染中间顶部的4个echarts图
@@ -423,7 +579,7 @@
 				redarList:[],//雷达图
 				indicatorList: [], //最外层维度
 				fuZhiBiaoList: [], //负指标
-				zhengZhiBiaoList: [] //正指标
+				zhengZhiBiaoList: [], //正指标
 			}
 		},
 		components: {},
@@ -432,7 +588,7 @@
 			 leidaData() {
 				 return this.$store.state.checkRadarList
 			 },
-			// 中间选中的tab
+			//  中间选中的tab
 			 selectedTabCheckingBetween() {
 				 return this.$store.state.selectedTabCheckingBetween
 			 }
@@ -587,11 +743,12 @@
 				var jhkqlvEcharts = document.getElementById('jhkqlv')
 				this.workPlanRateObj = {
 					name: '计划考勤率',
+					// color: '#0097ff',
 					color: {
 						startColor: '#0090ff',
 						endColor: '#00e2ff'
 					},
-					// value: this.info.workPlanRate,
+					// value: this.info.workPlanRate
 					value: this.info.newWorkPlanRate // 最新的
 				}
 				this.renderClock(jhkqlvEcharts, this.workPlanRateObj)
@@ -772,31 +929,11 @@
 					}
 				})
 			},
-			// 当日期为空时，获取昨天的日期，选中日期为白班返回（当前日期+' 19:59:59'），选中日期为夜班返回（当前日期+' 07:59:59'）
-			getYMDHMS (val) {
-				if (!val) { // 日期为空取昨天
-					val = moment(new Date()).format('YYYY-MM-DD')
-					let newDateA = new Date(val)
-					let DateNext1 = newDateA.setDate(newDateA.getDate()-1)
-					let DateObj = new Date(DateNext1)
-					val = moment(DateObj).format('YYYY-MM-DD')
-				}
-				if (this.$store.state.checkingHistoryQueryFlag === 'DAY') { // 白班
-					return val + ' 18:59:59'
-				} else if (this.$store.state.checkingHistoryQueryFlag === 'NIGHT') { // 夜班
-					let newDateB = new Date(val)
-					let DateNext2 = newDateB.setDate(newDateB.getDate() + 1)
-					let DateObj2 = new Date(DateNext2)
-					val = moment(DateObj2).format('YYYY-MM-DD') + ' 07:59:59'
-					return val
-				}
-			},
 			// 处理点击tab切换
 			handleCheckingTab(tab, event) {
-				// console.log('当前的tab是：', tab)
-				this.$store.commit('changeSelectTabCheckingBetweenMut', tab.name);
+				// console.log(tab, event);
+				this.$store.commit('changeSelectTabCheckingBetweenMut', tab.name); //设置选中tab
 				if (tab.name === "energy") { // 能源指标列表
-					// 设置选中的tab
 					// 请求能源指标列表数据
 					if (this.$store.state.centername === '') { // 如果是全部
 						this.$store.dispatch('getEnergyListDataAction', {
@@ -807,7 +944,7 @@
 						this.$store.dispatch('getEnergyListDataAction', {
 							centerName: this.$store.state.centername,
 							page: this.$store.state.energyListData.page,
-							pageSize: 10
+							pageSize: 15
 						})
 					}
 					// 请求能源指标echarts图数据
@@ -824,14 +961,11 @@
 						queryFlag: 'year'
 					})
 				}
-				
-				if(tab.name === 'leida'){ // 请求雷达数据
-					const ymdhms = this.getYMDHMS(this.$store.state.checkingHistoryQueryDate)
+				if(tab.name === 'leida'){
 					this.$store.dispatch('getRadarChartsAction',{
-						end: this.$store.state.allCenterList.length,
-						queryDay: ymdhms
+						end: this.$store.state.allCenterList.length
 					});
-				} 
+				}
 			},
 			// 雷达图渲染
 			rederEchartsRadar(dom, inDicatorArr, zhengzhibiaoArr, centerName) {
@@ -840,18 +974,13 @@
 				option = {
 					tooltip: {
 						position: ['10%','20%'],
+						// confine: true,
 						formatter: function(params,ticket,callback){
 							// console.log('params:',params)
 							var objhtml = params.data.name+'<br />';
 							var lvArr = params.data.value;
 							// console.log('lvArr:',lvArr)
-							objhtml+='派工率：' + lvArr[0]+'%<br />'
-							objhtml+='上岗率：' + lvArr[2]+'%<br />'
-							objhtml+='在岗率：' + lvArr[3]+'%<br />'
-							objhtml+='出勤率：' + lvArr[4]+'%<br />'
-							objhtml+='正常率：' + lvArr[1]+'%'
-						
-							/* for(var i=0;i<lvArr.length;i++){
+							for(var i=0;i<lvArr.length;i++){
 								if(i===0){
 									let str = '派工率：' + lvArr[i]+'%<br />';
 									objhtml+=str
@@ -867,8 +996,9 @@
 								}else if(i===4){
 									let str = '出勤率：' + lvArr[i]+'%'
 									objhtml+=str
-								}								
-							} */
+								}
+
+							}
 							return objhtml;
 						}
 					},
@@ -879,9 +1009,11 @@
 						// startAngle: 90,
 						splitNumber: 3,
 						shape: 'circle',
+						// nameGap: 8,
 						name: {
 							formatter: '{value}',
 							textStyle: {
+								// width:100,
 								color: '#fff'//外部文字的颜色
 							}
 						},
@@ -912,7 +1044,7 @@
 							symbol: 'none',
 							itemStyle: {
 								emphasis: {
-									// color: 各异,
+									// color: 'blue',
 									lineStyle: {
 										width: 4
 									}
@@ -926,6 +1058,7 @@
 								name: centerName,
 								areaStyle: {
 									normal: {
+										// color: 'rgba(83, 227, 253, 0.5)'//遮罩层颜色
 										color: 'rgba(83, 227, 253, 0)'//遮罩层颜色
 									}
 								}
@@ -939,9 +1072,8 @@
 			},
 			// 雷达图组织数据
       getRecordRadarChart(myArr){
-				
+
 				if(myArr instanceof Array){
-					// debugger;
 					let newMyArr = []
 					myArr.forEach((ele, index) => {
 							// this.fuZhiBiaoList.push([ele.lateNum, ele.outNum, ele.absentNum, ele.abnormalNum]);
@@ -965,7 +1097,7 @@
 					var myRadarCharts = [];
 					this.fuZhiBiaoList = [];
 					this.indicatorList = [];
-					// 派工率-workPlanRate			
+					// 派工率-workPlanRate
 					// 异常率=（总数-迟到-旷工(未到)-离岗-调班）/总数 = totalNum-lateNum-absentNum-outNum-abnormalNum
 					// 上岗率-validRate
 					// 在岗率-onWorkRate
@@ -990,7 +1122,7 @@
 								max: 100,
 								min: minValue
 							}, {
-								name: '异常\n(' + yichangNum + '人)',
+								name: "异常\n(" + yichangNum + "人)",
 								max: 100,
 								min: minValue
 							}, {
@@ -998,7 +1130,7 @@
 								max: 100,
 								min: minValue
 							}, {
-								name: '在岗(' + ele.onWorkTime + 'h)',
+								name: '在岗\n(' + ele.onWorkTime + 'h)',
 								max: 100,
 								min: minValue
 							}, {
@@ -1007,15 +1139,9 @@
 								min: minValue
 							}]);
 					})
-					this.indicatorList.forEach((ele,index)=>{
-						  ele.forEach((ele,index)=>{
-								// ele.max = Math.max.apply(null,100)
-								ele.max = 100
-							})
-					})
 					// console.log('fuZhiBiaoList:',this.fuZhiBiaoList)
 					// console.log('indicatorList:',this.indicatorList)
-					
+
 					var that = this
 					setTimeout(function() {
 						that.redarList.forEach(function(ele, index) {
@@ -1023,10 +1149,10 @@
                  	that.rederEchartsRadar(document.getElementById("radarChart" + index), that.indicatorList[index], that.fuZhiBiaoList[index], ele.centerName)
 							}
 						})
-						
+
 					})
 				}
-				 
+
 			},
 			// 能源分页===当切换为子工作中心时
 			handleCurrentChange(val) {
@@ -1034,21 +1160,30 @@
 				this.$store.dispatch('getEnergyListDataAction', {
 					centerName: this.$store.state.centername,
 					page: val,
-					pageSize: 10
+					pageSize: 15
 				})
 			},
-		  // 能源当前状态显示文字
+			// 能源当前状态显示文字
 			deviceStatusText(item) {
-				if (item === 1) {
+				if (item == 1) {
 					return '停机';
-				} else if (item === 2) {
+				} else if (item == 2) {
 					return '作业';
-				} else if (item === 4) {
+				} else if (item == 4) {
 					return '待机';
-				} else if (item === 5) {
+				} else if (item == 5||item == 0) {
 					return '离线';
 				}
 			},
+			// 进入能源设备详情页
+			handleLookDevicePage(centername){
+				this.$router.replace({
+					name: 'energyDeviceInfo',
+					params: {
+						centerName: centername
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -1090,8 +1225,7 @@
 				}
 			}
 		}
-
-		&_dashbord {
+				&_dashbord {
 			width: 100%;
 			height: calc(100% - 36px);
 			overflow: hidden;
@@ -1534,7 +1668,7 @@
 				}
 
 				/deep/ .el-tabs__item {
-					color: #335993;
+					color: #466ec8;
 					padding: 0 50px;
 					font-weight: 700;
 					font-size: 22px;
@@ -1620,7 +1754,7 @@
 					text-align: center;
 					background-color: #2a4b85;
 				}
-        
+
 				.checking_item-wrapper {
 					background-color: rgba(42, 75, 133, 0.3);
 					font-size: 16px;
@@ -1657,7 +1791,7 @@
 
 			/* 	 .checking_item-wrapper.radarChartBox {
 						 background: url(../../assets/images/leida.png) no-repeat;
-						background-position: 50% 50%; 
+						background-position: 50% 50%;
 						width:230px;
 						height:194px;
 					} */
@@ -1677,7 +1811,8 @@
 						line-height: 50px;
 						text-align: left;
 						padding: 0 5px;
-						background-color: #2a4b85;
+						// background-color: #2a4b85;
+						background: #48759c url(../../assets/images/checking_head-bg.jpg) no-repeat right top;
 						overflow: hidden;
 
 						.numAndUnit {
@@ -1872,8 +2007,48 @@
 					}
 
 					.common_paginaton {
-						margin-top: 5px;
+						margin-top: 15px;
 						text-align: right;
+					}
+
+
+					// new
+					span{
+						padding: 0px 5px;
+						box-sizing: border-box;
+    				display: inline-block;
+						height:34px;
+						line-height: 34px;
+					}
+					.energyTable_head{
+						width: 100%;
+						span{
+							background-color: #2a4b85;
+							color: #4095fe;
+							text-align: center;
+							font-size: 16px;
+							font-weight: bold;
+							// border: 1px solid transparent;
+						}
+					}
+					.energyTable_body{
+						width: 100%;
+						border-right: 1px solid #356593;
+						border-top: 1px solid #356593;
+						font-size:0;
+						text-align: right;
+						span{
+							font-size: 15px;
+							max-width: 200px;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							border-bottom: 1px solid #356593;
+    					border-left: 1px solid #356593;
+						}
+						span tr:hover {
+							background-color: #203c67;
+						}
 					}
 				}
 			}

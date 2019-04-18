@@ -6,7 +6,8 @@
       <!-- <div class="btnArea" @click="goTo('/Monitor')"></div> -->
       <div class="btnArea" @click="goTo('/Manage6S')"></div>
       <!-- 人员考勤 -->
-      <div class="btnArea" @click="goTo('/CheckingJt')"></div>
+      <div class="btnArea" @click="goTo('/CheckingV71')"></div>
+      <!-- <div class="btnArea" @click="goTo('/CheckingJt')"></div> -->
       <!-- 区域视频管理 -->
       <a class="btnArea" @click="goToVideoPage"></a>
       <!--设备安全统计-->
@@ -35,7 +36,7 @@ import axios from 'axios'
     },
     methods:{
       goTo(path){
-		  this.$router.push(path)	
+		  this.$router.push(path)
       },
       goToVideoPage () {
         window.location.href = `${this.$store.state.baseUrl}/videodemo` // 视频

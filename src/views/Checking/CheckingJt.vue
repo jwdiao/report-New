@@ -132,7 +132,10 @@
                       <span class="text">有效在岗时间</span>
                     </div>
                     <div class="item item-row2">
-                      <p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
+                      <!-- 等后台改了之间放开注释用注释，不用下面的两条判断 -->
+                      <!-- <p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p> -->
+                      <p class="num" v-show="info&&info.onWorkTime&&(info.onWorkTime<=info.recordTime)" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
+                      <p class="num" v-show="info&&info.onWorkTime&&(info.onWorkTime>info.recordTime)" style="letter-spacing:-1px;">{{Math.round(info.recordTime*100)/100}}h</p>
                       <p class="num" v-show="!info || !info.onWorkTime">0</p>
                     </div>
                   </div>
@@ -166,7 +169,11 @@
             </div>
           </div>
         </div>
-        <div class="checkingJt_con-bottom">
+        <div :class="{'checkingJt_con-bottom': true,'is-fullscreen':allScreen}">
+        <!-- <div class="checkingJt_con-bottom"> -->
+          <div @click="allScreenLook" style="position:absolute;top:10px;right:20px;cursor: pointer;z-index: 20;">
+            <el-button type="primary" size="mini">{{screenMessage}}</el-button>
+          </div>
           <el-tabs class="checking_tabs" v-model="currentTab" @tab-click="handleCheckingTab">
             <el-tab-pane label="人员雷达图" name="leida">
               <el-scrollbar class="checking_job-allCenter" style="height:100%;" >
@@ -245,8 +252,7 @@
                   </ul>
                 </div>
               </div>
-            </el-tab-pane>
-            
+            </el-tab-pane>       
         </el-tabs>
         </div>
       </div>
@@ -329,7 +335,9 @@ export default {
           pagination: {}
         }
       },
-			checkRadarList:[], // 考勤雷达图数据
+      checkRadarList:[], // 考勤雷达图数据
+      allScreen: false,
+      screenMessage:'点击查看全屏',	//全屏按钮文字
     }
   },
   mounted () {
@@ -377,11 +385,12 @@ export default {
 
 
     // 定时器刷新
-    /* this.refreshDataId = setInterval(() => {
+    this.refreshDataId = setInterval(() => {
       this.getTotalRecordDataFun()
+      this.getRecordDataOfMonthFun()
       this.getRecordDataOfDayFun()
       this.getRecordRadarChartDataFun()
-    }, 10000) */
+    }, 10000)
 
   },
   computed: {
@@ -418,6 +427,10 @@ export default {
     },
   },
   methods: {
+    allScreenLook(){//全屏按钮点击事件函数
+			this.allScreen=!this.allScreen;
+			this.screenMessage = this.screenMessage=="点击查看全屏"?"还原":"点击查看全屏";
+		},
     // 点击标题回到首页
     enterIndexPage (path) {
       this.$router.replace(path)
@@ -587,8 +600,6 @@ export default {
           startColor: '#0090ff',
           endColor: '#00e2ff'
         },
-        // value: this.info.workPlanRate
-        // value: this.info.newWorkPlanRate // 最新的
         value: this.info.workPlanRate
       }
       this.renderClock(jhkqlvEcharts, this.workPlanRateObj)
@@ -1209,11 +1220,16 @@ export default {
           position: ['10%','20%'],
           // confine: true,
           formatter: function(params,ticket,callback){
-            // console.log('params:',params)
+            console.log('params:',params)
             var objhtml = params.data.name+'<br />';
             var lvArr = params.data.value;
             // console.log('lvArr:',lvArr)
-            for(var i=0;i<lvArr.length;i++){
+            objhtml+='派工率：' + lvArr[0]+'%<br />'
+            objhtml+='上岗率：' + lvArr[2]+'%<br />'
+            objhtml+='在岗率：' + lvArr[3]+'%<br />'
+            objhtml+='出勤率：' + lvArr[4]+'%<br />'
+            objhtml+='正常率：' + lvArr[1]+'%'
+            /* for(var i=0;i<lvArr.length;i++){
               if(i===0){
                 let str = '派工率：' + lvArr[i]+'%<br />';
                 objhtml+=str
@@ -1229,9 +1245,8 @@ export default {
               }else if(i===4){
                 let str = '出勤率：' + lvArr[i]+'%'
                 objhtml+=str
-              }
-              
-            }
+              }            
+            } */
             return objhtml;
           }
         },
@@ -1309,11 +1324,12 @@ export default {
       if(myArr instanceof Array){
         let newMyArr = []
         myArr.forEach((ele, index) => {
+          // debugger;
             // this.fuZhiBiaoList.push([ele.lateNum, ele.outNum, ele.absentNum, ele.abnormalNum]);
             let yichangNum = parseFloat(ele.latenum)+parseFloat(ele.absentnum)+parseFloat(ele.outnum)+parseFloat(ele.abnormalnum)
             let zhengchangNum = parseFloat(ele.totalnum)-parseFloat(ele.latenum)-parseFloat(ele.absentnum)-parseFloat(ele.outnum)-parseFloat(ele.abnormalnum)
             let yichangLv = ((zhengchangNum/parseFloat(ele.totalnum))*100).toFixed(2) // 异常率
-            let paigongLv = ele.workplanrate<=100?ele.workplanrate:100 // 派工率
+            let paigongLv = ele.newworkplanrate<=100?ele.newworkplanrate:100 // 派工率
             let shanggangLv = ele.validrate<=100?ele.validrate:100 // 上岗率
             let zaigangLv = ele.onworkrate<=100?ele.onworkrate:100 // 在岗率
             let chuqinLv = ele.recordrate<=100?ele.recordrate:100 // 出勤率
@@ -1323,9 +1339,11 @@ export default {
             // console.log('centername:',ele.centerName)
             // console.log('yichangNum:',yichangNum)
         })
+        
         let sortNewArr = newMyArr.sort(function(a, b){
           return b.totalLv - a.totalLv
         })
+        console.log('sortNewArr:',sortNewArr)
         this.redarList = sortNewArr
         var myRadarCharts = [];
         this.fuZhiBiaoList = [];
@@ -1339,7 +1357,7 @@ export default {
             let yichangNum = parseFloat(ele.latenum)+parseFloat(ele.absentnum)+parseFloat(ele.outnum)+parseFloat(ele.abnormalnum)
             let zhengchangNum = parseFloat(ele.totalnum)-parseFloat(ele.latenum)-parseFloat(ele.absentnum)-parseFloat(ele.outnum)-parseFloat(ele.abnormalnum)
             let yichangLv = ((zhengchangNum/parseFloat(ele.totalnum))*100).toFixed(2) // 异常率
-            let paigongLv = ele.workplanrate<=100?ele.workplanrate:100 // 派工率
+            let paigongLv = ele.newworkplanrate<=100?ele.newworkplanrate:100 // 派工率
             let shanggangLv = ele.validrate<=100?ele.validrate:100 // 上岗率
             let zaigangLv = ele.onworkrate<=100?ele.onworkrate:100 // 在岗率
             let chuqinLv = ele.recordrate<=100?ele.recordrate:100 // 出勤率
@@ -1434,6 +1452,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .home_title{
 	position:relative;
 }
@@ -1738,6 +1757,7 @@ export default {
       border: 1px solid rgba(255, 255, 255, 0.1);
       height: calc(100% - 360px);
       margin-top: 15px;
+      position: relative;
       .checking_tabs {
         height: 100%;
 
@@ -1951,6 +1971,14 @@ export default {
     }
   }
 
+// 全屏样式
+  .is-fullscreen{
+    position: fixed;top:0;left:0;bottom:0;right:0;z-index:10;height:100%;background: #071226;
+    
+    .checking_job-allCenter .checking_item{
+      width: 25%
+    }
+  }
 }
 
 </style>

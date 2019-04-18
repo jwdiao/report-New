@@ -89,11 +89,12 @@
 <script>
 import moment from 'moment'
 import axios from 'axios'
-import AbnormalStatistics from '@/components/checking-v20190227/AbnormalStatistics'
-import Attendance from '@/components/checking-v20190227/Attendance'
-import EnergyStatistics from '@/components/checking-v20190227/EnergyStatistics'
-import Checking from '@/components/checking-v20190227/Checking'
-import MachingCenter from '@/components/checking-v20190227/MachingCenter'
+import http from '../../api/http'
+import AbnormalStatistics from '@/components/checking-v20190410/AbnormalStatistics'
+import Attendance from '@/components/checking-v20190410/Attendance'
+import EnergyStatistics from '@/components/checking-v20190410/EnergyStatistics'
+import Checking from '@/components/checking-v20190410/Checking20190410.vue'
+import MachingCenter from '@/components/checking-v20190410/MachingCenter'
 
 import {
   getAttendanceData,
@@ -103,9 +104,9 @@ import {
   queryYear,
   getCenternameList,
   getAbnormaDataObj,
-  getAbsentList1,
-  getLateList,
-  getChangeWorkList,
+  getAbsentList1,getAbsentList0417,
+  getLateList,getLateList0417,
+  getChangeWorkList,getChangeWorkList0417,
   getOutList
 } from '../../api/checkingApi'
 export default {
@@ -136,10 +137,11 @@ export default {
         userRecordNum: 0, // 考勤人数
         recordTime: 0, // 考勤时间
         onWorkTime: 0, // 有效在岗时间
-        newWorkPlanRate: 0, // 派工率
+        workPlanRate: 0, // 派工率
         recordRate: 0, // 考勤率
         onWorkRate: 0, // 在岗率
-        validRate: 0 // 有效上岗率
+        validRate: 0 ,// 有效上岗率
+        workType:1,//20190410新增加接口需要传递白夜班
       },
       monthDataLeft: {}, // 左侧异常月数据
       yearDataLeft: {}, // 左侧异常年数据
@@ -189,7 +191,8 @@ export default {
           pagination: {}
         }
       },
-			checkRadarList:[], // 考勤雷达图数据
+      checkRadarList:[], // 考勤雷达图数据
+      refreshDataId2: null
     }
   },
   mounted () {
@@ -237,6 +240,9 @@ export default {
        end: this.$store.state.allCenterList.length
       });
     }, 10000)
+    this.refreshDataId2 = setInterval(() => {
+				window.location.reload();
+		},1000*3600)
   },
   computed: {
     currentTab (){
@@ -276,7 +282,10 @@ export default {
     },
     // 基本信息顶部
     async getBaseInfoData () {
+      // const res = await getAttendanceData(this.$store.state.centername)
+      // const res = await http.post('http://10.88.195.89:8083/sanyAttendanceData/getAttendanceData', { centername: this.$store.state.centername })
       const res = await getAttendanceData(this.$store.state.centername)
+      // const res = await http.post('http://10.19.7.70:8089/sanyAttendanceData/getAttendanceData', { centername: this.$store.state.centername })
       if (res.data && res.data.ret === '200' && res.data.titledata) {
         this.baseInfo = res.data.titledata
       } else {
@@ -292,7 +301,7 @@ export default {
           userRecordNum: 0, // 考勤人数
           recordTime: 0, // 考勤时间
           onWorkTime: 0, // 有效在岗时间
-          newWorkPlanRate: 0,
+          workPlanRate: 0,
           recordRate: 0,
           onWorkRate: 0,
           validRate: 0
@@ -383,30 +392,48 @@ export default {
     async getAbsentLateLeaveChangeworkList () {
       let centerNameFromCentername = this.$store.state.centername
       let currentTimeDate = this.currentTime.substring(0,10)
+      if(this.dayOrNightStatus === '夜班'){
+        this.workType = 2
+      }else if(this.dayOrNightStatus === '白班'){
+        this.workType = 1
+      }
+      console.log('this.dayOrNightStatus:',this.dayOrNightStatus)
       // 获取旷工
-      const resAbsentList = await getAbsentList1(centerNameFromCentername,this.dayOrNightStatus, currentTimeDate, 1, 1000)
-      if (resAbsentList && resAbsentList.data.ret === '200') {
+      // const resultAbsent = await http.post('http://10.88.195.89:8083/userRecordException/list',{workType: this.workType, queryDate: currentTimeDate,recordStatus:3,workName:'',workNo:'',centerName:centerNameFromCentername,page:1,pageSize:1000})
+      const resultAbsent = await getAbsentList0417(this.workType,currentTimeDate,3,'','',centerNameFromCentername,1,1000)
+      if (resultAbsent && resultAbsent.data.ret === '200') {
         // console.log('获取的旷工数据:', res)
         this.kaoqinListSubCenter.absentData = {
-          absentList: resAbsentList.data.getAbsentList,
+          absentList: resultAbsent.data.data.list,
           pagination: {
-            total: resAbsentList.data.total
+            total: resultAbsent.data.data.totalCount
           }
         }
       }
-
       // 获取迟到
-      const resLateList = await getLateList(centerNameFromCentername,this.dayOrNightStatus, currentTimeDate, 1, 1000)
-      if (resLateList && resLateList.data.ret === '200') {
+      // const resultDispatchList = await http.post('http://10.88.195.89:8083/userRecordException/list',{workType: this.workType, queryDate: currentTimeDate,recordStatus:1,workName:'',workNo:'',centerName:centerNameFromCentername,page:1,pageSize:1000})
+      const resultDispatchList = await getLateList0417(this.workType,currentTimeDate, 1, '','',centerNameFromCentername,1, 1000)
+      if (resultDispatchList && resultDispatchList.data.ret === '200') {
         // console.log('获取的迟到数据:', resLateList) // workno
         this.kaoqinListSubCenter.lateData = {
-          lateList: resLateList.data.lateList,
+          lateList: resultDispatchList.data.data.list,
           pagination: {
-            total: resLateList.data.total
+            total: resultDispatchList.data.data.totalCount
           }
         }
       }
-
+      // 获取未派工
+      // const resultShiftList = await http.post('http://10.88.195.89:8083/userRecordException/list',{workType: this.workType, queryDate: currentTimeDate,recordStatus:2,workName:'',workNo:'',centerName:centerNameFromCentername,page:1,pageSize:1000})
+      const resultShiftList = await getChangeWorkList0417(this.workType,currentTimeDate, 2,'','',centerNameFromCentername, 1, 1000)
+      if (resultShiftList && resultShiftList.data.ret === '200') {
+        // console.log('获取的未派工即调班数据:', resChangeWorkList) // workno
+        this.kaoqinListSubCenter.abnormalData = {
+          abnormalList: resultShiftList.data.data.list,
+          pagination: {
+            total: resultShiftList.data.data.totalCount
+          }
+        }
+      }
       // 获取离岗
       const resOutList = await getOutList({
           centerName: centerNameFromCentername,
@@ -423,17 +450,7 @@ export default {
         }
       }
 
-      // 获取未派工
-      const resChangeWorkList = await getChangeWorkList(centerNameFromCentername,this.dayOrNightStatus, currentTimeDate, 1, 1000)
-      if (resChangeWorkList && resChangeWorkList.data.ret === '200') {
-        // console.log('获取的未派工即调班数据:', resChangeWorkList) // workno
-        this.kaoqinListSubCenter.abnormalData = {
-          abnormalList: resChangeWorkList.data.changeWorkList,
-          pagination: {
-            total: resChangeWorkList.data.total
-          }
-        }
-      }
+
     },
     // 点击加工中心重新请求数据
     selectedCenterName (centername) {
@@ -508,7 +525,7 @@ export default {
         this.companyOptions = [
           {label:'北京桩机',value:'北京桩机'},
           {label:'常熟索特',value:'常熟索特'},
-          {label:'临港中挖',value:'临港中挖'},
+          // {label:'临港中挖',value:'临港中挖'},
           {label:'昆山重机',value:'昆山重机'},
         ]
       } else if (val === 'zhongneng') {
@@ -518,7 +535,8 @@ export default {
         ]
       } else if (val === 'zhongqi') {
         this.companyOptions = [
-          {label:'宁乡起重机',value:'宁乡起重机'}
+          {label:'宁乡起重机',value:'宁乡起重机'},
+          {label:'湖州装备',value:'湖州装备'}
         ]
       } else if (val === 'zhongka') {
         this.companyOptions = [
@@ -572,6 +590,8 @@ export default {
       } else if (this.companyValue === '宁乡起重机') {
         BaseUrlReq = 'http://10.16.1.65:8083'
         code = '0502'
+      }else if (this.companyValue === '湖州装备') {
+        BaseUrlReq = 'http://10.29.77.240:8083'
       } else if (this.companyValue === '三一重卡') {
         BaseUrlReq = 'http://10.192.29.12:8083'
         code = '0101'
@@ -617,12 +637,13 @@ export default {
     },
     // 回到历史页面
     enterCheckHistory () {
-      this.$router.replace('/CheckingHistoryData')
+      this.$router.replace('/CheckingHistoryData20190410')
     }
   },
   destroyed () {
     clearInterval(this.timerId)
     clearInterval(this.refreshDataId)
+    clearInterval(this.refreshDataId2)
   }
 }
 </script>

@@ -35,14 +35,29 @@ export const getAbnormaDataObj = (end, queryDay) => http.get(queryDay ? '/sanyAt
 export const getAbsentList1 = (centerName,workType, stopTime, page, pagesize) => http.post('/sanyUserPushRecord/getAbsentList1',{
   centername: centerName,workType: workType, stopTime: stopTime, page: page, pagesize: pagesize
 })
+// 中间==人员考勤列表==加工中心为子工作中心时旷工列表(考勤和考勤历史页面公用)0417-->
+export const getAbsentList0417 = (workType,queryDate, recordStatus, workName, workNo,centerName,page,pageSize) => http.post('/userRecordException/list',{
+  workType,queryDate, recordStatus, workName, workNo,centerName,page,pageSize
+})
+
 // 中间==人员考勤列表==加工中心为子工作中心时迟到列表(考勤和考勤历史页面公用)
 export const getLateList = (centerName,workType, stopTime, page, pagesize) => http.post('/sanyUserPushRecord/getLateList',{
   centerName: centerName,workType: workType, stopTime: stopTime, page: page, pagesize: pagesize
 })
+// 中间==人员考勤列表==加工中心为子工作中心时迟到列表(考勤和考勤历史页面公用)0417-->
+export const getLateList0417 = (workType,queryDate,recordStatus,workName,workNo,centerName,page,pageSize) => http.post('/userRecordException/list',{
+  workType,queryDate,recordStatus,workName,workNo,centerName,page,pageSize
+})
+
 // 中间==人员考勤列表==加工中心为子工作中心时未派工列表(考勤和考勤历史页面公用)
 export const getChangeWorkList = (centerName,workType, stopTime, page, pagesize) => http.post('/sanyUserPushRecord/getChangeWorkList',{
   centerName: centerName,workType: workType, stopTime: stopTime, page: page, pagesize: pagesize
 })
+// 中间==人员考勤列表==加工中心为子工作中心时未派工列表(考勤和考勤历史页面公用)0417-->
+export const getChangeWorkList0417 = (workType,queryDate,recordStatus,workName,workNo,centerName,page,pageSize) => http.post('/userRecordException/list',{
+  workType,queryDate,recordStatus,workName,workNo,centerName,page,pageSize
+})
+
 // 中间==人员考勤列表==加工中心为子工作中心时离岗列表(考勤和考勤历史页面公用)
 export const getOutList = (params) => params.queryDay ? http.post('/sanyUserPushRecord/getOutList',{
   centerName: params.centerName,

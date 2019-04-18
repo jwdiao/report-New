@@ -786,7 +786,13 @@
 							var objhtml = params.data.name+'<br />';
 							var lvArr = params.data.value;
 							// console.log('lvArr:',lvArr)
-							for(var i=0;i<lvArr.length;i++){
+							objhtml+='派工率：' + lvArr[0]+'%<br />'
+							objhtml+='上岗率：' + lvArr[2]+'%<br />'
+							objhtml+='在岗率：' + lvArr[3]+'%<br />'
+							objhtml+='出勤率：' + lvArr[4]+'%<br />'
+							objhtml+='正常率：' + lvArr[1]+'%'
+							
+							/* for(var i=0;i<lvArr.length;i++){
 								if(i===0){
 									let str = '派工率：' + lvArr[i]+'%<br />';
 									objhtml+=str
@@ -804,7 +810,7 @@
 									objhtml+=str
 								}
 								
-							}
+							} */
 							return objhtml;
 						}
 					},

@@ -3,7 +3,8 @@
     <!-- 头部 start -->
     <div class="index_top">
       <div class="index_imgText">
-        <span class="title" style="cursor:pointer;" @click="switchData('/CarsNKV31')">回龙观园区•车辆统计报表</span><!--南口•南大门-->
+        <!--<span class="title" style="cursor:pointer;" @click="switchData('/CarsNKV31')">回龙观园区•车辆统计报表</span>&lt;!&ndash;南口•南大门&ndash;&gt;-->
+        <span class="title" style="cursor:pointer;">回龙观园区•车辆统计报表</span>
       </div>
       <em class="time" v-text="currentTime"></em>
 			<div class="button" @click="enterIndexPage('/HomeGuide')"></div>
@@ -983,8 +984,8 @@
           $('.index_center_bottom_searchContent_main').css('height','330px')
           $('.index_center_bottom_searchContent_mainAllsearch').css('height','330px')
         }else{
-          $('.index_center_bottom_searchContent_main').css('height','210px')
-          $('.index_center_bottom_searchContent_mainAllsearch').css('height','210px')
+          $('.index_center_bottom_searchContent_main').css('height','209px')
+          $('.index_center_bottom_searchContent_mainAllsearch').css('height','209px')
         }
       },
       screenHeightFn(){
@@ -992,8 +993,8 @@
           $('.index_center_bottom_searchContent_main').css('height','330px')
           $('.index_center_bottom_searchContent_mainAllsearch').css('height','330px')
         }else{
-          $('.index_center_bottom_searchContent_main').css('height','210px')
-          $('.index_center_bottom_searchContent_mainAllsearch').css('height','210px')
+          $('.index_center_bottom_searchContent_main').css('height','209px')
+          $('.index_center_bottom_searchContent_mainAllsearch').css('height','209px')
         }
       },
       //中间下面切换的函数
