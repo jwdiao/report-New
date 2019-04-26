@@ -12,6 +12,8 @@
       <a class="btnArea" @click="goToVideoPage"></a>
       <!--设备安全统计-->
       <a class="btnArea" @click="goTo('/equipmentSafety')"></a>
+      <!--设备互联-->
+      <a class="btnArea" @click="goTo('/DeviceHome')"></a>
       <!-- 监控设备查询 -->
      <!-- <a class="btnArea" @click="goTo('/Monitor')"></a> -->
 	  <router-link class="btnArea" to="/Monitor"></router-link>
@@ -51,7 +53,7 @@ import axios from 'axios'
 <style  lang="scss" scoped>
 .home-page{
   width: 100%;height: 100%;
-  background: url("./images/home-page8.jpg") no-repeat;background-size: 100% 100%;
+  background: url("./images/home-page9.jpg") no-repeat;background-size: 100% 100%;
   .home-page-wrap{
     position: fixed;
     top: 0;
@@ -59,7 +61,7 @@ import axios from 'axios'
     left: 0%;
     right: 0;
     margin: auto;
-    width: 93%;
+    width: 100%;
     height: 27%;
     /*border: 1px solid #ff0000;*/
     padding-left: 1%;
@@ -67,10 +69,10 @@ import axios from 'axios'
       text-align: center;
       display: block;
       float: left;
-      width: 13.5%;
+      width: 11.9%;
       height: 100%;
       /*border: 1px solid green;*/
-      margin-right: 0.7%;
+      margin-right: 0.5%;
       margin-left: 0%;
       padding-left: 1%;
       box-sizing: border-box;

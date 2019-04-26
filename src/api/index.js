@@ -90,3 +90,12 @@ export const reqHistoryCarsInformationData = (startDate,endDate) =>http.post('ht
 export const reqHistoryCarsInformationNKData = (startDate,endDate) =>http.post('/carPlater/getHistoryCarData',{startDate,endDate})
 //三一桩机三现历史数据--	--  接口
 export const reqnSanyHistoryData = (centerName,startTime,endTime) =>http.post('/sanyAttendanceNewData/list',{centerName,startTime,endTime})
+
+
+export const machineConnectioninfo = (params) => http.post('http://10.19.8.22:9099/machineConnection/findMachineConnectioninfo',params)
+//0424设备互联首页--接口
+export const reqDeviceInfomation = () => http.get('http://10.19.8.22:9099/machineConnection/getMachineInterConnectionSta')
+//0424设备互联详情页面--右上部分列表所有
+export const reqDeviceRightList = (deviceID) => http.post('http://10.19.8.22:9099/jiChuangDataController/getNewDataToPage',{deviceID})
+//0424设备互联详情页面--右上部分列表--进给率单位
+export const reqJGLDanwei = (no) => http.post('http://10.19.8.22:9099/machineConnection/getMachineInfoByNo',{no})

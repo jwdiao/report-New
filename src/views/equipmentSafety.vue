@@ -230,7 +230,14 @@
 			async getOnlineboard() {
 				const res = await onlineboard();
 				if (res && res.data.ret == 200) {
-					console.log('看板信息：',res.data.data)
+					res.data.data.forEach(function(item,index){
+						if(item.companyName=='杭州力龙'){
+							res.data.data.splice(index,1)
+						}
+						if(item.companyName=='三一动力'){
+							res.data.data.splice(index,1)
+						}
+					})
 					this.boardList = res.data.data
 					this.companyName = res.data.data[0].companyName
 					this.onLineXdata = res.data.data.map((item) => {

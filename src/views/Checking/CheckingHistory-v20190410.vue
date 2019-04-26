@@ -38,13 +38,8 @@
         <li>
           <p class="title">事业部</p>
           <div class="common_select">
-            <el-select
-            v-model="careerValue"
-            @change="careerChange"
-            placeholder="请选择"
-            >
-              <el-option
-                v-for="item in careerOptions"
+            <el-select v-model="careerValue" @change="careerChange" placeholder="请选择">
+              <el-option v-for="item in careerOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -55,12 +50,8 @@
         <li>
           <p class="title">子公司</p>
           <div class="common_select">
-            <el-select
-            v-model="companyValue"
-            placeholder="请选择"
-            >
-              <el-option
-                v-for="item in companyOptions"
+            <el-select v-model="companyValue" placeholder="请选择">
+              <el-option v-for="item in companyOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -187,8 +178,9 @@ export default {
         {label:'泵送事业部',value:'bengsong'},
         {label:'重能事业部',value:'zhongneng'},
         {label:'重起事业部',value:'zhongqi'},
-        {label:'三一重卡',value:'zhongka'},
+        {label:'重卡事业部',value:'zhongka'},
         {label:'港机事业部',value:'gangji'},
+        {label:'筑工事业部',value:'zhugong'},
       ],
       companyValue: '', // 子公司选中值
       companyOptions: [], // 子公司option
@@ -605,6 +597,10 @@ export default {
           {label:'长沙港机',value:'长沙港机'},
           {label:'珠海港机',value:'珠海港机'}
         ]
+      }else if (val === 'zhugong') {
+        this.companyOptions = [
+          {label:'快而居',value:'快而居'},
+        ]
       }
     },
     handleConfirm () {
@@ -669,6 +665,8 @@ export default {
         BaseUrlReq = 'http://10.11.16.187:8083'
       } else if (this.companyValue === '珠海港机') {
         BaseUrlReq = 'http://10.193.4.244:8083'
+      }else if (this.companyValue === '快而居') {
+        BaseUrlReq = 'http://10.192.20.245:8083'
       }
       axios.defaults.baseURL = BaseUrlReq
       localStorage.setItem('ipAddrCheckingSelectedSubcompany',BaseUrlReq)

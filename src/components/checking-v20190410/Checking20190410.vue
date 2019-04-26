@@ -94,7 +94,7 @@
 						<div class="top">
 							<div class="item item-row1">
 								<span class="text">派工人数</span>
-								<em class="num" style="letter-spacing: -2px" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum">0</em>
+								<em class="num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum">0</em>
 								<em class="num" v-show="!info || !info.totalPlanNum">0</em>
 								<div class="dayNightNumBox">
 									<div class="line"></div>
@@ -112,7 +112,7 @@
 							</div>
 							<div class="item item-row2">
 								<span class="text">实时派工</span>
-								<em class="num" style="letter-spacing:-2px;">{{info.planNum}}</em>
+								<em class="num" style="letter-spacing:-3px;">{{info.planNum}}</em>
 								<em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;">
 									({{isDayOrNigint.substring(0,1)}})
 								</em>
@@ -166,7 +166,7 @@
 							</div>
 							<div class="item item-row2">
 								<span class="text">考勤时间</span>
-								<em class="num" v-show="info&&info.recordTime" style="letter-spacing:-2px;">{{Math.round(info.recordTime*100)/100}}h</em>
+								<em class="num" v-show="info&&info.recordTime" style="letter-spacing:-3px;">{{Math.round(info.recordTime*100)/100}}h</em>
 								<em class="num" v-show="!info || !info.recordTime">0</em>
 							</div>
 						</div>
@@ -181,7 +181,7 @@
 								<span class="text">有效在岗时间</span>
 							</div>
 							<div class="item item-row2">
-								<p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-2px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
+								<p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-3px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
 								<p class="num" v-show="!info || !info.onWorkTime">0</p>
 							</div>
 						</div>

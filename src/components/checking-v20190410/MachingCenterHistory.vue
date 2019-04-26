@@ -13,13 +13,9 @@
         {{this.$store.state.selectedSubcompany}}
       </header>
       <img class="close" src="../../assets/images/close.png" @click="close" />
-      <div style="overflow:hidden;">
-        <div class="centerNameScroll" style="height: 700px; overflow-y: scroll;width:110%">
-          <ul class="home_container_list">
-            <li v-for="(centerItem,index) in allCenterList" :key="index" :ref="index" @click="getCenterInfo(centerItem)">{{centerItem}}</li>
-          </ul>
-        </div>
-      </div>
+      <ul class="home_container_list">
+        <li v-for="(centerItem,index) in allCenterList" :key="index" :ref="index" @click="getCenterInfo(centerItem)">{{centerItem}}</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -46,7 +42,7 @@ export default {
     getCenterInfo (item) {
       // 调用发请求
       this.flag = true
-
+      
       if (item.length > 6) {
         this.currentCenterName = item.substring(0, 6)
       } else {
@@ -54,7 +50,7 @@ export default {
       }
       if (item === '') {
         this.currentCenterName = this.$store.state.selectedSubcompany
-      }
+      }    
       this.$emit('selectName', item)
     }
   }

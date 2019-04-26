@@ -3,6 +3,8 @@ import Router from 'vue-router'
 
 // 主页
 const HomeGuide = () => import('../components/HomeGuide/HomeGuide.vue');
+// 主页0424
+const HomeGuideDevice = () => import('../components/HomeGuide/HomeGuideDevice.vue');
 //历史版本
 const HistoryVersion = () => import('../components/HomeGuide/HistoryVersion.vue');
 /* ===========================考勤页面(所有版本) start========================================= */
@@ -61,6 +63,13 @@ const DeviceSafeOnline = () => import('../views/DeviceSafeOnline.vue');
 //视觉设备安全在线
 const equipmentSafety = () => import('../views/equipmentSafety.vue');
 
+//设备互联
+const DeviceConnect = () => import('../views/DeviceConnect/index.vue');
+
+
+const DeviceParams = () => import('../views/DeviceConnect/DeviceParams.vue');
+const DeviceHome = () => import('../views/DeviceConnect/DeviceHome.vue');
+
 
 Vue.use(Router)
 
@@ -69,6 +78,11 @@ export default new Router({
     {
       path: '/',
       redirect: 'HomeGuide',
+    },
+    {
+      path: '/HomeGuideDevice',
+      name: 'homeguidedevice',
+      component: HomeGuideDevice
     },
     {
       path: '/Checking',
@@ -230,6 +244,21 @@ export default new Router({
 			path: '/CheckingJt',
 			name: 'CheckingJt',
 			component: CheckingJt
+    },
+    {
+      path: '/DeviceConnect',
+      name: 'DeviceConnect',
+      component: DeviceConnect
+    },
+    {
+      path: '/DeviceParams',
+      name: 'DeviceParams',
+      component: DeviceParams
+    },
+    {
+      path: '/DeviceHome',
+      name: 'DeviceHome',
+      component: DeviceHome
     }
   ]
 })
