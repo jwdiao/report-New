@@ -11,7 +11,7 @@
 			<div class="historyBtn" @click="enterIndexPage('/CarsHistoryInfor')">历史统计</div>
       <!--<div class="historyBtn" @click="enterIndexPage('/CarsHistoryInforNK')">历史统计 </div>-->
     </div>
-    <div class="index_main">
+    <div class="index_main"> 
       <div class="index_left">
         <div class="index_left_top">
           <div style=" border-radius:5px;background-color: rgba(42, 75, 133, 0.3);">

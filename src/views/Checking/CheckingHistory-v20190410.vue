@@ -576,12 +576,16 @@ export default {
           {label:'北京桩机',value:'北京桩机'},
           {label:'常熟索特',value:'常熟索特'},
           // {label:'临港中挖',value:'临港中挖'},
-          {label:'昆山重机',value:'昆山重机'},
+          // {label:'昆山重机',value:'昆山重机'},
+          {label:'重机华湘',value:'重机华湘'},
+          {label:'重机大挖',value:'重机大挖'},
+          {label:'重机小挖',value:'重机小挖'},
         ]
       } else if (val === 'zhongneng') {
         this.companyOptions = [
           {label:'三一重能',value:'三一重能'},
-          {label:'三一叶片',value:'三一叶片'}
+          {label:'三一叶片',value:'三一叶片'},
+          {label:'三一电机',value:'三一电机'}
         ]
       } else if (val === 'zhongqi') {
         this.companyOptions = [
@@ -655,6 +659,8 @@ export default {
         code = '0303'
       } else if (this.companyValue === '三一叶片') {
         BaseUrlReq = 'http://10.19.220.179:8083'
+      } else if (this.companyValue === '三一电机') {
+        BaseUrlReq = 'http://10.19.7.70:8084'
       } else if (this.companyValue === '益阳中阳') {
         BaseUrlReq = 'http://10.22.33.100:8083'
       } else if (this.companyValue === '长沙港机') {
@@ -663,6 +669,12 @@ export default {
         BaseUrlReq = 'http://10.11.16.187:8083'
       } else if (this.companyValue === '昆山重机') {
         BaseUrlReq = 'http://10.11.16.187:8083'
+      } else if (this.companyValue === '重机华湘') {
+        BaseUrlReq = 'http://10.11.16.187:8087'
+      } else if (this.companyValue === '重机大挖') {
+        BaseUrlReq = 'http://10.11.16.187:8085'
+      } else if (this.companyValue === '重机小挖') {
+        BaseUrlReq = 'http://10.11.16.187:8086'
       } else if (this.companyValue === '珠海港机') {
         BaseUrlReq = 'http://10.193.4.244:8083'
       }else if (this.companyValue === '快而居') {
@@ -672,11 +684,11 @@ export default {
       localStorage.setItem('ipAddrCheckingSelectedSubcompany',BaseUrlReq)
       localStorage.setItem('companyNameCheckingSelectedSubcompany',this.companyValue)
 
-      this.titleText = `${this.companyValue}` // 顶部显示的文字
+
 
       clearInterval(this.refreshDataId)
       this.selectDialogShow = false // 关闭弹窗
-
+      this.titleText = `${this.companyValue}` // 顶部显示的文字
       this.$store.commit('changeCenterNameMut','') // 重置加工中心为全部
       this.$store.commit('changeSubcompanyMut',this.companyValue) // 选中的子公司
       this.$store.commit('changeSelectTabCheckingBetweenMut','kaoqin') // 中间选中的tab设置为考勤列表

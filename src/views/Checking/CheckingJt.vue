@@ -1662,6 +1662,7 @@ export default {
                 font-size: 0.26rem;
                 color: #02c9fc;
                 font-family: fontnameRegular;
+                letter-spacing: -2px;
               }
 
               .lv {

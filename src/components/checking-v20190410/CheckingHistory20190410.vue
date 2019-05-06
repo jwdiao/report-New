@@ -151,8 +151,8 @@
 							<ul class="checking_item-wrapper">
 								<el-scrollbar style="height:100%;">
 									<li v-for="item in kaoqinListSubCenter.lateData.lateList" :key="item.id">
-										<span v-text="item.workname"></span>
-										<em v-text="item.workno"></em>
+										<span v-text="item.workName"></span>
+										<em v-text="item.workNo"></em>
 									</li>
 								</el-scrollbar>
 							</ul>
@@ -1269,6 +1269,7 @@
 								display: inline-block;
 								vertical-align: middle;
 								margin-left: 5px;
+                letter-spacing: -2px;
 							}
 						}
 						.dayNightNumBox{
