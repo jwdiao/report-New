@@ -3,7 +3,7 @@
     <!-- 头部 搜索start -->
     <div class="index_top">
       <div class="index_imgText">
-        <span class="title" style="cursor:pointer;" @click="switchHistoryData()">{{titleText}}三现数据中心</span>
+        <span class="title" style="cursor:pointer;" @click="switchHistoryData()">{{this.$store.state.selectedSubcompany}}三现数据中心</span>
       </div>
       <em class="time" v-text="currentTime"></em>
       <div class="button" @click="enterIndexPage('/CheckingV71')"></div>
@@ -24,7 +24,7 @@
       <!--日期end-->
     </div>
     <!-- 头部下拉 start -->
-    <div class="index_selectDialog" v-show="selectDialogShow">
+    <!--<div class="index_selectDialog" v-show="selectDialogShow">
       <ul>
         <li>
           <p class="title">事业部</p>
@@ -64,7 +64,8 @@
           <span class="btn cancel" @click="handleCancel">取消</span>
         </li>
       </ul>
-    </div>
+    </div>-->
+    <HeaderToSelected :selectDialogShow="selectDialogShow" @selectDialogShowName="selectDialogFunction"/>
     <!-- 头部下拉 end -->
     <div class="index_main">
       <!--标题-->
@@ -289,6 +290,7 @@
   import $ from 'jquery'
   import http from '../../api/http'
   import BScroll from 'better-scroll'
+  import HeaderToSelected from '../../components/checking-v20190410/HeaderToSelected'
   import {
     reqnSanyHistoryData
   }from'../../api'
@@ -334,6 +336,9 @@
         screenHeight:document.body.clientHeight,
 
       }
+    },
+    components:{
+      HeaderToSelected
     },
     created() {
       this.setDefaultDateStart()
@@ -427,6 +432,7 @@
       switchHistoryData(){
         this.selectDialogShow = true
       },
+      /*
       careerChange (val) {
         // console.log(`选择的事业部是：${val}`)
         this.companyOptions = []
@@ -437,13 +443,14 @@
             {label:'邵阳湖汽',value:'邵阳湖汽'},
             {label:'娄底中源',value:'娄底中源'},
             {label:'娄底中兴',value:'娄底中兴'},
-            {label:'益阳中阳',value:'益阳中阳'}
+            {label:'益阳中阳',value:'益阳中阳'},//20190510
+            {label:'常德路机',value:'常德路机'}
           ]
         } else if (val === 'zhongji') {
           this.companyOptions = [
             {label:'北京桩机',value:'北京桩机'},
             {label:'常熟索特',value:'常熟索特'},
-            // {label:'临港中挖',value:'临港中挖'},
+            {label:'临港中挖',value:'临港中挖'},
             // {label:'昆山重机',value:'昆山重机'},
             {label:'重机华湘',value:'重机华湘'},
             {label:'重机大挖',value:'重机大挖'},
@@ -531,10 +538,12 @@
           BaseUrlReq = 'http://10.19.7.70:8084'
         } else if (this.companyValue === '益阳中阳') {
           BaseUrlReq = 'http://10.22.33.100:8083'
+        } else if (this.companyValue === '常德路机') {
+          BaseUrlReq = 'http://10.21.23.101:8083'
         } else if (this.companyValue === '长沙港机') {
           BaseUrlReq = 'http://10.1.91.1:8083'
         } else if (this.companyValue === '临港中挖') {
-          BaseUrlReq = 'http://10.11.16.187:8083'
+          BaseUrlReq = 'http://10.11.16.187:8084'
         } else if (this.companyValue === '昆山重机') {
           BaseUrlReq = 'http://10.11.16.187:8083'
         } else if (this.companyValue === '重机华湘') {
@@ -562,7 +571,7 @@
       // 关闭顶部选择事业部弹窗
       handleCancel () {
         this.selectDialogShow = false
-      },
+      },*/
       //头部下拉------------end------------------------------
       //查询
       searchAll(){
@@ -611,6 +620,16 @@
           // console.log('this.CarsHistoryArr:',this.CarsHistoryArr)
         }else{
           this.$message({message:res.data.msg})
+        }
+      },
+
+      //20190514分离headerToSelected
+      selectDialogFunction(val){
+        this.selectDialogShow = val.flag
+        if(val.loadingData){
+          this.CarsHistoryArr = []
+          var centerName = this.$store.state.centername
+          this.getCarsHistoryData(centerName,this.valueDateStart,this.valueDateEnd)
         }
       },
     }

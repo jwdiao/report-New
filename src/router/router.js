@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 // 主页
 const HomeGuide = () => import('../components/HomeGuide/HomeGuide.vue');
+const HomeGuideJK = () => import('../components/HomeGuide/HomeGuideV0513.vue');   //20190513
 // 主页0424
 const HomeGuideDevice = () => import('../components/HomeGuide/HomeGuideDevice.vue');
 //历史版本
@@ -35,7 +36,8 @@ const EnergyDeviceInfo = () => import('../views/EnergyDevice/index-v20190311.vue
 const CheckingV7hlg = () => import('../views/Checking/CheckingHLG-v20190307.vue'); // 回龙观园区考勤
 
 // 全集团考勤
-const CheckingJt = () => import('../views/Checking/CheckingJt.vue'); // 全集团考勤数据页面===========正在开发中
+const CheckingJt = () => import('../views/Checking/CheckingJt.vue'); // 全集团考勤数据页面
+const CheckingJtSubcompany = () => import('../views/Checking/CheckingJtSubcompany.vue')   ///20190513与CheckingJt去掉返回
 /* ===========================考勤页面 end========================================= */
 
 // 6S管理
@@ -65,6 +67,8 @@ const equipmentSafety = () => import('../views/equipmentSafety.vue');
 
 //设备互联
 const DeviceConnect = () => import('../views/DeviceConnect/index.vue');
+//设备监控管理20190513
+const DeviceVideoManage = () =>import('../views/DeviceVideoManage')
 
 
 const DeviceParams = () => import('../views/DeviceConnect/DeviceParams.vue');
@@ -78,6 +82,11 @@ export default new Router({
     {
       path: '/',
       redirect: 'HomeGuide',
+    },
+    {
+      path: '/HomeGuideJK',
+      name: 'HomeGuideJK',
+      component: HomeGuideJK
     },
     {
       path: '/HomeGuideDevice',
@@ -246,6 +255,11 @@ export default new Router({
 			component: CheckingJt
     },
     {
+			path: '/CheckingJtSubcompany',
+			name: 'CheckingJtSubcompany',
+			component: CheckingJtSubcompany
+    },
+    {
       path: '/DeviceConnect',
       name: 'DeviceConnect',
       component: DeviceConnect
@@ -259,6 +273,11 @@ export default new Router({
       path: '/DeviceHome',
       name: 'DeviceHome',
       component: DeviceHome
+    },
+    {
+      path: '/DeviceVideoManage',
+      name: 'DeviceVideoManage',
+      component: DeviceVideoManage
     }
   ]
 })

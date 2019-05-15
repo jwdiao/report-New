@@ -11,8 +11,8 @@
 						<div class="top">
 							<div class="item item-row1">
 								<span class="text">派工人数</span>
-								<em class="num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum">0</em>
-								<em class="num" v-show="!info || !info.totalPlanNum">0</em>
+								<em class="num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum" style="letter-spacing:-3px;">0</em>
+								<em class="num" v-show="!info || !info.totalPlanNum" style="letter-spacing:-3px;">0</em> 
 								<div class="dayNightNumBox">
 									<div class="line"></div>
 									<div class="con">

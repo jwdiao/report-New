@@ -11,7 +11,7 @@
 			<div class="historyBtn" @click="enterIndexPage('/CarsHistoryInfor')">历史统计</div>
       <!--<div class="historyBtn" @click="enterIndexPage('/CarsHistoryInforNK')">历史统计 </div>-->
     </div>
-    <div class="index_main"> 
+    <div class="index_main">
       <div class="index_left">
         <div class="index_left_top">
           <div style=" border-radius:5px;background-color: rgba(42, 75, 133, 0.3);">
@@ -23,13 +23,13 @@
               <div>
                 <div class="index_left_top_main_Cars">
                   <div class="index_left_top_main_Cars_module carsN">
-                    <p>内部小车&nbsp;&nbsp;&nbsp;&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideCarNum||0}}</span></p>
+                    <p>内部小车&nbsp;&nbsp;<span class="index_left_top_main_Cars_module_num">{{carAllData.strandedInsideCarNum||0}}</span></p>
 
                   </div>
                 </div>
                 <div class="index_left_top_main_Cars ">
                   <div class="index_left_top_main_Cars_module carsW">
-                    <p>外部小车&nbsp; <span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideCarNum||0}}</span></p>
+                    <p>外部小车&nbsp;&nbsp;<span class="index_left_top_main_Cars_module_num">{{carAllData.strandedOutsideCarNum||0}}</span></p>
 
                   </div>
                 </div>

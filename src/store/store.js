@@ -43,9 +43,12 @@ export default new Vuex.Store({
     /**========================考勤页面checking end==========================**/
     /**========================考勤页面checkingHistory start==========================**/
     checkingHistoryQueryDate: '', // 顶部查询日期
-    checkingHistoryQueryFlag: 'DAY' // 顶部白夜班标识
+    checkingHistoryQueryFlag: 'DAY', // 顶部白夜班标识
     /**========================考勤页面checkingHistory end==========================**/
-
+    //20190513设备监控管理中心
+    sbhlOverViewSelectedCompany:'', // overview页面选中的子公司
+    //点击工艺类型内部内容
+   titleObj:{},
   },
   mutations: {
     /**========================考勤页面checking start==========================**/
@@ -70,7 +73,7 @@ export default new Vuex.Store({
       if (res && res.status === 200) {
         if (res.data && res.data.ret === "200") {
           state.energyListData.list = res.data.data.list
-          if (res.data.data.totalCount) {            
+          if (res.data.data.totalCount) {
             state.energyListData.totalCount = res.data.data.totalCount
           }
           if (res.data.data.page) {
@@ -78,7 +81,7 @@ export default new Vuex.Store({
           }
         }
       }
-      
+
     },
     // 能源日统计
     getEnergyDayDataMut (state,res) {
@@ -135,7 +138,7 @@ export default new Vuex.Store({
 			if (res && res.status === 200) {
 				if (res.data && res.data.ret === "200") {
 					   state.checkRadarList = res.data.data
-				} 
+				}
 			}
     },
     // 改变考勤历史页面查询日期
@@ -147,6 +150,16 @@ export default new Vuex.Store({
       state.checkingHistoryQueryFlag = val
     },
     /**========================考勤页面checking end==========================**/
+
+    //
+    // 改变加工中心设备监控中心====20190513
+    changeOverViewSelectedCompanyMut (state, val){
+      state.sbhlOverViewSelectedCompany = val
+    },
+    //改变工艺类型20190513
+    changeTitleName(state,val){
+      state.titleObj = val
+    }
   },
   actions: {
     /**========================考勤页面checking start==========================**/
@@ -154,7 +167,7 @@ export default new Vuex.Store({
     async getEnergyListDataAction({commit}, param) {
       const res = await http.post('/energy/getEnergy', param)
       commit('getEnergyListDataMut', res)
-      
+
     },
     // 能源日统计
     async getEnergyDayDataAction({commit}, param) {
@@ -187,7 +200,10 @@ export default new Vuex.Store({
         res = await getRecordRadarChart(params.end)
       }
       commit('getRadarChartsMut', res)
-    }
+    },
     /**========================考勤页面checking end==========================**/
+    getTitleName({commit},titleObj){
+      commit('changeTitleName',titleObj)
+    }
   }
 })

@@ -20,7 +20,7 @@
     </div>
     <!-- 头部 end -->
     <!-- 头部下拉 start -->
-    <div class="index_selectDialog" v-show="selectDialogShow">
+   <!-- <div class="index_selectDialog" v-show="selectDialogShow">
       <ul>
         <li>
           <p class="title">事业部</p>
@@ -60,7 +60,8 @@
           <span class="btn cancel" @click="handleCancel">取消</span>
         </li>
       </ul>
-    </div>
+    </div>-->
+    <HeaderToSelected :selectDialogShow="selectDialogShow" @selectDialogShowName="selectDialogFunction"/>
     <!-- 头部下拉 end -->
     <!-- main start -->
     <div class="index_main">
@@ -95,6 +96,7 @@ import Attendance from '@/components/checking-v20190410/Attendance'
 import EnergyStatistics from '@/components/checking-v20190410/EnergyStatistics'
 import Checking from '@/components/checking-v20190410/Checking20190410.vue'
 import MachingCenter from '@/components/checking-v20190410/MachingCenter'
+import HeaderToSelected from '@/components/checking-v20190410/HeaderToSelected'
 
 import {
   getAttendanceData,
@@ -116,7 +118,8 @@ export default {
     Attendance,
     EnergyStatistics,
     Checking,
-    MachingCenter
+    MachingCenter,
+    HeaderToSelected
   },
   data () {
     return {
@@ -155,6 +158,8 @@ export default {
         totalNum: 0
       },
       selectDialogShow: false, // 是否显示顶部事业部子公司弹窗
+      //20190513注释
+      /*
       careerValue: '', // 点击标题下拉事业部选中值
       careerOptions: [ // 事业部下拉option
         {label:'重机事业部',value:'zhongji'},
@@ -167,7 +172,7 @@ export default {
       ],
       companyValue: '', // 子公司选中值
       companyCode: '', // 子公司选中值的code码
-      companyOptions: [], // 子公司option
+      companyOptions: [], // 子公司option*/
       kaoqinList: { // 中间==人员考勤列表==全部工作中心时
         lateList: [], // 迟到
         leaveList: [], // 早退
@@ -510,7 +515,7 @@ export default {
     showSelectDialog () {
       this.selectDialogShow = true
     },
-    careerChange (val) {
+   /* careerChange (val) {
       // console.log(`选择的事业部是：${val}`)
       this.companyOptions = []
       this.companyValue = ''
@@ -520,13 +525,14 @@ export default {
           {label:'邵阳湖汽',value:'邵阳湖汽'},
           {label:'娄底中源',value:'娄底中源'},
           {label:'娄底中兴',value:'娄底中兴'},
-          {label:'益阳中阳',value:'益阳中阳'}
+          {label:'益阳中阳',value:'益阳中阳'},
+          {label:'常德路机',value:'常德路机'},  //20190510
         ]
       } else if (val === 'zhongji') {
         this.companyOptions = [
           {label:'北京桩机',value:'北京桩机'},
           {label:'常熟索特',value:'常熟索特'},
-          // {label:'临港中挖',value:'临港中挖'},
+          {label:'临港中挖',value:'临港中挖'}, //20190510
           // {label:'昆山重机',value:'昆山重机'},
           {label:'重机华湘',value:'重机华湘'},
           {label:'重机大挖',value:'重机大挖'},
@@ -613,10 +619,12 @@ export default {
         BaseUrlReq = 'http://10.19.7.70:8084'
       } else if (this.companyValue === '益阳中阳') {
         BaseUrlReq = 'http://10.22.33.100:8083'
+      } else if (this.companyValue === '常德路机') {
+        BaseUrlReq = 'http://10.21.23.101:8083'
       } else if (this.companyValue === '长沙港机') {
         BaseUrlReq = 'http://10.1.91.1:8083'
       } else if (this.companyValue === '临港中挖') {
-        BaseUrlReq = 'http://10.11.16.187:8083'
+        BaseUrlReq = ' http://10.11.16.187:8084'
       } else if (this.companyValue === '昆山重机') {
         BaseUrlReq = 'http://10.11.16.187:8083'
       } else if (this.companyValue === '重机华湘') {
@@ -653,11 +661,23 @@ export default {
     // 关闭顶部选择事业部弹窗
     handleCancel () {
       this.selectDialogShow = false
-    },
+    },*/
     // 回到历史页面
     enterCheckHistory () {
       this.$router.replace('/CheckingHistoryData20190410')
-    }
+    },
+    //20190514分离headerToSelected
+    selectDialogFunction(val){
+      this.selectDialogShow = val.flag
+      if(val.loadingData){
+        this.getBaseInfoData() // 基本数据
+        this.getYearLeftData()
+        this.getDayRightData()
+        this.getMonthRightData()
+        this.getYearRightData()
+        this.getCenterNameData() // 加工中心数组
+      }
+    },
   },
   destroyed () {
     clearInterval(this.timerId)
@@ -704,7 +724,7 @@ export default {
     }
     .historyBtn{
       float: left;font-size:16px;width:100px;height:36px;line-height: 36px;
-      margin-top: 50px;margin-left:10px;cursor: pointer;
+      margin-top: 37px;margin-left:10px;cursor: pointer;
       background:linear-gradient(#176275,#06437d);border-radius: 3px;
     }
     .leftInfo{
@@ -732,7 +752,7 @@ export default {
     // border:1px solid #ff0;
   }
 
-  &_selectDialog{
+  /*&_selectDialog{
     background-color: rgba(9, 20, 40, 0.8);border:1px solid #6bb9d5;
     position:fixed;top:105px;z-index:999;left:50%;transform: translateX(-50%);
     padding:28px 60px 48px;
@@ -757,7 +777,7 @@ export default {
       margin-left:4%;
       background-color: #b3b3bd;color:#0c1932;cursor: pointer;
     }
-  }
+  }*/
 
 }
 

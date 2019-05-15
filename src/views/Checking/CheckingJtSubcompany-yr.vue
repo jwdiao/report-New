@@ -2,9 +2,11 @@
   <div class="checkingJt">
     <!-- 头部 start -->
     <div class="checkingJt_top">
+      
+
       <div class="leftBox">
         <div class="leftBoxInner">
-          <div class="back" @click="enterIndexPage('/HomeGuide')"><img src="../../assets/images/index_back.png"></div>
+          <!-- <div class="back" @click="enterIndexPage('/HomeGuide')"><img src="../../assets/images/index_back.png"></div> -->
           <div class="dayOrnight">
             <img v-show="dayOrNightStatus ==='白班'" src="../../assets/images/index_sun.png" />
             <img v-show="dayOrNightStatus ==='夜班'" src="../../assets/images/index_moon.png" />
@@ -81,7 +83,7 @@
                       <em class="num" v-show="!info || !info.planTotalNum">0</em>
                       <div class="dayNightNumBox">
                         <div class="line"></div>
-                        <div class="con">
+                        <div class="con">									
                             <p>
                               白
                               <span v-text="info.dayPlanTotalNum">0</span>
@@ -98,7 +100,7 @@
                       <em class="num" style="letter-spacing:-1px;">{{info.planNum}}</em>
                       <em style="display: inline-block;vertical-align: middle;font-size: 0.2rem;color: #02c9fc;margin-left: 8px;">
                         ({{dayOrNightStatus.substring(0,1)}})
-                      </em>
+                      </em>								
                     </div>
                   </div>
                   <div class="bottom">
@@ -130,10 +132,7 @@
                       <span class="text">有效在岗时间</span>
                     </div>
                     <div class="item item-row2">
-                      <!-- 等后台改了之间放开注释用注释，不用下面的两条判断 -->
-                      <!-- <p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p> -->
-                      <p class="num" v-show="info&&info.onWorkTime&&(info.onWorkTime<=info.recordTime)" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
-                      <p class="num" v-show="info&&info.onWorkTime&&(info.onWorkTime>info.recordTime)" style="letter-spacing:-1px;">{{Math.round(info.recordTime*100)/100}}h</p>
+                      <p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
                       <p class="num" v-show="!info || !info.onWorkTime">0</p>
                     </div>
                   </div>
@@ -167,15 +166,11 @@
             </div>
           </div>
         </div>
-        <div :class="{'checkingJt_con-bottom': true,'is-fullscreen':allScreen}">
-        <!-- <div class="checkingJt_con-bottom"> -->
-          <div @click="allScreenLook" style="position:absolute;top:10px;right:20px;cursor: pointer;z-index: 20;">
-            <el-button type="primary" size="mini">{{screenMessage}}</el-button>
-          </div>
+        <div class="checkingJt_con-bottom">
           <el-tabs class="checking_tabs" v-model="currentTab" @tab-click="handleCheckingTab">
             <el-tab-pane label="人员雷达图" name="leida">
               <el-scrollbar class="checking_job-allCenter" style="height:100%;" >
-
+                
                 <div class="checking_item" v-for="(item, index) in redarList" :key="index">
                   <p class="checking_item-title" @click="handleEnterCompanyPage(item.companyCode)">
                     <!-- <div class="arrow-right"></div> -->
@@ -199,7 +194,7 @@
                       </ul>
                     </div>
                   </div>
-
+                  
                 </div>
               </el-scrollbar>
             </el-tab-pane>
@@ -251,6 +246,7 @@
                 </div>
               </div>
             </el-tab-pane>
+            
         </el-tabs>
         </div>
       </div>
@@ -333,13 +329,11 @@ export default {
           pagination: {}
         }
       },
-      checkRadarList:[], // 考勤雷达图数据
-      allScreen: false,
-      screenMessage:'点击查看全屏',	//全屏按钮文字
+			checkRadarList:[], // 考勤雷达图数据
     }
   },
   mounted () {
-
+    
 
 
 
@@ -372,23 +366,23 @@ export default {
 
     // 底部tab 只有点击的时候才请求
     // this.getAbnormaData()
-
+    
     //leida
     this.getRecordRadarChartDataFun()
     // this.getLeidaData()
 
 
 
+    
 
 
-
-    // 定时器刷新0425改5分钟刷新一次
+    // 定时器刷新
     this.refreshDataId = setInterval(() => {
       this.getTotalRecordDataFun()
       this.getRecordDataOfMonthFun()
       this.getRecordDataOfDayFun()
       this.getRecordRadarChartDataFun()
-    }, 300000)
+    }, 10000)
 
   },
   computed: {
@@ -401,7 +395,7 @@ export default {
         this.renderEchartsCircle()
       }
     },
-
+    
 
     // 人员考勤异常月统计 和 人员考勤月统计 ======左侧
     abnormalMonthData (val) {
@@ -409,7 +403,7 @@ export default {
         this.renderEchartsAbnormalMonth(this.abnormalMonthEchartsDom, val) // 人员考勤异常月统计echarts图
         this.renderEchartsMonth(this.monthEchartsDom, val) // 渲染echarts图
       }
-    },
+    }, 
 
     // 人员考勤日统计数据 ======右侧
     dayEchartsData (val) {
@@ -425,10 +419,6 @@ export default {
     },
   },
   methods: {
-    allScreenLook(){//全屏按钮点击事件函数
-			this.allScreen=!this.allScreen;
-			this.screenMessage = this.screenMessage=="点击查看全屏"?"还原":"点击查看全屏";
-		},
     // 点击标题回到首页
     enterIndexPage (path) {
       this.$router.replace(path)
@@ -598,6 +588,8 @@ export default {
           startColor: '#0090ff',
           endColor: '#00e2ff'
         },
+        // value: this.info.workPlanRate
+        // value: this.info.newWorkPlanRate // 最新的
         value: this.info.workPlanRate
       }
       this.renderClock(jhkqlvEcharts, this.workPlanRateObj)
@@ -1206,7 +1198,6 @@ export default {
       const res = await getRecordRadarChartData(this.centerName)
       if (res && res.data && res.data.code === 200) {
          this.leidaData = res.data.data.list
-        console.log('this.leidaData:',this.leidaData)
       }
     },
 
@@ -1219,7 +1210,7 @@ export default {
           position: ['10%','20%'],
           // confine: true,
           formatter: function(params,ticket,callback){
-            console.log('params:',params)
+            // console.log('params:',params)
             var objhtml = params.data.name+'<br />';
             var lvArr = params.data.value;
             // console.log('lvArr:',lvArr)
@@ -1244,7 +1235,7 @@ export default {
               }else if(i===4){
                 let str = '出勤率：' + lvArr[i]+'%'
                 objhtml+=str
-              }
+              }             
             } */
             return objhtml;
           }
@@ -1319,11 +1310,10 @@ export default {
     },
     // 雷达图组织数据
     getRecordRadarChartFun(myArr){
-
+      
       if(myArr instanceof Array){
         let newMyArr = []
         myArr.forEach((ele, index) => {
-          // debugger;
             // this.fuZhiBiaoList.push([ele.lateNum, ele.outNum, ele.absentNum, ele.abnormalNum]);
             let yichangNum = parseFloat(ele.latenum)+parseFloat(ele.absentnum)+parseFloat(ele.outnum)+parseFloat(ele.abnormalnum)
             let zhengchangNum = parseFloat(ele.totalnum)-parseFloat(ele.latenum)-parseFloat(ele.absentnum)-parseFloat(ele.outnum)-parseFloat(ele.abnormalnum)
@@ -1332,24 +1322,20 @@ export default {
             let shanggangLv = ele.validrate<=100?ele.validrate:100 // 上岗率
             let zaigangLv = ele.onworkrate<=100?ele.onworkrate:100 // 在岗率
             let chuqinLv = ele.recordrate<=100?ele.recordrate:100 // 出勤率
-            // let totalLv = parseFloat(yichangLv) + parseFloat(paigongLv) + parseFloat(shanggangLv) + parseFloat(zaigangLv) + parseFloat(chuqinLv)
-           //20190507 加权重计算 派工率：0.15  出勤率：0.25  在岗率：0.35   上岗率： 0.25
-            let totalLv = parseFloat(paigongLv)*0.15 + parseFloat(shanggangLv)*0.25 + parseFloat(zaigangLv)*0.35 + parseFloat(chuqinLv)*0.15 //20190507
+            let totalLv = parseFloat(yichangLv) + parseFloat(paigongLv) + parseFloat(shanggangLv) + parseFloat(zaigangLv) + parseFloat(chuqinLv)
             ele.totalLv = totalLv
             newMyArr.push(ele)
             // console.log('centername:',ele.centerName)
             // console.log('yichangNum:',yichangNum)
         })
-
         let sortNewArr = newMyArr.sort(function(a, b){
           return b.totalLv - a.totalLv
         })
-        console.log('sortNewArr:',sortNewArr)
         this.redarList = sortNewArr
         var myRadarCharts = [];
         this.fuZhiBiaoList = [];
         this.indicatorList = [];
-        // 派工率-workPlanRate
+        // 派工率-workPlanRate			
         // 异常率=（总数-迟到-旷工(未到)-离岗-调班）/总数 = totalNum-lateNum-absentNum-outNum-abnormalNum
         // 上岗率-validRate
         // 在岗率-onWorkRate
@@ -1392,7 +1378,7 @@ export default {
         })
         // console.log('fuZhiBiaoList:',this.fuZhiBiaoList)
         // console.log('indicatorList:',this.indicatorList)
-
+        
         var that = this
         setTimeout(function() {
           that.redarList.forEach(function(ele, index) {
@@ -1400,10 +1386,10 @@ export default {
                 that.rederEchartsRadar(document.getElementById("radarChart" + index), that.indicatorList[index], that.fuZhiBiaoList[index], ele.companyName)
             }
           })
-
+          
         })
       }
-
+        
     },
     // 处理点击tab切换
     handleCheckingTab(tab, event) {
@@ -1411,7 +1397,7 @@ export default {
       this.currentTab = tab.name;
       if(tab.name === 'kaoqin'){
         this.getAbnormaDataFun()
-      }
+      } 
     },
     async handleEnterCompanyPage (companyCode) {
       const res = await getOrgIPAddressData(companyCode)
@@ -1422,9 +1408,7 @@ export default {
         const url = 'http://' + ipAddress + ':' + port
         localStorage.setItem('ipAddrCheckingSelectedSubcompany',url)
         localStorage.setItem('companyNameCheckingSelectedSubcompany',itemData.companyName)
-        this.$router.push('/CheckingV71')
-        // this.$router.go(-1)
-        // this.$router.replace('/Checking')
+        this.$router.push('/Checking')
       }
     },
 
@@ -1453,7 +1437,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 .home_title{
 	position:relative;
 }
@@ -1542,13 +1525,13 @@ export default {
     .home_title{
       width:100%;
       img{margin-left: 10px;vertical-align: -2px;width: 12px;}
-
+			
     }
     .abnormalStatistics-day{
       flex: 1;
       // height: 345px;
       margin-bottom: 15px;
-
+      
       .day{
         display:flex;justify-content: center;align-items: center;flex-wrap: wrap;//如果一条轴线排不下，如何换行，wrap换行
         width:100%;height: calc(100% - 36px - 40px);margin: 20px 0;
@@ -1564,7 +1547,7 @@ export default {
             font-size: 0.42rem;width: 1rem;
             color:#00c7fa;display: inline-block;vertical-align: middle;
             font-weight: bold;margin-left:8px;
-
+            
             text-align: left;
             font-family: fontnameRegular;
           }
@@ -1581,7 +1564,7 @@ export default {
         width:100%;height: calc(100% - 36px);
       }
     }
-
+    
     .statistics-monthBox{
       flex: 1;
       background-color: rgba(39, 69, 111, 0.3);
@@ -1664,7 +1647,6 @@ export default {
                 font-size: 0.26rem;
                 color: #02c9fc;
                 font-family: fontnameRegular;
-                letter-spacing: -2px;
               }
 
               .lv {
@@ -1759,7 +1741,6 @@ export default {
       border: 1px solid rgba(255, 255, 255, 0.1);
       height: calc(100% - 360px);
       margin-top: 15px;
-      position: relative;
       .checking_tabs {
         height: 100%;
 
@@ -1818,9 +1799,9 @@ export default {
           flex: 1;
           margin-left: 6px;
 
-          /* &:first-child {
+          &:first-child {
             margin-left: 0;
-          } */
+          }
         }
 
         .checking_item-title {
@@ -1834,7 +1815,7 @@ export default {
           // background: #48759c url(../../assets/images/checking_head-bg.jpg) no-repeat right top;
           text-align: center;
         }
-
+        
         .checking_item-wrapper {
           background-color: rgba(42, 75, 133, 0.3);
           font-size: 16px;
@@ -1924,7 +1905,7 @@ export default {
           }
 
           .checking_item-wrapper {
-
+            
             font-size: 16px;
             height: calc(100% - 50px);
 
@@ -1965,7 +1946,7 @@ export default {
               }
             }
           }
-
+          
 
 
         }
@@ -1973,14 +1954,6 @@ export default {
     }
   }
 
-// 全屏样式
-  .is-fullscreen{
-    position: fixed;top:0;left:0;bottom:0;right:0;z-index:10;height:100%;background: #071226;
-
-    .checking_job-allCenter .checking_item{
-      width: 25%
-    }
-  }
 }
 
 </style>

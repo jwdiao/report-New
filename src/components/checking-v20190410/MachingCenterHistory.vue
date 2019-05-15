@@ -13,9 +13,13 @@
         {{this.$store.state.selectedSubcompany}}
       </header>
       <img class="close" src="../../assets/images/close.png" @click="close" />
-      <ul class="home_container_list">
-        <li v-for="(centerItem,index) in allCenterList" :key="index" :ref="index" @click="getCenterInfo(centerItem)">{{centerItem}}</li>
-      </ul>
+      <div style="overflow:hidden;">
+        <div class="centerNameScroll" style="height: 700px; overflow-y: scroll;width:110%">
+          <ul class="home_container_list">
+            <li v-for="(centerItem,index) in allCenterList" :key="index" :ref="index" @click="getCenterInfo(centerItem)">{{centerItem}}</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>

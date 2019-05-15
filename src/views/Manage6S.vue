@@ -46,7 +46,7 @@
 						<div class="message manage6s_eventCaptureTable">
 							<!--事件选择下拉框开始-->
 							<div class="common_select">
-								<el-select v-model="value" placeholder="请选择" @change="change()">
+								<el-select v-model="value" placeholder="请选择" @change="change(value)">
 									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 									</el-option>
 								</el-select>
@@ -75,7 +75,7 @@
 							</el-scrollbar> -->
 							<!--实时事件抓拍表格结束 old end-->
 							<!--实时事件抓拍表格开始 物料乱放  noHelmet-->
-							<div class="title" :class="value=='noHelmet'?'title-aqm':''">
+							<div class="title" :class="value=='noHelmet'?'title-aqm':value=='cvNoHelmet'?'title-aqm':''">
 								<span class="num">序号</span>
 								<span class="eventName">事件名称</span>
 								<span class="captureAddr">抓拍地点</span>
@@ -84,7 +84,7 @@
 								<span class="centername">部门</span>
 							</div>
 							<div v-show="warnShow" class="warnshow">该事件暂无数据</div>
-							<el-scrollbar class="manage6s_capture-con" :class="value=='noHelmet'?' manage6s_capture-conAQM':''" ref="myScrollbar">
+							<el-scrollbar class="manage6s_capture-con" :class="value=='noHelmet'?' manage6s_capture-conAQM':value=='cvNoHelmet'?'manage6s_capture-conAQM':''" ref="myScrollbar">
 								<div :class="{title_message:true,title_active:index==activeIndex}" v-for="(item, index) in snapEventListArr"
 								 :key="item.id" @click="addImg(index)">
 									<span class="num" v-text="item.num"></span>
@@ -141,7 +141,7 @@
 		getEventInforList,
 		getEventInforStatis,
 		getEventInforStatisday,
-		getSelectList1
+		getSelectList1,
 	} from '../api'
 	// 顶部环形图
 	export default {
@@ -209,6 +209,9 @@
 				}, {
 					value: "noHelmet",
 					label: '安全帽'
+				},{
+					value: "cvNoHelmet",
+					label: '视觉安全帽'
 				}],
 				chartArr: [{
 					title: '物料乱放',
@@ -239,6 +242,7 @@
 		},
 		mounted() {
 			// 顶部日期时间
+			//console.log(this.$route.query.a)
 			this.currentTime = this.getCurrentDateTime();
 			this.refreshDataId = setInterval(() => {
 				this.currentTime = this.getCurrentDateTime();
@@ -276,10 +280,10 @@
 					ele.resize();
 				})
 			},
-			change() {
-				/* alert(this.value) */
+			change(value) {
 				this.currentPage = 1;
 				this.getSelectList(this.value, this.currentPage.toString(), this.pageSize.toString());
+				
 			},
 			bigImg() {
 				this.eventsnapimgBig = this.eventsnapimg;
@@ -466,8 +470,7 @@
 			 */
 			async getSelectList(eventtype, page, pagesize) {
 				this.activeIndex = 0;
-				const res = await getSelectList1(eventtype, page, pagesize);
-				console.log(res)
+				var res = await getSelectList1(eventtype, page, pagesize);
 				if (res.data && res.data.ret == 200) {
 					this.tableTotal = res.data.total;
 					var listArr = res.data.getAbsentList;
@@ -476,7 +479,7 @@
 						for (var i = 0; i < listArr.length; i++) {
 							var currentItemObj = {
 								id: listArr[i].id + Math.random(),
-								eventname: listArr[i].eventtype == "noHelmet" ? "安全帽" : listArr[i].eventtype, //事件名称
+								eventname: listArr[i].eventtype == "noHelmet" ? "安全帽" :listArr[i].eventtype =="cvNoHelmet"?"视觉安全帽": listArr[i].eventtype, //事件名称
 								souevents: listArr[i].souevents, // 抓拍地点
 								eventstarttimestr: listArr[i].eventstarttime.slice(11), //抓拍时间
 								eventsnapimg: listArr[i].eventimgurl,

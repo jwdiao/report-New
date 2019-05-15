@@ -6,7 +6,7 @@
 			<div class="vision_title">
 				<!-- <span @click="enterIndexPage">北京三一视觉考勤</span> -->
 				<span @click="showSelectDialog">三现数据安全管理
-				<span v-show='companyValue'>({{companyValue}})</span>
+				<span v-show='this.$store.state.selectedSubcompany'>({{this.$store.state.selectedSubcompany}})</span>
 				<!--<span v-show='!companyValue'>(北京桩机)</span>-->
 				</span>
 			</div>
@@ -108,7 +108,7 @@
         <!--分页结束-->
 			</div>
 		</el-main>
-		<div class="index_selectDialog" v-show="selectDialogShow">
+		<!--<div class="index_selectDialog" v-show="selectDialogShow">
 		  <ul>
 		    <li>
 		      <p class="title">事业部</p>
@@ -148,7 +148,8 @@
 		      <span class="btn cancel" @click="handleCancel">取消</span>
 		    </li>
 		  </ul>
-		</div>
+		</div>-->
+    <HeaderToSelected :selectDialogShow="selectDialogShow" @selectDialogShowName="selectDialogFunction"/>
 	</el-container>
 </template>
 
@@ -158,6 +159,7 @@
 	import axios from 'axios'
 	import http from '../api/http'
 	import {getSanyCameraSysLogStaticList,getSanyCameraSysLogStaticCharts} from '../api'
+  import HeaderToSelected from '../components/checking-v20190410/HeaderToSelected'
 	export default {
 		name: 'controllog',
 		data() {
@@ -186,7 +188,7 @@
 				companyValue:'',
 				timer:null,
 				warnMessage:false,
-				companyOptions:[],
+				/*companyOptions:[],
 				careerValue: '', // 点击标题下拉事业部选中值
 				careerOptions: [ // 事业部下拉option
           {label:'重机事业部',value:'zhongji'},
@@ -196,7 +198,7 @@
 					{label:'重卡事业部',value:'zhongka'},
 					{label:'港机事业部',value:'gangji'},
           {label:'筑工事业部',value:'zhugong'},
-				],
+				],*/
 				pickerOptionsStart: {
 					disabledDate(time) {
 						return time.getTime() > Date.now();
@@ -219,6 +221,9 @@
 				tableList: []
 			};
 		},
+    components:{
+      HeaderToSelected
+    },
 		mounted() {
 			this.startTime = this.getStartTime();
 			this.endTime = this.getCurrentDateTime1();
@@ -261,7 +266,8 @@
 			showSelectDialog () {
 			  this.selectDialogShow = true
 			},
-			careerChange (val) {
+      //20190514头部下拉单独模块
+			/*careerChange (val) {
 			  // console.log(`选择的事业部是：${val}`)
 			  this.companyOptions = []
 			  this.companyValue = ''
@@ -271,13 +277,14 @@
 						{label:'邵阳湖汽',value:'邵阳湖汽'},
 						{label:'娄底中源',value:'娄底中源'},
 						{label:'娄底中兴',value:'娄底中兴'},
-						{label:'益阳中阳',value:'益阳中阳'}
+						{label:'益阳中阳',value:'益阳中阳'},//20190510
+						{label:'常德路机',value:'常德路机'},
 					]
 				} else if (val === 'zhongji') {
 					this.companyOptions = [
 						{label:'北京桩机',value:'北京桩机'},
 						{label:'常熟索特',value:'常熟索特'},
-						// {label:'临港中挖',value:'临港中挖'},
+						{label:'临港中挖',value:'临港中挖'}, //20190510
             // {label:'昆山重机',value:'昆山重机'},
             {label:'重机华湘',value:'重机华湘'},
             {label:'重机大挖',value:'重机大挖'},
@@ -364,10 +371,12 @@
           BaseUrlReq = 'http://10.19.7.70:8084'
         } else if (this.companyValue === '益阳中阳') {
 					BaseUrlReq = 'http://10.22.33.100:8083'
-				} else if (this.companyValue === '长沙港机') {
+				} else if (this.companyValue === '常德路机') {
+          BaseUrlReq = 'http://10.21.23.101:8083'
+        } else if (this.companyValue === '长沙港机') {
 					BaseUrlReq = 'http://10.1.91.1:8083'
 				} else if (this.companyValue === '临港中挖') {
-					BaseUrlReq = 'http://10.11.16.187:8083'
+					BaseUrlReq = 'http://10.11.16.187:8084'
 				} else if (this.companyValue === '昆山重机') {
 					BaseUrlReq = 'http://10.11.16.187:8083'
 				} else if (this.companyValue === '重机华湘') {
@@ -395,7 +404,7 @@
 			// 关闭顶部选择事业部弹窗
 			handleCancel () {
 			  this.selectDialogShow = false
-			},
+			},*/
 			clearVal(){
 				event.target.getAttribute('data-index')==1?this.startTime = "":this.endTime = ""
 			},
@@ -626,7 +635,15 @@
 				this.endTime = '';
 				this.currentPage = 1;
                 this.getSanyCameraSysLogList(this.startTime,this.endTime);
-			}
+			},
+      //20190514分离headerToSelected
+      selectDialogFunction(val){
+        this.selectDialogShow = val.flag
+        if(val.loadingData){
+          this.getSanyCameraSysLogList(this.startTime,this.endTime);
+          this.getSanyCameraSysLogStatic();
+        }
+      },
 		}
 	}
 </script>

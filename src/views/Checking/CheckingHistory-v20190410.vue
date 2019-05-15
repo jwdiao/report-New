@@ -2,7 +2,7 @@
   <div class="index">
     <!-- 头部 start -->
     <div class="index_top">
-      <div class="title"><span  @click="showSelectDialog">{{titleText}}三现数据中心</span></div>
+      <div class="title"><span  @click="showSelectDialog">{{this.$store.state.selectedSubcompany}}三现数据中心</span></div>
       <div class="leftInfo">
         <div class="back" @click="enterIndexPage('/CheckingHistoryData20190410')"><img src="../../assets/images/index_back.png"></div>
         <div class="historyTime">
@@ -33,7 +33,7 @@
     </div>
     <!-- 头部 end -->
     <!-- 头部下拉 start -->
-    <div class="index_selectDialog" v-show="selectDialogShow">
+   <!-- <div class="index_selectDialog" v-show="selectDialogShow">
       <ul>
         <li>
           <p class="title">事业部</p>
@@ -64,7 +64,8 @@
           <span class="btn cancel" @click="handleCancel">取消</span>
         </li>
       </ul>
-    </div>
+    </div>-->
+    <HeaderToSelected :selectDialogShow="selectDialogShow" @selectDialogShowName="selectDialogFunction"/>
     <!-- 头部下拉 end -->
     <!-- main start -->
     <div class="index_main">
@@ -107,6 +108,7 @@ import Attendance from '@/components/checking-v20190227/AttendanceHistory'
 import EnergyStatistics from '@/components/checking-v20190227/EnergyStatisticsHistory'
 import Checking from '@/components/checking-v20190410/CheckingHistory20190410'
 import MachingCenter from '@/components/checking-v20190410/MachingCenterHistory'
+import HeaderToSelected from '@/components/checking-v20190410/HeaderToSelected'
 
 import {
   getAttendanceData,
@@ -129,7 +131,8 @@ export default {
     AbnormalStatistics,
     Attendance,
     Checking,
-    MachingCenter
+    MachingCenter,
+    HeaderToSelected
   },
   data () {
     return {
@@ -172,7 +175,7 @@ export default {
         totalNum: 0
       },
       selectDialogShow: false, // 是否显示顶部事业部子公司弹窗
-      careerValue: '', // 点击标题下拉事业部选中值
+      /*careerValue: '', // 点击标题下拉事业部选中值
       careerOptions: [ // 事业部下拉option
         {label:'重机事业部',value:'zhongji'},
         {label:'泵送事业部',value:'bengsong'},
@@ -183,7 +186,7 @@ export default {
         {label:'筑工事业部',value:'zhugong'},
       ],
       companyValue: '', // 子公司选中值
-      companyOptions: [], // 子公司option
+      companyOptions: [], // 子公司option*/
       titleText: '北京桩机',
       kaoqinList: { // 中间==人员考勤列表==全部工作中心时
         lateList: [], // 迟到
@@ -559,7 +562,7 @@ export default {
     showSelectDialog () {
       this.selectDialogShow = true
     },
-    careerChange (val) {
+   /* careerChange (val) {
       // console.log(`选择的事业部是：${val}`)
       this.companyOptions = []
       this.companyValue = ''
@@ -569,13 +572,14 @@ export default {
           {label:'邵阳湖汽',value:'邵阳湖汽'},
           {label:'娄底中源',value:'娄底中源'},
           {label:'娄底中兴',value:'娄底中兴'},
-          {label:'益阳中阳',value:'益阳中阳'}
+          {label:'益阳中阳',value:'益阳中阳'},//20190510
+          {label:'常德路机',value:'常德路机'},
         ]
       } else if (val === 'zhongji') {
         this.companyOptions = [
           {label:'北京桩机',value:'北京桩机'},
           {label:'常熟索特',value:'常熟索特'},
-          // {label:'临港中挖',value:'临港中挖'},
+          {label:'临港中挖',value:'临港中挖'},  //20190510
           // {label:'昆山重机',value:'昆山重机'},
           {label:'重机华湘',value:'重机华湘'},
           {label:'重机大挖',value:'重机大挖'},
@@ -663,10 +667,12 @@ export default {
         BaseUrlReq = 'http://10.19.7.70:8084'
       } else if (this.companyValue === '益阳中阳') {
         BaseUrlReq = 'http://10.22.33.100:8083'
+      } else if (this.companyValue === '常德路机') {
+        BaseUrlReq = 'http://10.21.23.101:8083'
       } else if (this.companyValue === '长沙港机') {
         BaseUrlReq = 'http://10.1.91.1:8083'
       } else if (this.companyValue === '临港中挖') {
-        BaseUrlReq = 'http://10.11.16.187:8083'
+        BaseUrlReq = 'http://10.11.16.187:8084'
       } else if (this.companyValue === '昆山重机') {
         BaseUrlReq = 'http://10.11.16.187:8083'
       } else if (this.companyValue === '重机华湘') {
@@ -703,7 +709,7 @@ export default {
     // 关闭顶部选择事业部弹窗
     handleCancel () {
       this.selectDialogShow = false
-    },
+    },*/
     // 回到实时页面
     enterChecking () {
       // this.$router.push('/Checking')
@@ -760,6 +766,18 @@ export default {
         this.getAbnormaData()
       } else { // 子加工中心
         this.getAbsentLateLeaveChangeworkList()
+      }
+    },
+    //20190514分离headerToSelected
+    selectDialogFunction(val){
+      this.selectDialogShow = val.flag
+      if(val.loadingData){
+        this.getBaseInfoData() // 基本数据
+        this.getYearLeftData()
+        this.getDayRightData()
+        this.getMonthRightData()
+        this.getYearRightData()
+        this.getCenterNameData() // 加工中心数组
       }
     },
   },
