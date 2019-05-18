@@ -1,213 +1,5 @@
 <template>
 	<div class="checking">
-		<div class="checking_dashbordBox">
-			<p class="home_title home_title-blue">
-				人员考勤看板
-				<span class="checking_total">计件总人数<em v-show="info && info.totalNum" v-text="info.totalNum"></em></span>
-			</p>
-<!-- 			<div class="checking_dashbord">
-				<ul>
-					<li>
-						<div class="top">
-
-							<div class="item" v-show="isDayOrNigint==='白班'">
-								<span class="text">派工人数(白)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
-								<em class="num" v-show="!info || !info.planNum">0</em>
-							</div>
-							<div class="item" v-show="isDayOrNigint==='白班'">
-								<span class="text">派工人数(夜)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.nightPlanTotalNum" v-text="info.nightPlanTotalNum"></em>
-								<em class="num" v-show="!info || !info.nightPlanTotalNum">0</em>
-							</div>
-
-							<div class="item" v-show="isDayOrNigint==='夜班'">
-								<span class="text">派工人数(白)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.dayPlanTotalNum" v-text="info.dayPlanTotalNum"></em>
-								<em class="num" v-show="!info || !info.dayPlanTotalNum">0</em>
-							</div>
-							<div class="item" v-show="isDayOrNigint==='夜班'">
-								<span class="text">派工人数(夜)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
-								<em class="num" v-show="!info || !info.planNum">0</em>
-							</div>
-
-						</div>
-						<div class="bottom">
-							<div class="lv lvBlue" id="jhkqlv"></div>
-							<p class="lvText">派工率</p>
-						</div>
-					</li>
-					<li>
-						<div class="top">
-							<div class="item">
-								<span class="text">考勤人数</span>
-								<em class="num" v-show="info&&info.userRecordNum" v-text="info.userRecordNum"></em>
-								<em class="num" v-show="!info || !info.userRecordNum">0</em>
-							</div>
-							<div class="item">
-								<span class="text">考勤时间</span>
-								<em class="num" v-show="info&&info.recordTime" style="letter-spacing:-3px;">{{Math.round(info.recordTime*10)/10}}h</em>
-								<em class="num" v-show="!info || !info.recordTime">0</em>
-							</div>
-						</div>
-						<div class="bottom">
-							<div class="lv lvYellow" id="kaoqinlv"></div>
-							<p class="lvText">出勤率</p>
-						</div>
-					</li>
-					<li>
-						<div class="top" style="text-align:center;">
-							<div class="item">
-								<span class="text">有效在岗时间</span>
-							</div>
-							<div class="item">
-								<p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-3px;">{{Math.round(info.onWorkTime*10)/10}}h</p>
-								<p class="num" v-show="!info || !info.onWorkTime">0</p>
-							</div>
-						</div>
-						<div class="bottom">
-							<div class="lv lvBlue" id="zaiganglv"></div>
-							<p class="lvText">在岗率</p>
-						</div>
-					</li>
-					<li>
-						<div class="top" style="text-align:center;">
-							<div class="item">
-								<span class="text">有效在岗人数</span>
-							</div>
-							<div class="item">
-								<p class="num" v-show="info&&info.validNum" v-text="info.validNum"></p>
-								<p class="num" v-show="!info || !info.validNum">0</p>
-							</div>
-						</div>
-						<div class="bottom">
-							<div class="lv lvYellow" id="yxsglv"></div>
-							<p class="lvText">有效上岗率</p>
-						</div>
-					</li>
-				</ul>
-			</div> -->
-			<div class="checking_dashbord2">
-				<ul>
-					<li>
-						<div class="top">
-							<div class="item item-row1">
-								<span class="text">派工人数</span>
-								<em class="num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum" style="letter-spacing:-3px;">0</em>
-								<em class="num" v-show="!info || !info.totalPlanNum" style="letter-spacing:-3px;">0</em>
-								<div class="dayNightNumBox">
-									<div class="line"></div>
-									<div class="con">
-											<p>
-												白
-												<span v-text="info.dayPlanTotalNum">0</span>
-											</p>
-											<p>
-												夜
-												<span v-text="info.nightPlanTotalNum">0</span>
-											</p>
-									</div>
-								</div>
-							</div>
-							<div class="item item-row2">
-								<span class="text">实时派工</span>
-								<em class="num" style="letter-spacing:-3px;">{{info.planNum}}</em>
-								<em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;">
-									({{isDayOrNigint.substring(0,1)}})
-								</em>
-							</div>
-
-
-
-							<!-- 白班 -->
-							<!-- <div class="item" v-show="isDayOrNigint==='白班'">
-								<span class="text">派工人数(白)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
-								<em class="num" v-show="!info || !info.planNum">0</em>
-								<div class="dayNightNumBox">
-									<div>
-										<p>白268</p>
-										<p>夜268</p>
-									</div>
-								</div>
-							</div>
-							<div class="item" v-show="isDayOrNigint==='白班'">
-								<span class="text">派工人数(夜)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.nightPlanTotalNum" v-text="info.nightPlanTotalNum"></em>
-								<em class="num" v-show="!info || !info.nightPlanTotalNum">0</em>
-							</div> -->
-
-							<!-- 白班 end -->
-							<!-- 夜班 -->
-							<!-- <div class="item" v-show="isDayOrNigint==='夜班'">
-								<span class="text">派工人数(白)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.dayPlanTotalNum" v-text="info.dayPlanTotalNum"></em>
-								<em class="num" v-show="!info || !info.dayPlanTotalNum">0</em>
-							</div>
-							<div class="item" v-show="isDayOrNigint==='夜班'">
-								<span class="text">派工人数(夜)</span>
-								<em class="num" style="letter-spacing:-3px;" v-show="info&&info.planNum" v-text="info.planNum"></em>
-								<em class="num" v-show="!info || !info.planNum">0</em>
-							</div> -->
-							<!-- 夜班 end -->
-						</div>
-						<div class="bottom">
-							<div class="lv lvBlue" id="jhkqlv"></div>
-							<p class="lvText">派工率</p>
-						</div>
-					</li>
-					<li>
-						<div class="top">
-							<div class="item item-row1">
-								<span class="text">考勤人数</span>
-								<em class="num" v-show="info&&info.userRecordNum" v-text="info.userRecordNum"></em>
-								<em class="num" v-show="!info || !info.userRecordNum">0</em>
-							</div>
-							<div class="item item-row2">
-								<span class="text">考勤时间</span>
-								<em class="num" v-show="info&&info.recordTime" style="letter-spacing:-3px;">{{Math.round(info.recordTime*100)/100}}h</em>
-								<em class="num" v-show="!info || !info.recordTime">0</em>
-							</div>
-						</div>
-						<div class="bottom">
-							<div class="lv lvYellow" id="kaoqinlv"></div>
-							<p class="lvText">出勤率</p>
-						</div>
-					</li>
-					<li>
-						<div class="top" style="text-align:center;">
-							<div class="item item-row1">
-								<span class="text">有效在岗时间</span>
-							</div>
-							<div class="item item-row2">
-								<p class="num" v-show="info&&info.onWorkTime" style="letter-spacing:-3px;">{{Math.round(info.onWorkTime*100)/100}}h</p>
-								<p class="num" v-show="!info || !info.onWorkTime">0</p>
-							</div>
-						</div>
-						<div class="bottom">
-							<div class="lv lvBlue" id="zaiganglv"></div>
-							<p class="lvText">在岗率</p>
-						</div>
-					</li>
-					<li>
-						<div class="top" style="text-align:center;">
-							<div class="item item-row1">
-								<span class="text">有效在岗人数</span>
-							</div>
-							<div class="item item-row2">
-								<p class="num" v-show="info&&info.validNum" v-text="info.validNum"></p>
-								<p class="num" v-show="!info || !info.validNum">0</p>
-							</div>
-						</div>
-						<div class="bottom">
-							<div class="lv lvYellow" id="yxsglv"></div>
-							<p class="lvText">有效上岗率</p>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
 		<div class="checking_wrapper">
 			<el-tabs class="checking_tabs" v-model="currentTab" @tab-click="handleCheckingTab">
 				<el-tab-pane label="人员考勤" name="kaoqin">
@@ -328,7 +120,7 @@
 								</span> -->
 							</p>
 							<!--雷达图开始-->
-							<div class="checking_item-wrapper radarChartBox" :id="`radarChart${index}`" style="height:194px;width:220px;">
+							<div class="checking_item-wrapper radarChartBox" :id="`radarChart${index}`" style="height:1.9rem;width:100%;">
 
 							</div>
 							<!--雷达图结束-->
@@ -528,12 +320,6 @@
 		name: 'checking',
 		props: ['info', 'isDayOrNigint', 'kaoqinList', 'kaoqinListSubCenter'],
 		watch: {
-			info() {
-				// 如果有基本信息，渲染中间顶部的4个echarts图
-				if (this.info) {
-					this.renderEchartsCircle()
-				}
-			},
 			// 雷达图数据
 			leidaData(val) {
 				if (val.length) {
@@ -661,136 +447,7 @@
 				})
 				// console.log(divTop,divLeft)
 			},
-			/* 四个考勤率 */
-			renderClock(dom, data) {
-				var myChart = echarts.init(dom)
-				var option = null
-				option = {
-					tooltip: {
-						formatter: '{a} {b} : {c}%',
-						confine: true // 是否将tooltip框限制在图表的区域内
-					},
-					toolbox: {
-						show: true
-					},
-					series: [{
-						name: data.name,
-						type: 'gauge',
-						radius: '100%',
-						rich: {
-							color: '#fff'
-						},
-						axisLabel: {
-							show: false
-						},
-						itemStyle: {
-							// color: data.color, //指针颜色
-							length: 5
-						},
-						axisTick: {
-							show: false
-						},
-						emphasis: {
-							itemStyle: {
-								color: '#fff'
-							}
-						},
-						axisLine: { // 仪表盘轴线相关配置。
-							show: false,
-							lineStyle: {
-								width: 0,
-								// 0% 处的颜色
-								color: [
-									[1, new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-										offset: 0,
-										color: data.color.startColor
-									}, {
-										offset: 1,
-										color: data.color.endColor
-									}], false)]
-								]
-								// color: [[1,'#ff820d']]
-							},
-							length: 5
-						},
-						splitLine: {
-							show: false
-						},
-						pointer: {
-							width: 4
-						},
-						detail: {
-							formatter: '{value}%',
-							color: '#fff',
-							offsetCenter: [0, '70%'],
-							fontSize: 20
-						},
-						data: [{
-							value: data.value,
-							name: ''
-						}]
-					}]
-				}
-				if (option && typeof option === 'object') {
-					myChart.setOption(option, true)
-				}
-			},
-			/* 四个考勤率 */
-			renderEchartsCircle() {
-				// 计划考勤率 jhkqlv
-				var jhkqlvEcharts = document.getElementById('jhkqlv')
-				this.workPlanRateObj = {
-					name: '计划考勤率',
-					// color: '#0097ff',
-					color: {
-						startColor: '#0090ff',
-						endColor: '#00e2ff'
-					},
-					// value: this.info.workPlanRate
-					value: this.info.newWorkPlanRate // 最新的
-				}
-				this.renderClock(jhkqlvEcharts, this.workPlanRateObj)
 
-				// 考勤率
-				var kaoqinlvEcharts = document.getElementById('kaoqinlv')
-				this.recordRateObj = {
-					name: '考勤率',
-					// color: '#ff8f19',
-					color: {
-						startColor: '#ff7905',
-						endColor: '#ffbf46'
-					},
-					value: this.info.recordRate
-				}
-				this.renderClock(kaoqinlvEcharts, this.recordRateObj)
-
-				// 在岗率 zaiganglv
-				var zaiganglvEcharts = document.getElementById('zaiganglv')
-				this.workPlanRateObj = {
-					name: '上岗率',
-					// color: '#0097ff',
-					color: {
-						startColor: '#0090ff',
-						endColor: '#00e2ff'
-					},
-					// value: this.info.onWorkRate
-					value: parseFloat(this.info.onWorkRate) > 100 ? '100' : this.info.onWorkRate
-				}
-				this.renderClock(zaiganglvEcharts, this.workPlanRateObj)
-
-				// 有效上岗率 yxsglv
-				var yxsglvEcharts = document.getElementById('yxsglv')
-				this.validRateObj = {
-					name: '有效上岗率',
-					// color: '#ff8f19',
-					color: {
-						startColor: '#ff7905',
-						endColor: '#ffbf46'
-					},
-					value: this.info.validRate
-				}
-				this.renderClock(yxsglvEcharts, this.validRateObj)
-			},
 
 			// 以图搜人
 			async getCameraProInfo(workname, workno) {
@@ -1194,9 +851,9 @@
 
 		&_dashbordBox {
 			// height:340px;
-			background-color: rgba(39, 69, 111, 0.3);
+			/*background-color: rgba(39, 69, 111, 0.3);*/
 			padding: 15px;
-			border: 1px solid rgba(255, 255, 255, 0.1);
+			/*border: 1px solid rgba(255, 255, 255, 0.1);*/
 
 			.home_title {
 				width: 100%;
@@ -1585,57 +1242,7 @@
 						&:hover {
 							cursor: pointer;
 						}
-
 					}
-
-					/* &.camera1{
-               top: 0;
-               left: 50px;
-             }
-             &.camera2{
-               top: 85px;
-               left: 50px;
-             }
-             &.camera3{
-               top: 170px;
-               left: 50px;
-             }
-             &.camera4{
-               top: 245px;
-               left: 20px;
-             }
-             &.camera5{
-               top: 245px;
-               left: 110px;
-             }
-             &.camera6{
-               top: 350px;
-               left: 110px;
-             }
-             &.camera7{
-               top: 0;
-               left: 290px;
-             }
-             &.camera8{
-               top: 105px;
-               left: 290px;
-             }
-             &.camera9{
-               top: 190px;
-               left: 320px;
-             }
-             &.camera10{
-               top: 300px;
-               left: 290px;
-             }
-             &.camera11{
-               top: 0;
-               left: 600px;
-             }
-             &.camera12{
-               top: 110px;
-               left:590px;
-             }*/
 				}
 			}
 		}
@@ -1698,8 +1305,7 @@
 					margin-bottom: 0
 				}
 				.checking_item-title.centerName{
-					background:url(../../assets/images/topTitle.png) no-repeat;
-          background-size: center center;
+					/*background:url(../../assets/images/topTitle.png) no-repeat;*/
 					text-align: center;
 				}
 			}
@@ -1787,21 +1393,20 @@
 					/deep/ .el-scrollbar__wrap {
 						overflow-x: hidden
 					}
-
-			/* 	 .checking_item-wrapper.radarChartBox {
-						 background: url(../../assets/images/leida.png) no-repeat;
-						background-position: 50% 50%;
-						width:230px;
-						height:194px;
-					} */
-
 					.checking_item {
 						width: 25%;
 						float: left;
 						padding-left: 6px;
 						padding-bottom: 10px;
+            .radarChartBox{
+              /deep/ div{
+               /deep/ canvas{
+                  width: 3.28rem!important;
+                  height: 1.8rem!important;
+                }
+              }
+            }
 					}
-
 					.checking_item-title {
 						color: #53e3fd;
 						font-size: 16px;

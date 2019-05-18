@@ -21,13 +21,13 @@
     <div class="sbhl_main">
       <div class="sbhl_left">
         <div class="sbhl_left_top">
-          <div class="sbhltitle">
+          <!-- <div class="sbhltitle">
             设备总数 :
             <span style="font-size: 0.3rem">{{deviceData.totalNum||0}}</span>
             <em> 台</em>
-          </div>
+          </div> -->
           <div class="statusList">
-            <ul class="statusListTop">
+            <!-- <ul class="statusListTop">
               <li>
                 <p class="statusTitle">作业</p>
                 <div class="statusDiv">
@@ -60,8 +60,7 @@
                   <em class="statusDanw">台</em>
                 </div>
               </li>
-
-            </ul>
+            </ul> -->
             <ul class="statusListBottom">
               <li>
                 <p class="statusNum">开机小时数</p>
@@ -1099,6 +1098,7 @@
     .sbhl_main {
       height: calc(100% - 125px);
       .sbhl_left_top {
+				
       }
     }
     /*左侧*/
@@ -1118,7 +1118,7 @@
       &_top {
         /*flex:2;*/
         width: 100%;
-        height: 305px;
+        height: 190px;
         /*border: 1px solid rgba(255, 255, 255, 0.1);*/
         .sbhltitle{
           color: #30adff;font-size: 0.18rem;
@@ -1126,7 +1126,7 @@
         }
         .statusList{
           /*height: calc(100% - 0.35rem);*/
-          height: 273px;
+          height: 190px;
           display: flex;flex-direction: column;
           .statusListTop{
             flex: 1;display: flex;align-items: center;
@@ -1215,7 +1215,7 @@
       /*页面左侧下部*/
       &_bottom {
         /*flex: 3;*/
-        height: calc(100% - 305px);
+        height: calc(100% - 190px);
         /*background: rgba(39, 69, 111, 0.3);*/
         // border: 1px solid rgba(255, 255, 255, 0.1);
         width: 100%;overflow:hidden;

@@ -20,6 +20,7 @@ const CheckingV5 = () => import('../views/Checking/Checking-v20190213.vue'); // 
 const CheckingV6 = () => import('../views/Checking/Checking-v20190221.vue'); // 20190221版本
 const CheckingV7 = () => import('../views/Checking/Checking-v20190227.vue'); // 最新版本CheckingHistoryData
 const CheckingV71 = () => import('../views/Checking/Checking-v20190410.vue'); // 最新版本CheckingHistoryData 20190410新测试接口
+const CheckingV8 = () => import('../views/Checking/Checking-v20190517.vue'); // 界面样式与设备互联保持一致
 
 // 考勤历史列表数据页面
 const CheckingHistoryData = () => import('../views/Checking/CheckingHistoryData.vue'); // 考勤历史列表数据页面（点击首页历史记录按钮进入该页面）
@@ -42,6 +43,9 @@ const CheckingJtSubcompany = () => import('../views/Checking/CheckingJtSubcompan
 
 // 6S管理
 const Manage6S = () => import('../views/Manage6S.vue');
+const Manage6SV2 = () => import('../views/Manage6Sv2.vue');
+
+
 // 车辆管理页面（所有版本）
 const CarsV10 = () => import('../views/Cars/Cars-v1-0117.vue');//南口车辆(第1.0版)
 const CarsV20 = () => import('../views/Cars/Cars-v2-0211.vue');//南口车辆(第2.0版)
@@ -134,6 +138,11 @@ export default new Router({
       component: CheckingV71
     },
     {
+      path: '/CheckingV8',
+      name: 'checkingv8',
+      component: CheckingV8
+    },
+    {
       path: '/CheckingHistory',
       name: 'CheckingHistory',
       component: CheckingHistory
@@ -169,6 +178,11 @@ export default new Router({
       name: 'manage6S',
       component: Manage6S
     },
+		{
+		  path: '/Manage6SV2',
+		  name: 'Manage6SV2',
+		  component: Manage6SV2
+		},
     {
       path: '/CarsV21',
       name: 'cars',

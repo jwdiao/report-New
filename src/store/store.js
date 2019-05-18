@@ -15,7 +15,9 @@ export default new Vuex.Store({
     allCenterList: [], // 加工中心列表
     selectedSubcompany: '', // 选中的子公司
     selectedTabCheckingBetween: 'kaoqin', // 考勤页面选中的tab项
-		checkRadarList:[],//考勤雷达图
+	checkRadarList:[],//考勤雷达图
+	isMachineShow:true,
+	tableHeight:350,
     energyListData: {
       list: [],
       totalCount: 0,

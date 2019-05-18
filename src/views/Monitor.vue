@@ -106,6 +106,9 @@
 								row-key="kid"
 								>
 									<el-table-column prop="num" label="序号" width="50">
+										<template scope="scope">
+											 <span style="color:yellow">{{scope.row.num}}</span>
+										</template>
 									</el-table-column>
 									<el-table-column prop="firstGroupName" label="工艺" width="50">
 									</el-table-column>
@@ -131,6 +134,9 @@
 								row-key="kid"
 								>
 									<el-table-column prop="num" label="序号" width="50">
+										<template scope="scope">
+											 <span style="color:yellow">{{scope.row.num}}</span>
+										</template>
 									</el-table-column>
 									<el-table-column prop="firstGroupName" label="工艺" width="50">
 									</el-table-column>
@@ -506,7 +512,7 @@
 			selectedHighlight({row,rowIndex}){
 				if((this.getIndex===rowIndex)){//如果this.getIndex==当前行索引当前行加高亮背景色
 					return{
-						"background-color" : "#CAE1FF"
+						"background-color" : "rgba(56, 142, 237, 0.6)"
 					}
 				}
 			},
@@ -632,7 +638,7 @@
 
 				.table {
 					margin: 10px 0px;
-          flex:1;
+                    flex:1;
 					/* max-height:400px; */
 					/* overflow-y:auto;
 					width:650px; */
@@ -657,13 +663,20 @@
 					/deep/ .el-table td {
 						padding: 5px 0px;
 					}
-          /deep/ .el-table__row{
-						cursor:pointer
+                    /deep/ .el-table__row{
+						cursor:pointer;
 					}
+				    /deep/ .el-table tbody tr:hover>td {
+						background:rgba(56, 142, 237, 0.6);
+					} 
+					/* /deep/ .el-table__row:hover{
+						cursor:pointer;
+						background:yellow;
+					} */
 					/* /deep/ .el-table--enable-row-hover .el-table__body tr:hover>td{
 						background-color:gray !important;
 					} */
-				}
+				    }
 
 				.common_paginaton {
 					height: 40px;

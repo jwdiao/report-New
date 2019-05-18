@@ -87,12 +87,18 @@
 		 }
 		 .el-table td{
 			 border-bottom:1px solid #191717;
-			 color:#31a0ff;
+			 color:#80dcf5;
 		 }
 		 /*每一行的背景颜色*/
 		 .el-table__row{
-			background:rgba(27, 60, 106, 0.9)
+			background:rgba(27, 60, 106, 1)
 		 }
+		 .el-table tbody tr:hover>td {
+		 	background:rgba(56, 142, 237, 0.6);
+			
+		 } 
+		
+		 
 	 }
 	 .common_select{
 		 input.el-input__inner {
@@ -189,3 +195,20 @@
 body{font-size: 12px;}
 
 //日期end
+
+//标题小蓝点
+.titleText{
+  position: relative;
+}
+.titleText:after {
+  display: block;
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  background: #31E6FF;
+  left: 0px;
+  top: 42%;
+  margin-top: -5px;
+}

@@ -1,51 +1,88 @@
 <template>
-<el-scrollbar style="height:90%;">
-  <ul class="clear overview-crafttype">
-    <li
-      v-for="(item, index) in list" :key="index"
-			@click="handleLiClick(item,index)"
-      :class="`overview-navConItem ${item.totalNum?'':'overview-navConItem-disable'}`"
-    >
-		  <!--@click="handleClick(item)"-->
-      <div class="clear title" >
-        <div class="left">
-          <em class="num">{{index+1}}.</em>
-          <span class="ellipsis name">{{item.workCenterName}}</span>
-        </div>
-        <div class="right amount">{{item.totalNum}}台</div>
-      </div>
-      <div class="content">
-        <ul>
-          <li>
-            <span class="label">开机率</span>
-            <span class="value">{{item.kaijiLv}}%</span>
-          </li>
-          <li>
-            <span class="label">作业率</span>
-            <span class="value">{{item.zuoyeLv}}%</span>
-          </li>
-          <li>
-            <span class="label">故障率</span>
-            <span class="value">{{item.alarmLv}}%</span>
-          </li>
-          <li>
-            <span class="label">利用率</span>
-            <span class="value">{{item.liyongLv}}%</span>
-          </li>
-          <li>
-            <span class="label">总耗电量</span>
-            <span class="value">{{item.elcPower}} kw•h</span>
-          </li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-</el-scrollbar>
+<div style="height:100%" ref="tableBox" id="tableBox">
+	<el-scrollbar style="height:90%;" v-show="machineShow">
+	  <ul class="clear overview-crafttype" >
+	    <li
+	      v-for="(item, index) in list" :key="index"
+				@click="handleLiClick(item,index)"
+	      :class="`overview-navConItem ${item.totalNum?'':'overview-navConItem-disable'}`"
+	    >
+			  <!--@click="handleClick(item)"-->
+	      <div class="clear title" >
+	        <div class="left">
+	          <em class="num">{{index+1}}.</em>
+	          <span class="ellipsis name">{{item.workCenterName}}</span>
+	        </div>
+	        <div class="right amount">{{item.totalNum}}台</div>
+	      </div>
+	      <div class="content">
+	        <ul>
+	          <li>
+	            <span class="label">开机率</span>
+	            <span class="value">{{item.kaijiLv}}%</span>
+	          </li>
+	          <li>
+	            <span class="label">作业率</span>
+	            <span class="value">{{item.zuoyeLv}}%</span>
+	          </li>
+	          <li>
+	            <span class="label">故障率</span>
+	            <span class="value">{{item.alarmLv}}%</span>
+	          </li>
+	          <li>
+	            <span class="label">利用率</span>
+	            <span class="value">{{item.liyongLv}}%</span>
+	          </li>
+	          <li>
+	            <span class="label">总耗电量</span>
+	            <span class="value">{{item.elcPower}} kw•h</span>
+	          </li>
+	        </ul>
+	      </div>
+	    </li>
+	  </ul>
+		
+	</el-scrollbar>
+	<div class="common_table" v-show="!machineShow">
+		<template>
+			<el-table :data="cameraList" border style="width: 100%"
+			:height="tableHeight"
+			@row-click="handleRowClick"
+			:row-class-name="tableRowClassName"
+			:row-style="selectedHighlight"
+			ref="spuProfileTable"
+			row-key="kid"
+			>
+				<el-table-column prop="num" label="序号" width="100">
+				</el-table-column>
+				<el-table-column prop="firstGroupName" label="工艺" width="100">
+				</el-table-column>
+				<el-table-column prop="cameraName" label="设备名称" min-width="135">
+				</el-table-column>
+				<el-table-column prop="factoryName" label="厂房" width="100">
+				</el-table-column>
+				<el-table-column prop="companyName" label="子公司">
+				</el-table-column>
+				<el-table-column prop="orgName" label="事业部">
+				</el-table-column>
+			</el-table>
+		</template>
+		<div class="common_paginaton" v-show="pageShow" style="margin-top:10px;">
+			<template>
+				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage"
+				 :page-sizes="[10,18, 30, 40, 50,60]" :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="tableTotal"
+				 style="height:100%;">
+				</el-pagination>
+			</template>
+		</div>
+	</div>
+	
+</div>
 </template>
 <script>
 import moment from 'moment'
 import {
-  reqCountDeviceMain
+  reqCountDeviceMain, searchCameraList
 } from '../../../api/deviceVideoManageApi'
 export default {
   name: 'CraftType',
@@ -53,31 +90,87 @@ export default {
     return{
       currentTime: '', // 系统当前日期
       list: [],
-      companyCode: ''
+      companyCode: '',
+			pageShow:true,
+			pageSize:18,
+			currentPage:1,
+			tableTotal:18,
+			cameraList:[],
+			getIndex:0,//表格行索引
+			//tableHeight:350
+			//isMachineShow:true
     }
   },
   computed: {
     companyCodeStr() {
       return this.$store.state.sbhlOverViewSelectedCompany;
-    }
+    },
+		machineShow(){
+			return this.$store.state.isMachineShow;
+		},
+		tableHeight(){
+			return this.$store.state.tableHeight;
+		}
   },
   watch: {
     companyCodeStr(newvalue) {
       // console.log('craftType code:',newvalue)
       this.getCraftTypeData()
-    }
+    },
+		machineShow(newvalue){
+			console.log(newvalue)
+		}
   },
+	created(){
+		console.log(this.$refs.tableBox)
+		
+	},
   mounted() {
+		//
+		//this.tableHeight = 200
+		//console.log(this.$refs.tableBox)
+		
     this.currentTime = moment(new Date()).format('YYYY-MM-DD');
-
+	  
     if(this.companyCodeStr) { // 页面切换tab时，this.companyCodeStr=''
        this.getCraftTypeData()
     }
+		window.addEventListener('resize', this.handleResize);
   },
   methods: {
+		handleResize(){
+			this.$store.state.tableHeight = this.$refs.tableBox.offsetHeight-70
+		},
 		handleLiClick(item,index){
 			//console.log(item,index)
-			this.$emit('handleLiClick',item,index)
+			this.$store.state.tableHeight = this.$refs.tableBox.offsetHeight-70
+			this.$emit('handleLiClick',item,index);
+			this.searchCameraListHttp();
+			this.$store.state.isMachineShow = false;
+		},
+		async searchCameraListHttp(){
+			const res = await searchCameraList('','','','','01','','',0,18);
+			this.cameraList = res.data.data.list
+			console.log(this.cameraList)
+		},
+		handleSizeChange(){
+			
+		},
+		handleCurrentChange(){
+			
+		},
+		tableRowClassName({row,rowIndex}){
+			row.index = rowIndex//把每一行的索引放入row
+		},
+		selectedHighlight({row,rowIndex}){
+			if((this.getIndex===rowIndex)){//如果this.getIndex==当前行索引当前行加高亮背景色
+				return{
+					"background-color" : "rgba(56, 142, 237, 0.6)"
+				}
+			}
+		},
+		handleRowClick(row, event, column) {
+			this.getIndex = row.index//将选中行的索引赋值给this.getIndex
 		},
     async getCraftTypeData() {
       this.companyCode = JSON.parse(this.companyCodeStr).value
@@ -169,17 +262,17 @@ export default {
         })
       }
     },
-    handleClick(item) {
-      /*if (!item.totalNum) {
+   /* handleClick(item) {
+      if (!item.totalNum) {
         return;
       }
-      const deviceHomeObj = {type: '01',typeCode: item.firstGroupCode,typeName:item.workCenterName} // 类型 01 工艺，02 加工中心
+      const deviceHomeObj = {type: '01',typeCode: item.firstGroupCode} // 类型 01 工艺，02 加工中心
       localStorage.setItem('sbhl-DeviceHome-Param',JSON.stringify(deviceHomeObj))
-      // this.$router.push('/DeviceHome')
-      this.$store.dispatch('getTitleName',deviceHomeObj)
+
+      this.$router.push('/DeviceHome')
+
     } */
   },
-  }
 }
 </script>
 <style lang="scss" scoped>
@@ -231,5 +324,14 @@ export default {
       cursor: default;
     }
   }
+	/deep/ .el-table--scrollable-y .el-table__body-wrapper{
+		width:102%;
+	}
+	/deep/ .el-table__body, .el-table__footer, .el-table__header{
+		background:rgba(0,0,0,0);
+	}
+	/deep/ .el-table--border th.gutter:last-of-type{
+		display:none;
+	}
 </style>
 

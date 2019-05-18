@@ -74,3 +74,5 @@ export const reqSelectByDeviceIDSs = (deviceID) => http.post(BASE_URL+'/machineC
 // 2 minutes 右下角
 export const reqSelectByDeviceID = (deviceID) => http.post(BASE_URL+'/machineConnection/selectByDeviceID', { machineNo: deviceID })
 //***======================================================DeviceConnect.vue页面 start====================================================================== */
+//查询摄像头 
+export const searchCameraList = (secondGroupCode,orgCode,companyCode,factoryCode,firstGroupCode,cameraName,searchNme,startIndex,pageSize) =>http.post('/camera/searchCameraList', {secondGroupCode,orgCode,companyCode,factoryCode,firstGroupCode,cameraName,searchNme,startIndex,pageSize})
