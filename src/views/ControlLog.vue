@@ -650,7 +650,7 @@
 
 <style lang="scss" scoped>
 	.el-container {
-		background: url(../assets/images/body_bg.png) no-repeat;
+		background: url(../assets/images/index_bg0522.png) no-repeat;
 		background-size: 100% 100%;
 		height: 100%;
 		font-size: 12px;
@@ -658,13 +658,13 @@
 		.el-header {
 			color: #333;
 			text-align: center;
-			height: 110px !important;
-			background: url(../assets/images/body_title.png) no-repeat;
+			height: 56px !important;
+			/*background: url(../assets/images/body_title.png) no-repeat;*/
 			background-size: 100% 100%;
-			padding-top: 20px;
+			/*padding-top: 20px;*/
 			position: relative;
 			.vision_title {
-				font-size: 0.44rem;
+				font-size: 0.32rem;
 				color: #fff;
 				font-weight: bold;
 				height: 100%;
@@ -678,7 +678,7 @@
 				right: 44px;
 				color: #ababab;
 				position: absolute;
-				top: 70px;
+				top: 28px;
 				z-index: 10;
 				text-align: left;
 				font-family: fontnameUnidreamLED !important;
@@ -689,7 +689,7 @@
 				left: 44px;
 				color: #ababab;
 				position: absolute;
-				top: 70px;
+				top: 28px;
 				height: 40px;
 				div {
 					float: left;

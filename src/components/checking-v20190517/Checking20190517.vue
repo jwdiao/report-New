@@ -120,7 +120,7 @@
 								</span> -->
 							</p>
 							<!--雷达图开始-->
-							<div class="checking_item-wrapper radarChartBox" :id="`radarChart${index}`" style="height:1.9rem;width:100%;">
+							<div class="checking_item-wrapper radarChartBox" :id="`radarChart${index}`" style="height:1.94rem;width:100%;">
 
 							</div>
 							<!--雷达图结束-->
@@ -379,6 +379,7 @@
 		},
 		created() {},
 		mounted() {
+      // 给window对象绑定resize事件
 			window.addEventListener('resize', this.handleResize); // 给window对象绑定resize事件
 			this._focusColor();
 		},
@@ -388,6 +389,8 @@
 			]),
 			handleResize() {
 				this._setcameraposition()
+        this.getRecordRadarChart(this.$store.state.checkRadarList)
+
 			},
 			// 监测摄像头位置
 			_setcameraposition() {
@@ -850,11 +853,7 @@
 		flex-direction: column;
 
 		&_dashbordBox {
-			// height:340px;
-			/*background-color: rgba(39, 69, 111, 0.3);*/
 			padding: 15px;
-			/*border: 1px solid rgba(255, 255, 255, 0.1);*/
-
 			.home_title {
 				width: 100%;
 				position: relative;
@@ -1400,8 +1399,9 @@
 						padding-bottom: 10px;
             .radarChartBox{
               /deep/ div{
+                width: 100%!important;
                /deep/ canvas{
-                  width: 3.28rem!important;
+                  width: 3.25rem!important;
                   height: 1.8rem!important;
                 }
               }

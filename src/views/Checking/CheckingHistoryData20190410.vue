@@ -96,8 +96,8 @@
             </div>
           </div>
           <div class="second" style=" border-radius:5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 10px">
-            <p class="home_title" style="display: flex;justify-content: center;border-radius:5px 5px 0 0;">
-              <span><span style="margin-left:5px;font-size: 32px; color: #02c9fc;">•</span>白班</span>
+            <p class="home_title" style="display: flex;justify-content: center;border-radius:5px 5px 0 0;" >
+              <span><span style="margin-left:5px;font-size: 32px; color: #02c9fc;" v-show="this.$store.state.selectedSubcompany!=='总部'">•</span>白班</span>
             </p>
             <div class="index_center_top_main">
               <div class="iconbg">
@@ -136,7 +136,7 @@
               </div>
             </div>
           </div>
-          <div class="third" style=" border-radius:5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 0px">
+          <div class="third" v-show="this.$store.state.selectedSubcompany!=='总部'" style=" border-radius:5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 0px">
             <p class="home_title" style="display: flex;justify-content: center;border-radius:5px 5px 0 0;">
               <span><span style="margin-left:5px;font-size: 32px; color: #02c9fc;">•</span>夜班</span>
             </p>
@@ -178,9 +178,9 @@
 
         </div>
         <!--可滑动列表-->
-        <div class="index_center_bottom" style="overflow: hidden">
+        <div class="index_center_bottom" style="overflow: hidden" v-if="this.$store.state.selectedSubcompany!=='总部'">
           <div class="scrollAll">
-            <div class="scrollDiv" v-for="(item,index) in CarsHistoryArr" :key="index">
+            <div class="scrollDiv"  v-for="(item,index) in CarsHistoryArr" :key="index">
               <div class="first" style=" border-radius:0 0 5px 5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 10px">
                 <div class="index_center_bottom_main">
                   <div class="iconbg">
@@ -238,7 +238,7 @@
                   </div>
                 </div>
               </div>
-              <div class="third" style=" border-radius:0 0 5px 5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 0px">
+              <div class="third"  style=" border-radius:0 0 5px 5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 0px">
                 <div class="index_center_bottom_main">
                   <div class="iconbg">
 
@@ -277,9 +277,70 @@
               </div>
 
             </div>
-
           </div>
-
+        </div>
+        <div class="index_center_bottom" style="overflow: hidden" v-else>
+          <div class="scrollAll">
+            <div class="scrollDiv"  v-for="(item,index) in CarsHistoryArr" :key="index">
+              <div class="first" style=" border-radius:0 0 5px 5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 10px">
+                <div class="index_center_bottom_main">
+                  <div class="iconbg">
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p>{{index+1}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars"  @click="skipToHistory(item.date)">
+                      <div class="index_center_bottom_main_Cars_module carsH">
+                        <p class="leaveNumP" style="cursor: pointer;text-decoration: underline">{{item.date}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.newWorkPlanRate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="second" style=" border-radius:0 0 5px 5px;background-color: rgba(42, 75, 133, 0.3);margin-right: 10px">
+                <div class="index_center_bottom_main">
+                  <div class="iconbg">
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.recordRate}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.onWorkRate}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.validRate}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.lateNum}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p v-if="item.day">{{item.day.absentNum}}</p>
+                      </div>
+                    </div>
+                    <div class="index_center_bottom_main_Cars">
+                      <div class="index_center_bottom_main_Cars_module carsN">
+                        <p>{{item.day.abnormalNum}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -16,6 +16,9 @@ export const reqCountDeviceMain = (companyCode, orgCode, requestType, currentDat
   requestType: requestType,
   date: currentDateStr
 })
+export const reqDeviceMain = (queryType) => http.post('/videoDataHour/getEcharts',{
+	queryType
+})
 // 设备列表接口
 export const reqSelectMachineByMachineStatus = (machineStatus, pageNum, pageSize, companyCode, date) =>http.post(BASE_URL+'/machineConnection/selectMachineByMachineStatus',{
   pageNum: pageNum,
@@ -68,6 +71,8 @@ export const reqJGLDanwei = (no) => http.post(BASE_URL+'/machineConnection/getMa
 
 //2019.04.29 设备互联左上部分--
 export const reqDeviceAll = () => http.post(BASE_URL+'/machineConnection/countDeviceMain', {companyCode:'',orgCode:'0301',requestType:'01'})
+
+export const getVideoServe = (query) => http.post('http://10.88.190.36:8083/camera/getVideoSurveilInitStatic',query)
 
 // 1s 右下角
 export const reqSelectByDeviceIDSs = (deviceID) => http.post(BASE_URL+'/machineConnection/selectByDeviceIDSs',{ machineNo: deviceID })

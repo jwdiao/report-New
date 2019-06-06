@@ -6,8 +6,20 @@
           <div class="open lv echartsImg" id="jhkqlv"></div>
       </li>
       <li>
-        <p class="statusNum">考勤时间</p>
-        <div class="echartsImg runHourNum" ref="runHourNum">
+        <p class="statusNum">出勤率</p>
+        <div class="lv echartsImg start" id="kaoqinlv"></div>
+      </li>
+      <li>
+        <p class="statusNum">在岗率</p>
+        <div class="lv echartsImg problem" id="zaiganglv"></div>
+      </li>
+      <li>
+        <p class="statusNum">有效上岗率</p>
+        <div class="lv echartsImg totalE" id="yxsglv"></div>
+      </li>
+      <li>
+        <p class="statusNum">总工时</p>
+        <div class="echartsImg runHourNum">
           <div>
             <p class="numPoint" v-show="info&&info.recordTime" style="letter-spacing:-1px;">{{Math.round(info.recordTime*100)/100}}</p>
             <p class="numPoint" v-show="!info || !info.recordTime">0</p>
@@ -15,28 +27,18 @@
           </div>
         </div>
       </li>
-      <li>
-        <p class="statusNum">出勤率</p>
-        <div class="lv echartsImg start" id="kaoqinlv"></div>
-      </li>
-      <li>
+
+      <!--<li>
         <p class="statusNum">有效在岗时间</p>
-        <div class="echartsImg runLV" id="runLV" ref="runLV">
+        <div class="echartsImg runLV" id="runLV">
           <div>
             <p class="numPoint" v-show="info&&info.onWorkTime" style="letter-spacing:-1px;">{{Math.round(info.onWorkTime*100)/100}}</p>
             <p class="numPoint" v-show="!info || !info.onWorkTime">0</p>
             <em>单位:h</em>
           </div>
         </div>
-      </li>
-      <li>
-        <p class="statusNum">在岗率</p>
-          <div class="lv echartsImg problem" id="zaiganglv"></div>
-      </li>
-      <li>
-        <p class="statusNum">有效上岗率</p>
-          <div class="lv echartsImg totalE" id="yxsglv"></div>
-      </li>
+      </li>-->
+
     </ul>
   </div>
 </template>
@@ -208,36 +210,39 @@
           margin: 0.1rem;
           display: flex;justify-content: center;align-items: center;
           div{
+            width: 1.61rem!important;
+            /*height: 1.1rem !important;*/
             margin-top: 10%;
             color: #02c9fc;
             .numPoint{
               color: #02c9fc;font-size: 0.24rem;
             }
+
           }
         }
         .open{
           background: url("../../assets/images/youxiaolv.png") no-repeat center;
-          background-size: 65% 100%;
+          background-size: 55% 100%;
         }
         .runHourNum{
           background: url("../../assets/images/zaixianshu.png") no-repeat center;
-          background-size: 65% 100%;
+          background-size: 55% 100%;
         }
         .start{
           background: url("../../assets/images/index_clock-green.png") no-repeat center;
-          background-size: 65% 100%;
+          background-size: 55% 100%;
         }
         .runLV{
           background: url("../../assets/images/lixianshu.png") no-repeat center;
-          background-size: 65% 100%;
+          background-size: 55% 100%;
         }
         .problem{
           background: url("../../assets/images/lixianlv.png") no-repeat center;
-          background-size: 65% 100%;
+          background-size: 55% 100%;
         }
         .totalE{
           background: url("../../assets/images/youxiaolv.png") no-repeat center;
-          background-size: 65% 100%;
+          background-size: 55% 100%;
         }
       }
       li:nth-last-child(1){

@@ -189,7 +189,10 @@
 					<el-button type="primary" @click="allScreenLook">{{screenMessage}}</el-button>
 				</div>
 				<div class="bottom">
-					<object classid="clsid:461284E8-135D-44B3-BD59-549150A773EC" id="spv" width="100%" height="100%"> </object>
+					<object classid="clsid:461284E8-135D-44B3-BD59-549150A773EC" id="spv" width="50%" height="50%"> </object>
+          <object classid="clsid:461284E8-135D-44B3-BD59-549150A773EC" id="spv2" width="50%" height="50%"> </object>
+          <object classid="clsid:461284E8-135D-44B3-BD59-549150A773EC" id="spv3" width="50%" height="50%"> </object>
+          <object classid="clsid:461284E8-135D-44B3-BD59-549150A773EC" id="spv4" width="50%" height="50%"> </object>
 				</div>
 			</div>
 			 <!--视频结束-->
@@ -199,7 +202,7 @@
 
 <script>
 	import moment from 'moment'
-	import http from '../api/http'
+	import http from '../../api/http'
 	import {
 		InitSpvx,
 		SetLocalParam,
@@ -208,8 +211,8 @@
 		getScreenWidthAndHeight,
 		getPreviewParamByUuid,
 		getPreviewParam
-	} from '../assets/js/ocx2.js'
-	import {searchCameraList,getOption} from '../api'
+	} from '../../assets/js/ocx2.js'
+	import {searchCameraList,getOption} from '../../api'
 	export default {
 		name: 'monitor',
 		data() {
@@ -298,6 +301,48 @@
 					// 	SetToolBar(ocxObj);
 					// }, 500);
 					 var minHeight = getScreenWidthAndHeight(false,
+					     false);
+				}
+			}
+			var ocxObj2 = document.getElementById('spv2'),
+				initRet2 = InitSpvx(ocxObj2);
+			if (initRet === 0) {
+				// 设置OCX本地参数
+				var localParamRet2 = SetLocalParam(ocxObj);
+				if (localParamRet === 0) {
+					// 设置工具栏
+					// setTimeout(function() {
+					// 	SetToolBar(ocxObj);
+					// }, 500);
+					 var minHeight2 = getScreenWidthAndHeight(false,
+					     false);
+				}
+			}
+			var ocxObj3 = document.getElementById('spv3'),
+				initRet3 = InitSpvx(ocxObj3);
+			if (initRet === 0) {
+				// 设置OCX本地参数
+				var localParamRet3 = SetLocalParam(ocxObj);
+				if (localParamRet === 0) {
+					// 设置工具栏
+					// setTimeout(function() {
+					// 	SetToolBar(ocxObj);
+					// }, 500);
+					 var minHeight3 = getScreenWidthAndHeight(false,
+					     false);
+				}
+			}
+			var ocxObj4 = document.getElementById('spv4'),
+				initRet4= InitSpvx(ocxObj4);
+			if (initRet === 0) {
+				// 设置OCX本地参数
+				var localParamRet4 = SetLocalParam(ocxObj);
+				if (localParamRet === 0) {
+					// 设置工具栏
+					// setTimeout(function() {
+					// 	SetToolBar(ocxObj);
+					// }, 500);
+					 var minHeight4 = getScreenWidthAndHeight(false,
 					     false);
 				}
 			}
@@ -501,7 +546,9 @@
 				var viewPath = getPreviewParamByUuid(viewData.cameraUuid, 0, false, viewData.companyCode);
 				if (viewPath) {
 					var ocxObj = document.getElementById('spv');
+					var ocxObj2 = document.getElementById('spv2');
 					var playRet = playVideoByOcx(ocxObj, viewPath);
+					var playRet2 = playVideoByOcx(ocxObj2, viewPath);
 					if (playRet === 0) {
 					}
 				}
@@ -509,13 +556,15 @@
 			tableRowClassName({row,rowIndex}){
 				row.index = rowIndex//把每一行的索引放入row
 			},
+      //如果this.getIndex==当前行索引当前行加高亮背景色
 			selectedHighlight({row,rowIndex}){
-				if((this.getIndex===rowIndex)){//如果this.getIndex==当前行索引当前行加高亮背景色
+				if((this.getIndex===rowIndex)){
 					return{
 						"background-color" : "rgba(56, 142, 237, 0.6)"
 					}
 				}
 			},
+      //点击每一行显示对应
 			handleRowClick(row, event, column) {
 				this.monitorViewMessage=row	//将每一行的字典赋值给	this.monitorViewMessage即监控视频左上方文字描述字典
 				this.getIndex = row.index//将选中行的索引赋值给this.getIndex
@@ -533,7 +582,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		background-image: url(../assets/images/body_bg.png);
+		background-image: url(../../assets/images/body_bg.png);
 		background-size: 100% 100%;
 		color: rgb(255, 255, 255);
 		background-repeat: no-repeat;
@@ -542,7 +591,7 @@
 		.header {
 			height: 1.1rem;
 			.manage6s_imgText {
-				background-image: url(../assets/images/body_title.png);
+				background-image: url(../../assets/images/body_title.png);
 				background-size:100% 100%;
 				font-size: 0.44rem;
 				color: #fff;
@@ -565,7 +614,7 @@
 			.button {
 				width: 90px;
 				height: 40px;
-				background: url(../assets/images/index_back.png) no-repeat;
+				background: url(../../assets/images/index_back.png) no-repeat;
 				position:fixed;
 				top:0.60rem;
 				left:0.15rem;
@@ -668,7 +717,7 @@
 					}
 				    /deep/ .el-table tbody tr:hover>td {
 						background:rgba(56, 142, 237, 0.6);
-					} 
+					}
 					/* /deep/ .el-table__row:hover{
 						cursor:pointer;
 						background:yellow;

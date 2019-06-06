@@ -17,7 +17,12 @@ export default new Vuex.Store({
     selectedTabCheckingBetween: 'kaoqin', // 考勤页面选中的tab项
 	checkRadarList:[],//考勤雷达图
 	isMachineShow:true,
-	tableHeight:350,
+	machineSecondShow:false,
+	departmentShow:true,
+	departmentSecondShow:false,
+	centerDialogShow:false,
+	jgldShow:false,
+	gyData:null,
     energyListData: {
       list: [],
       totalCount: 0,

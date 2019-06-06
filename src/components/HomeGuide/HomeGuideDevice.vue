@@ -4,7 +4,7 @@
       <!-- <div class="btnArea" @click="goTo('/TextOcx')" style="position:fixed;top:0;left:50%;z-index:10;">ocx test</div> -->
       <!-- 6s管理 -->
       <!-- <div class="btnArea" @click="goTo('/Monitor')"></div> -->
-      <div class="btnArea" @click="goTo('/Manage6S')"></div>
+      <div class="btnArea" @click="goTo('/Manage6SV2')"></div>
       <!-- 人员考勤 -->
       <div class="btnArea" @click="goTo('/CheckingV71')"></div>
       <!-- <div class="btnArea" @click="goTo('/CheckingJt')"></div> -->

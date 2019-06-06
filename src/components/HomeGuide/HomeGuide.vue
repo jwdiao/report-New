@@ -4,17 +4,17 @@
       <!-- <div class="btnArea" @click="goTo('/TextOcx')" style="position:fixed;top:0;left:50%;z-index:10;">ocx test</div> -->
       <!-- 6s管理 -->
       <!-- <div class="btnArea" @click="goTo('/Monitor')"></div> -->
-      <div class="btnArea" @click="goTo('/Manage6S')"></div>
+      <div class="btnArea" @click="goTo('/Manage6SV3')"></div>
       <!-- 人员考勤 -->
-      <div class="btnArea" @click="goTo('/CheckingJt')"></div>
+      <div class="btnArea" @click="goTo('/CheckingJtV8')"></div>
       <!-- <div class="btnArea" @click="goTo('/CheckingJt')"></div> -->
       <!-- 区域视频管理 -->
-      <a class="btnArea" @click="goToVideoPage"></a>
+      <!--<a class="btnArea" @click="goToVideoPage"></a>-->
       <!--设备安全统计-->
-      <a class="btnArea" @click="goTo('/equipmentSafety')"></a>
+      <a class="btnArea" @click="goTo('/Monitor')"></a>
       <!-- 监控设备查询 -->
      <!-- <a class="btnArea" @click="goTo('/Monitor')"></a> -->
-	  <router-link class="btnArea" to="/Monitor"></router-link>
+	  <!--<router-link class="btnArea" to="/Monitor"></router-link>-->
       <!-- <a class="btnArea" @click="goToControlPage"></a> -->
       <!-- 车辆信息 -->
       <!--<div class="btnArea" @click="goTo('/CarshlgV21')"></div>-->
@@ -51,7 +51,7 @@ import axios from 'axios'
 <style  lang="scss" scoped>
 .home-page{
   width: 100%;height: 100%;
-  background: url("./images/home-page8.jpg") no-repeat;background-size: 100% 100%;
+  background: url("./images/home-page20190513.png") no-repeat;background-size: 100% 100%;
   .home-page-wrap{
     position: fixed;
     top: 0;
@@ -59,7 +59,7 @@ import axios from 'axios'
     left: 0%;
     right: 0;
     margin: auto;
-    width: 93%;
+    width: 82%;
     height: 27%;
     /*border: 1px solid #ff0000;*/
     padding-left: 1%;
@@ -67,7 +67,7 @@ import axios from 'axios'
       text-align: center;
       display: block;
       float: left;
-      width: 13.5%;
+      width: 19%;
       height: 100%;
       /*border: 1px solid green;*/
       margin-right: 0.7%;

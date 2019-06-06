@@ -1,9 +1,9 @@
 <template>
   <div class="overviewList">
     <div  class="navLine">
-			<span :class="{FirstTitleNobg:true,secTitlebg:activeindex==10}">三一集团</span>
+	  <span :class="{FirstTitleNobg:true,secTitlebg:activeindex==10}">三一集团</span>
       <span :class="{FirstTitleNobg:true,secTitlebg:activeindex==100}">{{message}}</span>
-      <span :class="{FirstTitleNobg:true,secTitlebg:activeindex==index}" v-for="(item , index) in navLineList" :key="index">{{item.workCenterName}}</span> 
+      <span :class="{FirstTitleNobg:true,secTitlebg:activeindex==index}" v-for="(item , index) in navLineList" :key="index">{{item.firstGroupCode}}</span> 
     </div>
     <ul class="overview-nav">
       <li class="nav" @click="crafClick('工艺类型')" :class="{active: currentView == 'CraftType'}" v-show="CraftTypeShow"> 工艺类型</li>
@@ -15,9 +15,8 @@
         <div :is="currentView" 
 				@handleLiClick="handleParent(arguments)" 
 				@handleClick="handleWorkCenter(arguments)"
-				>
-				
-				</div>
+				>		
+		</div>
       </div>
     </keep-alive>
   </div>
@@ -56,6 +55,8 @@ export default {
 			this.message = msg
 			this.WorkCenterShow = true;
 			this.$store.state.isMachineShow = true;
+			this.$store.state.machineSecondShow = false;
+			this.$store.state.departmentShow = false;
 		},
 		/*事业部点击事件*/
 		WorkCenterClick(msg){
@@ -64,13 +65,15 @@ export default {
 			this.message = msg
 			this.currentView = 'WorkCenter'
 			this.CraftTypeShow = true;
+			this.$store.state.departmentShow = true;
+			this.$store.state.departmentSecondShow = false;
 		},
 		/*监听工艺类型每一个item点击事件*/
 		handleParent(msg){
 			this.machineShow=false;//切换到设备列表
 			this.WorkCenterShow = false;
 			this.tablineMessage(msg);
-				
+			console.log(msg[0])	
 		},
 		/*监听事业部每一个item点击事件*/
 		handleWorkCenter(msg){
@@ -84,6 +87,7 @@ export default {
 				 this.activeindex = this.navLineList.length-1;
 			}else{
 				this.navLineList.push(msg[0]);
+				console.log(this.navLineList)
 				this.activeindex = this.navLineList.length-1;
 			}
 		}

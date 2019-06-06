@@ -4,17 +4,21 @@ import http from './http'
 // 顶部考勤数据
 // http://10.19.7.69:9084
 const baseUrl = 'http://10.19.8.22:9085'
-// const baseUrl = 'http://10.88.195.89:9084'
+// const baseUrl = 'http://10.88.195.89:9085'  //20190524高杰调试
 export const getTotalRecordData = () => http.get(baseUrl+'/attendanceData/getTotalRecordData')
 // 右侧人员日统计
 export const getRecordDataOfDay = (companyCode) => http.post(baseUrl+'/attendanceData/getRecordDataOfDay', { companyCode: companyCode })
 // 左侧 人员考勤异常月统计和人员考勤月统计 两个公用
 export const getRecordDataOfMonth = (companyCode, date) => http.post(baseUrl+'/attendanceData/getRecordDataOfMonth', { companyCode: companyCode, date: date })
+// 左侧 人员考勤异常年统计和人员考勤月统计 两个公用
+export const getRecordDataOfYear = (companyCode, date) => http.post(baseUrl+'/attendanceData/getRecordDataOfYear', { companyCode: companyCode, date: date })
 // 底部tab	集团人员考勤列表接口
 export const getAbnormaData = (centerName) => http.post(baseUrl+'/attendanceData/getAbnormaData', { centerName: centerName })
 // 底部tab	集团人员雷达图接口
 export const getRecordRadarChartData = (centerName) => http.post(baseUrl+'/attendanceData/getRecordRadarChart', { centerName: centerName })
 export const getOrgIPAddressData = (companyCode) => http.post(baseUrl+'/attendanceData/getOrgIPAddress', { companyCode: companyCode })
+//计件总人数20190528
+export const getAllCountData = () => http.get(baseUrl+'/attendanceData/getAllCountUser')
 
 
 // 基本信息

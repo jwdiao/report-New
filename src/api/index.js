@@ -70,7 +70,13 @@ export const reqCenterBottomAllSearchData = (date,ccode,carbelong,cartype,isouts
 export const getDeviceByCenter = (params) => http.post('/deviceSgCamera/getDeviceByCenter',{
 	centerName: params.centerName,
 	page: params.page,
-	pageSize: params.pageSize
+	pageSize: params.pageSize,
+})
+export const getDeviceByGY = (params) => http.post('/deviceSgCamera/getDeviceByCenter',{
+	centerName:params.centerName,
+	secondGroupCode:params.secondGroupCode,
+	page: params.page,
+	pageSize: params.pageSize,
 })
 // 设备页面(EnergyDevive)-----单个设备工作状态信息接口
 export const getSingleDeviceInfo = (deviceCode,centerName) => centerName?http.post('/energy/getSingleDeviceInfo',{centerName:centerName,deviceCode:deviceCode}):http.post('/energy/getSingleDeviceInfo',{deviceCode:deviceCode})
@@ -99,3 +105,5 @@ export const reqDeviceInfomation = () => http.get('http://10.19.8.22:9099/machin
 export const reqDeviceRightList = (deviceID) => http.post('http://10.19.8.22:9099/jiChuangDataController/getNewDataToPage',{deviceID})
 //0424设备互联详情页面--右上部分列表--进给率单位
 export const reqJGLDanwei = (no) => http.post('http://10.19.8.22:9099/machineConnection/getMachineInfoByNo',{no})
+//第三版6s管理右上echarts接口
+export const getEventInforcompany = () => http.post('/sanySanyEventInfor/getEventInforcompany')

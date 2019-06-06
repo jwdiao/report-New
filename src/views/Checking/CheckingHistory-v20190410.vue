@@ -15,7 +15,7 @@
             placeholder="选择日期">
           </el-date-picker>
         </div>
-        <ul class="dayNightBox">
+        <ul class="dayNightBox" v-show="this.$store.state.selectedSubcompany!=='总部'">
           <li :class="{'selected':selectedDayOrNight==='DAY'}" @click="handleSelectedDayOrNight('DAY')">
             <img v-show="selectedDayOrNight==='DAY'" src="../../assets/images/checking_sun-yellow.png" />
             <img v-show="selectedDayOrNight==='NIGHT'" src="../../assets/images/checking_sun-grey.png" />

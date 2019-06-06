@@ -184,13 +184,16 @@
 				this.getEchartsList();
 				this.getOnlineboard();
 				this.getOnlineRateEchart();
-			},60000)
+			},60000);
 			this.getEchartsList();
 			this.getOnlineboard();
 			this.getOnlineRateEchart();
 			window.addEventListener('resize', this.handleResize);
 			/* this.renderEchartsOnlineCount(); */
 			//this.renderEchartsOnlineLv();
+		},
+		created(){
+			
 		},
 		methods: {
 			handleResize() {

@@ -4,7 +4,7 @@
     <div class="checkingJt_top">
       <div class="leftBox">
         <div class="leftBoxInner">
-          <div class="back" @click="enterIndexPage('/HomeGuide')"><img src="../../assets/images/index_back.png"></div>
+          <div class="back" @click="enterIndexPage('/HomeGuideJK')"><img src="../../assets/images/index_back.png"></div>
           <div class="dayOrnight">
             <img v-show="dayOrNightStatus ==='白班'" src="../../assets/images/index_sun.png" />
             <img v-show="dayOrNightStatus ==='夜班'" src="../../assets/images/index_moon.png" />
@@ -176,11 +176,12 @@
             <el-tab-pane label="人员雷达图" name="leida">
               <el-scrollbar class="checking_job-allCenter" style="height:100%;" >
 
-                <div class="checking_item" v-for="(item, index) in redarList" :key="index">
+                <div class="checking_item" v-for="(item, index) in redarList" :key="index" v-show="item.companyName!=='总部'">
                   <p class="checking_item-title" @click="handleEnterCompanyPage(item.companyCode)">
                     <!-- <div class="arrow-right"></div> -->
                     <span class="title" v-html="item.companyName"></span>
-                    <span class="totalNum"><span class="text">计件总人数</span> <em>{{item.totalnum}}</em></span>
+                    <span class="totalNum" v-show="item.companyCode !== '0001'"><span class="text">计件总人数</span> <em>{{item.totalnum}}</em></span>
+                    <span class="totalNum" v-show="item.companyCode === '0001'"><span class="text">计时总人数</span> <em>{{item.totalnum}}</em></span>
                   </p>
                   <div class="radarChartBox">
                     <div class="checking_item-wrapper radarChart" :id="`radarChart${index}`">
@@ -189,8 +190,8 @@
                     <div class="leidaTextBox">
                       <ul class="leidaText">
                         <li><span>派工人数</span><em>{{item.totalplannum}}</em></li>
-                        <li><span>派工人数(白)</span><em>{{item.dayplantotalnum}}</em></li>
-                        <li><span>派工人数(夜)</span><em>{{item.nightplantotalnum}}</em></li>
+                        <li v-show="item.companyCode !== '0001'"><span>派工人数(白)</span><em>{{item.dayplantotalnum}}</em></li>
+                        <li v-show="item.companyCode !== '0001'"><span>派工人数(夜)</span><em>{{item.nightplantotalnum}}</em></li>
                         <li><span>实时派工</span><em>{{item.plannum}}</em></li>
                         <li><span>考勤人数</span><em>{{item.userrecordnum}}</em></li>
                         <li><span>考勤时间</span><em>{{Math.round(item.recordtime*100)/100}}h</em></li>
@@ -209,7 +210,7 @@
                   <p class="checking_item-title">迟到</p>
                   <ul class="checking_item-wrapper">
                     <el-scrollbar style="height:100%;">
-                      <li v-for="item in kaoqinList.lateList" :key="item.id">
+                      <li v-for="item in kaoqinList.lateList" :key="item.id" v-show="item.companyName!=='总部'">
                         <span v-text="item.companyName"></span>
                         <em v-text="item.latenum"></em>
                       </li>
@@ -220,7 +221,7 @@
                   <p class="checking_item-title">离岗</p>
                   <ul class="checking_item-wrapper">
                     <el-scrollbar style="height:100%;">
-                      <li v-for="item in kaoqinList.leaveList" :key="item.id">
+                      <li v-for="item in kaoqinList.leaveList" :key="item.id" v-show="item.companyName!=='总部'">
                         <span v-text="item.companyName"></span>
                         <em v-text="item.outnum"></em>
                       </li>
@@ -231,7 +232,7 @@
                   <p class="checking_item-title">未到</p>
                   <ul class="checking_item-wrapper">
                     <el-scrollbar style="height:100%;">
-                      <li v-for="item in kaoqinList.absentList" :key="item.id">
+                      <li v-for="item in kaoqinList.absentList" :key="item.id" v-show="item.companyName!=='总部'">
                         <span v-text="item.companyName"></span>
                         <em v-text="item.absentnum"></em>
                       </li>
@@ -242,7 +243,7 @@
                   <p class="checking_item-title">未派工</p>
                   <ul class="checking_item-wrapper">
                     <el-scrollbar style="height:100%;">
-                      <li v-for="item in kaoqinList.abnormalList" :key="item.id">
+                      <li v-for="item in kaoqinList.abnormalList" :key="item.id" v-show="item.companyName!=='总部'">
                         <span v-text="item.companyName"></span>
                         <em v-text="item.abnormalnum"></em>
                       </li>

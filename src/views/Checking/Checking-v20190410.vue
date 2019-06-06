@@ -9,7 +9,7 @@
         <!-- <div class="back" @click="window.history.go(1)"><img src="../../assets/images/index_back.png"></div> -->
         <div class="back" @click="$router.back()"><img src="../../assets/images/index_back.png"></div>
         <!-- <div class="back" @click="enterIndexPage('/CheckingJt')"><img src="../../assets/images/index_back.png"></div> -->
-        <div class="dayOrnight">
+        <div class="dayOrnight" v-show="this.$store.state.selectedSubcompany!=='总部'">
           <img v-show="dayOrNightStatus ==='白班'" src="../../assets/images/index_sun.png" />
           <img v-show="dayOrNightStatus ==='夜班'" src="../../assets/images/index_moon.png" />
           <span v-text="dayOrNightStatus">白班</span>

@@ -981,20 +981,20 @@
           ele.resize()
         })
         if($(window).height() >= 1000){
-          $('.index_center_bottom_searchContent_main').css('height','330px')
-          $('.index_center_bottom_searchContent_mainAllsearch').css('height','330px')
+          $('.index_center_bottom_searchContent_main').css('height','390px')
+          $('.index_center_bottom_searchContent_mainAllsearch').css('height','390px')
         }else{
-          $('.index_center_bottom_searchContent_main').css('height','209px')
-          $('.index_center_bottom_searchContent_mainAllsearch').css('height','209px')
+          $('.index_center_bottom_searchContent_main').css('height','259px')
+          $('.index_center_bottom_searchContent_mainAllsearch').css('height','259px')
         }
       },
       screenHeightFn(){
         if(this.screenHeight >= 1000){
-          $('.index_center_bottom_searchContent_main').css('height','330px')
-          $('.index_center_bottom_searchContent_mainAllsearch').css('height','330px')
+          $('.index_center_bottom_searchContent_main').css('height','390px')
+          $('.index_center_bottom_searchContent_mainAllsearch').css('height','390px')
         }else{
-          $('.index_center_bottom_searchContent_main').css('height','209px')
-          $('.index_center_bottom_searchContent_mainAllsearch').css('height','209px')
+          $('.index_center_bottom_searchContent_main').css('height','259px')
+          $('.index_center_bottom_searchContent_mainAllsearch').css('height','259px')
         }
       },
       //中间下面切换的函数
@@ -1325,7 +1325,7 @@
 <style lang="scss" scoped>
   .index{
     height:100%;
-    background-image: url(../../assets/images/index_bg.png);
+    background-image: url(../../assets/images/index_bg0522.png);
     background-size: cover;
     color: rgb(255, 255, 255);
     background-repeat: no-repeat;
@@ -1338,13 +1338,13 @@
       left: 2.5%;
       right: 2.5%;
       height: 70px;
-      padding-top: 20px;
+      /*padding-top: 20px;*/
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       /*background: url(../assets/images/body_title.png) no-repeat center center;*/
       background-size: auto 100%;
       img{display:inline-block;vertical-align: middle;width:50px;}
-      .title{font-size: 0.44rem;
+      .title{font-size: 0.32rem;
         color:#fff;font-weight:bold;}
       .time{
         width: 285px;
@@ -1353,7 +1353,7 @@
         display: inline-block;
         vertical-align: middle;
         position: fixed;
-        top:65px;
+        top:28px;
         right:20px;
         z-index: 10;
         text-align: left;
@@ -1364,13 +1364,13 @@
 				height: 40px;
 				background: url(../../assets/images/index_back.png) no-repeat;
 				position:fixed;
-				top:60px;
+				top:28px;
 				left:40px;
 				cursor:pointer;
 			}
       .historyBtn{
         font-size:16px;width:100px;height:36px;line-height: 36px;
-        margin-top: 50px;margin-left:10px;cursor: pointer;
+        margin-top: 20px;margin-left:10px;cursor: pointer;
         background:linear-gradient(#176275,#06437d);border-radius: 3px;
         position:fixed;
         top:10px;
@@ -1379,7 +1379,7 @@
     }
     &_main{
       position: fixed;
-      top:110px;
+      top:60px;
       left: 2.5%;
       right: 2.5%;
       bottom:15px;

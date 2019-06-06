@@ -2,45 +2,22 @@
   <div class="leftTopPersonNum">
     <div class="leftWarp">
       <p class="titleText1 titleText">计件总人数
-        <em class="titleTotalNum" v-show="info && info.totalNum">{{info.totalNum}}<em>人</em></em>
+        <em class="titleTotalNum" v-if="info && info.totalNum">{{info.totalNum}}<em>人</em></em>
+        <em class="titleTotalNum" v-else>0<em>人</em></em>
       </p>
-      <p class="titleText2 titleText1">&nbsp;&nbsp;&nbsp;&nbsp;离岗
+      <!--<p class="titleText2 titleText1">&nbsp;&nbsp;&nbsp;&nbsp;离岗
         <em class="titleTotalNum zaotui" v-if="info && info.outNum">{{info.outNum}}  <em>人</em></em>
         <em class="titleTotalNum" v-else>0  <em>人</em></em>
-      </p>
+      </p>-->
     </div>
     <!--几个人数-->
     <div class="statusList">
       <ul class="statusListTop">
         <li>
-          <p class="statusTitle">迟到</p>
-          <div class="statusDiv">
-            <em class="statusCount chidao" v-if="info && info.lateNum" v-text="info.lateNum"></em>
-            <em class="statusCount" v-else>0</em>
-            <em class="statusDanw">人</em>
-          </div>
-        </li>
-        <li>
-          <p class="statusTitle">未到</p>
-          <div class="statusDiv">
-            <em class="statusCount kuanggong" v-if="info && info.absentNum" v-text="info.absentNum"></em>
-            <em class="statusCount" v-else>0</em>
-            <em class="statusDanw">人</em>
-          </div>
-        </li>
-        <li>
-          <p class="statusTitle">未派工</p>
-          <div class="statusDiv">
-            <em class="statusCount tiaoban" v-if="info && info.abnormalNum" v-text="info.abnormalNum"></em>
-            <em class="statusCount" v-else>0</em>
-            <em class="statusDanw">人</em>
-          </div>
-        </li>
-        <li>
           <p class="statusTitle">派工人数</p>
           <div class="statusDiv">
-            <em class=" statusCount num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum" style="letter-spacing:-3px;">0</em>
-            <em class="statusCount num" v-show="!info || !info.totalPlanNum" style="letter-spacing:-3px;">0</em>
+            <em class=" statusCount num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum" style="letter-spacing:-1px;">0</em>
+            <em class="statusCount num" v-show="!info || !info.totalPlanNum" style="letter-spacing:-1px;">0</em>
             <em class="statusDanw">人</em>
             <div class="dayNightNumBox">
               <div class="line"></div>
@@ -60,7 +37,7 @@
         <li>
           <p class="statusTitle">实时派工</p>
           <div class="statusDiv">
-            <em class="statusCount num" style="letter-spacing:-3px;">{{info.planNum}}</em>
+            <em class="statusCount num" style="letter-spacing:-1px;">{{info.planNum}}</em>
             <em class="statusDanw">人</em>
             <em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;">
               ({{isDayOrNigint.substring(0,1)}})
@@ -83,6 +60,39 @@
             <em class="statusDanw">人</em>
           </div>
         </li>
+        <li>
+          <p class="statusTitle">迟到</p>
+          <div class="statusDiv">
+            <em class="statusCount chidao" v-if="info && info.lateNum" v-text="info.lateNum"></em>
+            <em class="statusCount" v-else>0</em>
+            <em class="statusDanw">人</em>
+          </div>
+        </li>
+        <li>
+          <p class="statusTitle">离岗</p>
+          <div class="statusDiv">
+            <em class="statusCount chidao" v-if="info && info.outNum" v-text="info.outNum"></em>
+            <em class="statusCount" v-else>0</em>
+            <em class="statusDanw">人</em>
+          </div>
+        </li>
+        <li>
+          <p class="statusTitle">未到</p>
+          <div class="statusDiv">
+            <em class="statusCount kuanggong" v-if="info && info.absentNum" v-text="info.absentNum"></em>
+            <em class="statusCount" v-else>0</em>
+            <em class="statusDanw">人</em>
+          </div>
+        </li>
+        <li>
+          <p class="statusTitle">未派工</p>
+          <div class="statusDiv">
+            <em class="statusCount tiaoban" v-if="info && info.abnormalNum" v-text="info.abnormalNum"></em>
+            <em class="statusCount" v-else>0</em>
+            <em class="statusDanw">人</em>
+          </div>
+        </li>
+
       </ul>
     </div>
   </div>
@@ -136,6 +146,7 @@
         background: url("../../assets/images/title-bg.png") no-repeat;
         background-size: 100% 100%;
         margin-bottom: 10px;
+        padding-left: 15px;
         li {
           flex: 1;
           text-align: center;

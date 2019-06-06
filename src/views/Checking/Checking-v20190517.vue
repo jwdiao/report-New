@@ -2,7 +2,7 @@
   <div class="index">
     <!-- 头部 start -->
     <div class="index_top">
-      <div class="title"><span @click="showSelectDialog">{{this.$store.state.selectedSubcompany}}三现数据中心</span></div>
+      <div class="title"><span @click="showSelectDialog">{{this.$store.state.selectedSubcompany}}考勤数据</span></div>
       <!-- <div class="title"><span @click="showSelectDialog">{{`${this.companyValue}三现数据中心`}}</span></div> -->
 
       <div class="leftInfo">
@@ -36,7 +36,7 @@
       <div class="index_right">
         <attendance
         v-if="this.$store.state.selectedTabCheckingBetween!='energy'"
-        :dayInfo="dayEchartsDataRight" :monthInfo="monthEchartsDataRight" :yearInfo="yearEchartsDataRight" />
+        :dayInfo="dayEchartsDataRight" :monthInfo="monthEchartsDataRight" :yearInfo="yearEchartsDataRight" :yearData="yearDataLeft" />
         <EnergyStatistics
         v-if="this.$store.state.selectedTabCheckingBetween=='energy'" />
       </div>
@@ -466,7 +466,7 @@ export default {
     },
     // 回到历史页面
     enterCheckHistory () {
-      this.$router.replace('/CheckingHistoryData20190410')
+      this.$router.replace('/CheckingHistoryData20190517')
     },
     //20190514分离headerToSelected
     selectDialogFunction(val){
@@ -491,22 +491,22 @@ export default {
 <style lang="scss" scoped>
 .index{
   height:100%;
-  background-image: url(../../assets/images/index_bg.png);
+  background-image: url(../../assets/images/index_bg0522.png);
   background-size: 100% 100%;
   color: rgb(255, 255, 255);
   background-repeat: no-repeat;overflow: hidden;
   &_top{
     position: fixed;top:0;left:15px;right:15px;box-sizing: border-box;
-    height: 106px;line-height:106px;text-align: center;
+    height: 80px;line-height:85px;text-align: center;
     .title {
-      font-size: 0.44rem;
+      font-size: 0.32rem;
       color:#fff;font-weight:bold;
-      span{cursor: pointer;}
+      span{cursor: pointer; margin-top: -20px;display: inherit;}
     }
     .time{
       width:250px;
       font-size: 0.32rem;right:2.2rem;
-      color:#ababab;position: fixed;top:28px;z-index: 10;text-align: left;
+      color:#ababab;position: fixed;top:0px;z-index: 10;text-align: left;
       font-family: fontnameUnidreamLED !important;
     }
     .back{
@@ -518,23 +518,23 @@ export default {
     .dayOrnight{
       // position: absolute;top:15px;left:80px;
       float: left;display: inline-block;vertical-align: middle;
-      img{vertical-align: middle;width: 86px;}
+      img{vertical-align: middle;width: 70px;}
       span{
-        font-size:34px;color:#ababab;
+        font-size:28px;color:#ababab;
         vertical-align: middle;margin-left:-10px;
       }
     }
     .historyBtn{
       float: left;font-size:16px;width:100px;height:36px;line-height: 36px;
-      margin-top: 37px;margin-left:10px;cursor: pointer;
+      margin-top: 27px;margin-left:10px;cursor: pointer;
       background:linear-gradient(#176275,#06437d);border-radius: 3px;
     }
     .leftInfo{
-      position: absolute;top:15px;left:0;overflow: hidden;
+      position: absolute;top:0px;left:0;overflow: hidden;
     }
   }
   &_main{
-    position: fixed;top:120px;left:15px;right:15px;bottom:15px;
+    position: fixed;top:73px;left:15px;right:15px;bottom:15px;
   }
   &_left{
     width: 73.5%;float: left;height:100%;
@@ -549,11 +549,5 @@ export default {
   &_right{
     width: 25%;float: left;height:100%;
   }
-
-
-
 }
-
-
-
 </style>

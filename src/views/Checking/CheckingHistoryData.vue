@@ -3,7 +3,7 @@
     <!-- 头部 搜索start -->
     <div class="index_top">
       <div class="index_imgText">
-        <span class="title" style="cursor:pointer;" @click="switchHistoryData()">{{titleText}}三现数据中心</span>
+        <span class="title" style="cursor:pointer;" @click="switchHistoryData()">{{titleText}}考勤表</span>
       </div>
       <em class="time" v-text="currentTime"></em>
       <div class="button" @click="enterIndexPage('/Checking')"></div>

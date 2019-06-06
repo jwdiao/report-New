@@ -3,7 +3,8 @@
 		<div class="checking_dashbordBox">
 			<p class="home_title home_title-blue">
 				人员考勤看板
-				<span class="checking_total">计件总人数<em v-show="info && info.totalNum" v-text="info.totalNum"></em></span>
+				<span class="checking_total" v-if="this.$store.state.selectedSubcompany!=='总部'">计件总人数<em v-show="info && info.totalNum" v-text="info.totalNum"></em></span>
+				<span class="checking_total" v-else>计时总人数<em v-show="info && info.totalNum" v-text="info.totalNum"></em></span>
 			</p>
 <!-- 			<div class="checking_dashbord">
 				<ul>
@@ -96,7 +97,7 @@
 								<span class="text">派工人数</span>
 								<em class="num" v-show="info&&info.totalPlanNum" v-text="info.totalPlanNum" style="letter-spacing:-3px;">0</em>
 								<em class="num" v-show="!info || !info.totalPlanNum" style="letter-spacing:-3px;">0</em>
-								<div class="dayNightNumBox">
+								<div class="dayNightNumBox" v-show="this.$store.state.selectedSubcompany!=='总部'">
 									<div class="line"></div>
 									<div class="con">
 											<p>
@@ -113,7 +114,7 @@
 							<div class="item item-row2">
 								<span class="text">实时派工</span>
 								<em class="num" style="letter-spacing:-3px;">{{info.planNum}}</em>
-								<em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;">
+								<em style="display: inline-block;vertical-align: middle;font-size: 0.24rem;color: #02c9fc;margin-left: 10px;" v-show="this.$store.state.selectedSubcompany!=='总部'">
 									({{isDayOrNigint.substring(0,1)}})
 								</em>
 							</div>

@@ -3,7 +3,7 @@
 	<el-scrollbar style="height:90%;" v-show="machineShow">
 	  <ul class="clear overview-crafttype" >
 	    <li
-	      v-for="(item, index) in list" :key="index"
+	      v-for="(item, index) in ListArray" :key="index"
 				@click="handleLiClick(item,index)"
 	      :class="`overview-navConItem ${item.totalNum?'':'overview-navConItem-disable'}`"
 	    >
@@ -11,79 +11,93 @@
 	      <div class="clear title" >
 	        <div class="left">
 	          <em class="num">{{index+1}}.</em>
-	          <span class="ellipsis name">{{item.workCenterName}}</span>
+	          <span class="ellipsis name">{{item.firstGroupCode}}</span>
 	        </div>
-	        <div class="right amount">{{item.totalNum}}台</div>
+	        <!-- <div class="right amount">{{item.totalNum}}台</div> -->
 	      </div>
 	      <div class="content">
 	        <ul>
+			  <li>
+				<span class="label">总数</span>
+				<span class="value">{{item.totalCount}}</span>
+			  </li>
+			  <li>
+			    <span class="label">在线数</span>
+			    <span class="value">{{item.onlineNum}}</span>
+			  </li>
+			  <li>
+			    <span class="label">在线率</span>
+			    <span class="value">{{item.onlinerate}}%</span>
+			  </li>
 	          <li>
-	            <span class="label">开机率</span>
-	            <span class="value">{{item.kaijiLv}}%</span>
+	            <span class="label">离线率</span>
+	            <span class="value">{{item.offlinerate}}%</span>
 	          </li>
 	          <li>
-	            <span class="label">作业率</span>
-	            <span class="value">{{item.zuoyeLv}}%</span>
-	          </li>
-	          <li>
-	            <span class="label">故障率</span>
-	            <span class="value">{{item.alarmLv}}%</span>
-	          </li>
-	          <li>
-	            <span class="label">利用率</span>
-	            <span class="value">{{item.liyongLv}}%</span>
-	          </li>
-	          <li>
-	            <span class="label">总耗电量</span>
-	            <span class="value">{{item.elcPower}} kw•h</span>
+	            <span class="label">离线数</span>
+	            <span class="value">{{item.offlineNum}}</span>
 	          </li>
 	        </ul>
 	      </div>
 	    </li>
 	  </ul>
-		
 	</el-scrollbar>
-	<div class="common_table" v-show="!machineShow">
-		<template>
-			<el-table :data="cameraList" border style="width: 100%"
-			:height="tableHeight"
-			@row-click="handleRowClick"
-			:row-class-name="tableRowClassName"
-			:row-style="selectedHighlight"
-			ref="spuProfileTable"
-			row-key="kid"
-			>
-				<el-table-column prop="num" label="序号" width="100">
-				</el-table-column>
-				<el-table-column prop="firstGroupName" label="工艺" width="100">
-				</el-table-column>
-				<el-table-column prop="cameraName" label="设备名称" min-width="135">
-				</el-table-column>
-				<el-table-column prop="factoryName" label="厂房" width="100">
-				</el-table-column>
-				<el-table-column prop="companyName" label="子公司">
-				</el-table-column>
-				<el-table-column prop="orgName" label="事业部">
-				</el-table-column>
-			</el-table>
-		</template>
-		<div class="common_paginaton" v-show="pageShow" style="margin-top:10px;">
-			<template>
-				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage"
-				 :page-sizes="[10,18, 30, 40, 50,60]" :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="tableTotal"
-				 style="height:100%;">
-				</el-pagination>
-			</template>
-		</div>
-	</div>
+	<el-scrollbar style="height:90%;" v-show="machineSecondShow">
+	  <ul class="clear overview-crafttype" >
+	    <li
+	      v-for="(item, index) in secondArrList" :key="index"
+				@click="handleLiSecondClick(item,index)"
+	      :class="`overview-navConItem ${item.totalNum?'':'overview-navConItem-disable'}`"
+	    >
+			  <!--@click="handleClick(item)"-->
+	      <div class="clear title" >
+	        <div class="left">
+	          <em class="num">{{index+1}}.</em>
+	          <span class="ellipsis name">{{item.groupName}}</span> 
+	        </div>
+	        <!-- <div class="right amount">{{item.totalNum}}台</div> -->
+	      </div>
+	      <div class="content">
+	        <ul>
+			  <li>
+				<span class="label">总数</span>
+				<span class="value">{{item.totalCount}}</span>
+			  </li>
+			  <li>
+			    <span class="label">在线数</span>
+			    <span class="value">{{item.onlineNum}}</span>
+			  </li>
+			  <li>
+			    <span class="label">在线率</span>
+			    <span class="value">{{item.onlinerate}}%</span>
+			  </li>
+	          <li>
+	            <span class="label">离线率</span>
+	            <span class="value">{{item.offlinerate}}%</span>
+	          </li>
+	          <li>
+	            <span class="label">离线数</span>
+	            <span class="value">{{item.offlineNum}}</span>
+	          </li>
+	        </ul>
+	      </div>
+	    </li>
+	  </ul>
+	</el-scrollbar>
+	
+	
 	
 </div>
 </template>
 <script>
 import moment from 'moment'
 import {
-  reqCountDeviceMain, searchCameraList
+  reqCountDeviceMain,getVideoServe
 } from '../../../api/deviceVideoManageApi'
+import {
+  getOption
+} from '../../../api'
+//import getOption from '../../../api/index'
 export default {
   name: 'CraftType',
   data() {
@@ -97,45 +111,55 @@ export default {
 			tableTotal:18,
 			cameraList:[],
 			getIndex:0,//表格行索引
+			ListArray:[],
+			secondCodeList:[],
+			secondArrList:[],
+			
+			
+			//machineSecondShow:false
 			//tableHeight:350
 			//isMachineShow:true
     }
   },
   computed: {
-    companyCodeStr() {
-      return this.$store.state.sbhlOverViewSelectedCompany;
-    },
+		companyCodeStr() {
+		  return this.$store.state.sbhlOverViewSelectedCompany;
+		},
 		machineShow(){
 			return this.$store.state.isMachineShow;
 		},
 		tableHeight(){
 			return this.$store.state.tableHeight;
+		},
+		machineSecondShow(){
+			return this.$store.state.machineSecondShow;
 		}
+		
   },
   watch: {
     companyCodeStr(newvalue) {
-      // console.log('craftType code:',newvalue)
-      this.getCraftTypeData()
+      
     },
 		machineShow(newvalue){
 			console.log(newvalue)
 		}
   },
 	created(){
-		console.log(this.$refs.tableBox)
+		//console.log(this.$refs.tableBox)
 		
 	},
   mounted() {
-		//
-		//this.tableHeight = 200
-		//console.log(this.$refs.tableBox)
-		
+		   //
+		   //this.tableHeight = 200
+		  //console.log(this.$refs.tableBox)
+	this.getVideoServeHttp();
     this.currentTime = moment(new Date()).format('YYYY-MM-DD');
-	  
+	//this.getVideoServeHttp1();
     if(this.companyCodeStr) { // 页面切换tab时，this.companyCodeStr=''
        this.getCraftTypeData()
     }
-		window.addEventListener('resize', this.handleResize);
+	//this.getOptions()
+	window.addEventListener('resize', this.handleResize);
   },
   methods: {
 		handleResize(){
@@ -143,16 +167,79 @@ export default {
 		},
 		handleLiClick(item,index){
 			//console.log(item,index)
-			this.$store.state.tableHeight = this.$refs.tableBox.offsetHeight-70
+			//this.$store.state.tableHeight = this.$refs.tableBox.offsetHeight-70
 			this.$emit('handleLiClick',item,index);
-			this.searchCameraListHttp();
+			//this.searchCameraListHttp();
 			this.$store.state.isMachineShow = false;
+			this.getOptions(item.firstGroupCode);
+			this.$store.state.machineSecondShow = true;
 		},
-		async searchCameraListHttp(){
-			const res = await searchCameraList('','','','','01','','',0,18);
-			this.cameraList = res.data.data.list
-			console.log(this.cameraList)
+		handleLiSecondClick(item,index){
+			console.log('item',item);
+			this.$store.gyData = item;
+			this.$store.state.jgldShow = true;
+			this.$store.state.centerDialogShow = false;
+			sessionStorage.groupCodeSelf = item.groupCode
+			this.$router.push('/EnergyDeviceInfoList');
 		},
+		
+		/*拿到二级CODE集合*/
+		async getOptions(val){
+			let optionArray = {'下料':'01','成型':'02','焊接':'03','热处理':'04','机加':'05','涂装':'06','装配':'07','调试':'08'}
+			const res = await getOption('/cameraGroup/getGroup/',optionArray[val]);
+			console.log('要看的',res.data.data);
+			for(var i=0;i<res.data.data.length;i++){
+				this.getVideoServeHttp1(optionArray[val],res.data.data[i].groupCode,res.data.data[i].groupName,res.data.data[i].groupCode)
+			}
+		},
+		
+		/*拿到二级摄像头渲染页面数组*/
+		async getVideoServeHttp1(firstVal,secondVal,groupName,groupCode){
+			const query = {
+				 "cameraName": "",//摄像头名称
+			     "companyCode": "0303",//子公司编号
+			     "factoryCode": "",//厂房
+			     "firstGroupCode":firstVal,//一级工艺
+			     "orgCode": "",//事业部编号
+			     "searchNme": "",
+			     "secondGroupCode": secondVal//二级工艺编号
+			}
+			const res = await getVideoServe(query);
+			res.data.data.groupName = groupName;
+			res.data.data.groupCode = groupCode;
+			this.secondArrList.push(res.data.data);
+			console.log('可以作为循环的数组',this.secondArrList);
+		},
+		
+		
+		async getVideoServeHttp(){
+			let myArr = ['01','02','03','04','05','06','07','08'];
+			let firstGroupName = ['下料','成型','焊接','热处理','机加','涂装','装配','调试']
+			let ListArray = [];
+			for(var i=0;i<myArr.length;i++){
+				const query = {
+					 "cameraName": "",//摄像头名称
+				     "companyCode": "0303",//子公司编号
+				     "factoryCode": "",//厂房
+				     "firstGroupCode": myArr[i],//一级工艺
+				     "orgCode": "",//事业部编号
+				     "searchNme": "",
+				     "secondGroupCode": ""//二级工艺编号
+				}
+				const res = await getVideoServe(query);
+				const obj = {
+					firstGroupCode:firstGroupName[i],
+					offlineNum: res.data.data.offlineNum,
+				    offlinerate: res.data.data.offlinerate,
+				    onlineNum: res.data.data.onlineNum,
+				    onlinerate: res.data.data.onlinerate,
+				    totalCount: res.data.data.totalCount
+				}
+				ListArray.push(obj)
+			}
+			this.ListArray = ListArray
+		},
+		
 		handleSizeChange(){
 			
 		},
@@ -172,106 +259,7 @@ export default {
 		handleRowClick(row, event, column) {
 			this.getIndex = row.index//将选中行的索引赋值给this.getIndex
 		},
-    async getCraftTypeData() {
-      this.companyCode = JSON.parse(this.companyCodeStr).value
-      this.list = [];
-      const res = await reqCountDeviceMain(this.companyCode,'','02',this.currentTime) //
-      // const res = await reqCountDeviceMain('0301','','02') //
-      if(res&&res.data.code===200&&res.data.data.length){
-        const resList = res.data.data
-        const newList = resList.forEach(item => {
-
-          // debugger;
-          const runTime = item.runTime == null ? 0 : item.runTime // 作业时间
-          const idleTime = item.idleTime == null ? 0 : item.idleTime // 空闲时间（待机时间）
-          const naturalTime = item.naturalTime == null ? 0 : item.naturalTime // 自然时间
-          const alarmNum = item.alarmNum == null ? 0 : item.alarmNum // 故障数
-          const totalNum = item.totalNum == null ? 0 : item.totalNum // 总数
-          const elcPower = item.elcPower == null ? 0 : item.elcPower // 总耗电量
-
-          let kaijiTime = runTime + idleTime; // 开机时间（作业时间+空闲时间）
-          // let kaijiLv = kaijiTime / naturalTime; // 开机率（开机时间/自然时间）
-          // let zuoyeLv = runTime / kaijiTime // 作业率（作业时间/开机时间）
-          // let alarmLv = alarmNum / totalNum // 故障率（故障数/总数）
-          // let liyongLv = kaijiLv / zuoyeLv // 利用率（开机率/作业率）
-
-          let kaijiLv = 0; // 开机率（开机时间/自然时间）
-          if (kaijiTime == 0) {
-            kaijiLv = 0;
-          } else {
-            kaijiLv = (kaijiTime / naturalTime *100).toFixed(2); // 开机率（开机时间/自然时间）
-          }
-
-          let zuoyeLv = 0; // 作业率（作业时间/开机时间）
-          if (runTime == 0) {
-            zuoyeLv = 0;
-          } else {
-            zuoyeLv = (runTime / kaijiTime *100).toFixed(2) // 作业率（作业时间/开机时间）
-          }
-
-          // 故障率
-          let alarmLv = 0;
-          if (alarmNum == 0) {
-            alarmLv = 0;
-          } else {
-            alarmLv = (alarmNum / totalNum *100).toFixed(2) // 故障率（故障数/总数）
-          }
-
-          // 利用率
-          let liyongLv = 0
-          if (kaijiLv == 0) {
-            liyongLv = 0
-          } else {
-            liyongLv = ((kaijiLv/100 * zuoyeLv/100)*100).toFixed(2) // 利用率（开机率/作业率）
-          }
-
-          let workCenterName = '';
-          if (item.firstGroupCode === '01') {
-            workCenterName = '下料'
-          } else if (item.firstGroupCode === '02') {
-            workCenterName = '成型'
-          } else if (item.firstGroupCode === '03') {
-            workCenterName = '焊接'
-          } else if (item.firstGroupCode === '04') {
-            workCenterName = '热处理'
-          } else if (item.firstGroupCode === '05') {
-            workCenterName = '机加'
-          } else if (item.firstGroupCode === '06') {
-            workCenterName = '涂装'
-          } else if (item.firstGroupCode === '07') {
-            workCenterName = '装配'
-          } else if (item.firstGroupCode === '08') {
-            workCenterName = '调试'
-          }
-
-
-          // let totalNum =
-          let obj = {
-            firstGroupCode: item.firstGroupCode,
-            workCenterName,
-            totalNum,
-            kaijiLv,
-            zuoyeLv,
-            alarmLv,
-            liyongLv,
-            elcPower
-          }
-          // 开机率
-          this.list.push(obj)
-
-        })
-      }
-    },
-   /* handleClick(item) {
-      if (!item.totalNum) {
-        return;
-      }
-      const deviceHomeObj = {type: '01',typeCode: item.firstGroupCode} // 类型 01 工艺，02 加工中心
-      localStorage.setItem('sbhl-DeviceHome-Param',JSON.stringify(deviceHomeObj))
-
-      this.$router.push('/DeviceHome')
-
-    } */
+    
   },
 }
 </script>

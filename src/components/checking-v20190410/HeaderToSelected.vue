@@ -229,7 +229,7 @@
       handleCancel () {
         // this.selectDialogShow = false
         var loadingData = false
-        this.$emit('selectDialogShowName',{flag:!loadingData,loadingData:loadingData})
+        this.$emit('selectDialogShowName',{flag:loadingData,loadingData:loadingData})
       },
     }
   }
